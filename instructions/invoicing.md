@@ -1,7 +1,8 @@
-INVOICING (version 4)
+INVOICING (version 5)
 Written for: sheets-spec version 4
 
 Change log
+- v5 (2026-10-09): the invoice list waits only on sheets-spec rule 9 (a reminder still waiting for wording no longer holds it), and yields to a reminder preview that is about to go out.
 - v4 (2026-10-08): weekly share wording.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v3 (2026-10-08): waits for any open approval (sheets-spec rule 9); read-back lists go first.
@@ -39,7 +40,7 @@ PART B. ASK FOR APPROVAL (one approval open at a time)
 Only if ALL of these are true:
 - no approval is open (sheets-spec rule 9), AND
 - no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), AND
-- NEXT week's tab (sheets-spec WEEK NAMES; on Fri Oct 9 2026 that is Week 1) does not have a reminder waiting on approval ("Reminder requested" filled and "Reminder approved" blank).
+- NEXT week's reminder preview is not about to go out (sheets-spec WEEK NAMES): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
 Then take the oldest Invoice item with Status Waiting:
 - Text Mark: "Invoices for [Day, date] are ready: [n] invoices, $[sum]. [doc link] Reply 'good' to send all, or 'good except [numbers]'." Nothing else in that text.
 - Status = Sent, Sent to = Mark, First sent = now.
