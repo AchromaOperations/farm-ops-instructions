@@ -1,7 +1,8 @@
-PARSER (version 8)
+PARSER (version 9)
 Written for: sheets-spec version 4
 
 Change log
+- v9 (2026-10-09): "eggs" with no amount = 1 dozen.
 - v8 (2026-10-09): before writing to a week tab, add any missing label or column it needs (sheets-spec rule 8).
 - v7 (2026-10-08): reminder approval needs two different people (Mark, Laura, Harry, Shane); Harry and Shane can approve the reminder preview.
 - v6 (2026-10-08, revised): first-week-only products always go to Mark as a question.
@@ -152,7 +153,7 @@ ORDER WRITING (used by every section above)
 Rule checks. All must pass, or create a Clarify item with a proposed question instead:
 1. Customer: exactly one match.
 2. Every item maps to exactly one Products "Column name" (Active = Yes). Use the Defaults tab (All, or this Cust ID) for vague words. "Yogurt" with several yogurt products and no flavor = fails.
-3. Every amount is explicit, or set by a Defaults row.
+3. Every amount is explicit, or set by a Defaults row. Built-in default: "eggs" (plural) with no number or amount ("can I get eggs", "add eggs this week") = 1 of the eggs product, which is 1 dozen. A number or amount in the text always wins ("2 dozen eggs", "half dozen eggs").
 3b. First week only: if an item's Products "Weeks" is "First week only", it fails. Question: "[name] asked for [item] for the week of [dates]. That's a first-week-only item. Add it to that week, or hold it for the next first week?" (The rest of the same message can still be written if it passes.)
 4. Standing conflict: if the item has a standing order and the text could mean "in addition" or "instead" (e.g. "milk this week please"), it fails. Words like "extra", "another", "more" = in addition. "Just", "only", "change to", "instead" = instead.
 5. Target row (test customers, Cust ID starting with "T": if they have no row on the week tab, add one at the bottom of the customer table first):
