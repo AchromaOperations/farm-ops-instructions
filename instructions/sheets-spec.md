@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-09, revised 11): Config "Follow-up every (minutes)" (Mark followed up every hourly run) and "Daily follow-up time"; "Nudge after" now only paces Laura and Shane on the reminder; header label "Reminder others last asked"; a Digest # stays taken until Resolved.
 - v4 (2026-10-08, revised 10): reminder preview goes to Mark, Laura, Harry and Shane; "Reminder approvals" records who approved; two different approvers needed.
 - v4 (2026-10-08, revised 9): Products "Weeks" column (All, First week only).
 - v4 (2026-10-08, revised 8): Quo send tools return no message ID; system texts are logged with ID "pending" and the parser fills it in by matching.
@@ -104,8 +105,10 @@ Settings and starting values:
 - Delivery list time: 19:00 the evening before
 - Route check start: 15:00
 - Digest batch size: 3
-- Nudge after (hours): 3
-- Laura after (hours): 6
+- Follow-up every (minutes): 55   (how often Mark is followed up on anything waiting for him; 55 = every hourly run. Missing or blank = 55.)
+- Daily follow-up time: 08:00   (the once-a-day text about Sales items Mark answered but didn't close. Missing or blank = 08:00.)
+- Nudge after (hours): 3   (reminder only: when Laura is first asked for the wording, and how often Laura and Shane hear again)
+- Laura after (hours): 6   (when Laura gets a copy of Mark's open questions and list approvals)
 - Bulk send batch size: 40
 - Stale run after (minutes): 50
 - Parser late after (minutes): 90
@@ -127,8 +130,8 @@ Q# | Type | Created | Week | Cust ID | Customer | Original message | Question | 
 - Type (dropdown): Clarify, Sales, Invoice, Read-back, Late order, Reminder, Driver, Other.
   Read-back items hold the link to a read-back approval list in Question.
   Driver items are questions for Harry (sent by delivery-check, not the digest). Invoice items hold the link to that day's invoice list doc in Question.
-- Digest # (TRACKER): the number Mark sees in the current digest (1, 2, 3). Cleared when the item is Resolved. Never two open items with the same Digest #.
-- Status (dropdown): Waiting, Sent, Answered, Resolved.   (Waiting = not yet sent to anyone)
+- Digest # (TRACKER): the number Mark sees in the current digest (1, 2, 3). Cleared when the item is Resolved. Never two items that aren't Resolved with the same Digest #.
+- Status (dropdown): Waiting, Sent, Answered, Resolved.   (Waiting = not yet sent to anyone. Answered = a Sales item Mark answered without sale / no sale / resolved; owner-digest follows these up once a day.)
 - Outcome (dropdown, Sales only): Sale, No sale, Resolved.
 
 TAB: Inbox Log (header in row 1). One row per text the parser handled, in and out.
@@ -177,6 +180,7 @@ Asked-for order cutoff | 2026-10-10 18:00
 Reminder requested |
 Reminder last asked |
 Reminder asked Laura |
+Reminder others last asked |   (TRACKER: when Laura, and Shane for an approval, were last followed up about the reminder)
 Reminder wording received |   (STAMP: first time wording arrived)
 Reminder wording |   (TRACKER: current wording; replaced if Mark or Laura revises it)
 Reminder wording updated |   (TRACKER: when the current wording was set)

@@ -1,7 +1,8 @@
-SEND REMINDER (version 7)
+SEND REMINDER (version 8)
 Written for: sheets-spec version 4
 
 Change log
+- v8 (2026-10-09): Mark is followed up at every hourly run while the wording or his YES is missing; Laura and Shane stay at every Nudge after hours (new label "Reminder others last asked"); Laura is first asked Nudge after hours after the request.
 - v7 (2026-10-08): preview goes to Mark, Laura, Harry and Shane; the parser needs two different approvals (never mention this in any text).
 - v6 (2026-10-08): one text per phone number (shared numbers); NO TEXTS customers skipped; late approval moves the reply-by time.
 - v5 (2026-10-08): cutoff line no longer says "your order" (milk is a weekly share).
@@ -15,7 +16,8 @@ HOW TO WORK
 A checklist. Every stage is decided by cells in the header block of NEXT week's tab (sheets-spec WEEK NAMES; on Fri Oct 9 2026 that is Week 1). Do exactly ONE stage per run: the first one whose condition is true, then finish. The only judgment is the wording check in Stage C.
 
 Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Times in texts are friendly ("Sat Oct 10, 6pm").
-"Nudge after" = Config "Nudge after (hours)".
+"Follow-up every" = Config "Follow-up every (minutes)"; missing or blank = 55 (Mark hears again at every hourly run).
+"Nudge after" = Config "Nudge after (hours)" (how often Laura and Shane hear again, and when Laura is first asked).
 Never tell anyone how many approvals are needed or who else has approved. No text may mention it.
 
 STAGE A. ASK FOR WORDING
@@ -25,9 +27,10 @@ Condition: "Reminder requested" is blank.
 
 STAGE B. WAITING FOR WORDING
 Condition: "Reminder wording received" is blank.
-- If "Reminder asked Laura" is blank and "Reminder last asked" is at least Nudge after hours ago (3 hours: a 9am request reaches Laura at the noon run): text Laura "Hi Laura, Mark hasn't sent this week's customer reminder yet. Could either of you text it back?" Fill "Reminder asked Laura" and "Reminder last asked" = now.
-- Else if "Reminder last asked" is at least Nudge after hours ago: text Mark and Laura "Still need this week's customer reminder wording when you get a chance." Set "Reminder last asked" = now.
-- Otherwise do nothing. Finish.
+- Mark: if "Reminder last asked" is at least Follow-up every minutes ago: text Mark "Still need this week's customer reminder wording when you get a chance." Set "Reminder last asked" = now.
+- Laura: if "Reminder asked Laura" is blank and "Reminder requested" is at least Nudge after hours ago (3 hours: a 9am request reaches Laura at the noon run): text Laura "Hi Laura, Mark hasn't sent this week's customer reminder yet. Could either of you text it back?" Fill "Reminder asked Laura" and "Reminder others last asked" = now.
+  Else if "Reminder asked Laura" is filled and the later of "Reminder others last asked" and "Reminder asked Laura" is at least Nudge after hours ago: text Laura "Still need this week's customer reminder wording when you get a chance." Set "Reminder others last asked" = now.
+- Finish.
 
 STAGE C. CHECK AND PREVIEW
 Condition: "Reminder wording" is filled, AND "Reminder approved" is blank, AND ("Reminder preview sent" is blank or older than "Reminder wording updated"), AND ("Reminder check failed" is blank or older than "Reminder wording updated").
@@ -50,8 +53,10 @@ Condition: "Reminder wording" is filled, AND "Reminder approved" is blank, AND (
 
 STAGE D. WAITING FOR APPROVAL
 Condition: "Reminder preview sent" is filled and "Reminder approved" is blank.
-- If "Reminder last asked" is at least Nudge after hours ago: text each of Mark, Laura and Shane who is NOT in "Reminder approvals" "The customer reminder is still waiting for your YES (preview sent [time])." (Never nudge Harry.) Set "Reminder last asked" = now.
-- Otherwise do nothing. Finish.
+Follow-up text: "The customer reminder is still waiting for your YES (preview sent [time])." Never to Harry.
+- Mark: if Mark is NOT in "Reminder approvals" and "Reminder last asked" is at least Follow-up every minutes ago: text Mark the follow-up. Set "Reminder last asked" = now.
+- Laura and Shane: if the later of "Reminder others last asked" and "Reminder preview sent" is at least Nudge after hours ago: text each of Laura and Shane who is NOT in "Reminder approvals" the follow-up. Set "Reminder others last asked" = now.
+- Finish.
 
 STAGE E. SEND
 Condition: "Reminder approved" is filled and "Reminder sent" is blank.

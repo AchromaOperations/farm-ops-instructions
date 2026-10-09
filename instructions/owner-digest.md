@@ -1,7 +1,8 @@
-OWNER DIGEST (version 4)
+OWNER DIGEST (version 5)
 Written for: sheets-spec version 4
 
 Change log
+- v5 (2026-10-09): Mark is followed up at every hourly run (Config "Follow-up every (minutes)", default 55), each follow-up lists every unanswered question; half-closed Sales items get one morning follow-up a day; Digest # stays taken until Resolved.
 - v4 (2026-10-09): share requests from customers ask Mark for the change to make, or 'no change'.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v3 (2026-10-08): nudges for read-back lists too.
@@ -15,22 +16,25 @@ Definitions
 - Open batch = Queue items of Type Clarify, Sales, Late order or Other with Status "Sent".
 - Urgent = an item whose customer's delivery is today or tomorrow and whose week-tab row has Delivered blank. (Delivery list items need answers before the list locks.)
 - Invoice pending = a Queue item of Type Invoice or Read-back with Status "Sent" (an open list approval).
-- "Nudge after" and "Laura after" = Config hours. Batch size = Config "Digest batch size".
+- "Follow-up every" = Config "Follow-up every (minutes)"; missing or blank = 55 (Mark hears again at every hourly run).
+- "Laura after" = Config "Laura after (hours)". Batch size = Config "Digest batch size".
+- Half-closed = Sales items with Status "Answered" (Mark answered but didn't say sale / no sale / resolved).
+- "Daily follow-up time" = Config "Daily follow-up time"; missing or blank = 08:00.
 - Driver items are not handled here (delivery-check sends those). Reminder texts are not handled here (send-reminder does).
 
 STEP 1. MOVE STALE INVOICE HOLDS
 Any Clarify item whose Question starts with "Invoice" and that has been Sent for 24 hours with no Answer: create a Sales item with the same customer and question (customer service follow-up), then set the Clarify item's Answer = "moved to Sales Q[n]", Status = Resolved, clear its Digest #.
 
 STEP 2. NUDGES (for items already sent)
-a. Invoice pending: if (Last nudged, else First sent) is at least Nudge after hours ago, text Mark: "[Invoices for [day] / Customer read-backs] still need your OK: [link]. Reply 'good' or 'good except [numbers]'." If First sent is at least Laura after hours ago and Sent to doesn't include Laura, send the same text to Laura and add Laura to Sent to. Set Last nudged = now.
-b. Open batch: items with Status Sent and NO Answer, where (Last nudged, else First sent) is at least Nudge after hours ago. Text Mark one message: "Still waiting on [numbers]:" followed by each item's "[Digest #]. [Question]". If any of them was First sent at least Laura after hours ago and Laura isn't in Sent to: also send the same message to Laura and add Laura to Sent to. Set Last nudged = now on each.
-   (Items with an Answer but not Resolved, such as Sales answers without an outcome, are not nudged.)
+a. Invoice pending: if (Last nudged, else First sent) is at least Follow-up every minutes ago, text Mark: "[Invoices for [day] / Customer read-backs] still need your OK: [link]. Reply 'good' or 'good except [numbers]'." If First sent is at least Laura after hours ago and Sent to doesn't include Laura, send the same text to Laura and add Laura to Sent to. Set Last nudged = now.
+b. Open batch: unanswered items = Status Sent and NO Answer. If any of them has (Last nudged, else First sent) at least Follow-up every minutes ago: text Mark one message: "Still waiting on [numbers]:" followed by EVERY unanswered item's "[Digest #]. [Question]", then "([n] more waiting after these)" if any Waiting items exist. If any of them was First sent at least Laura after hours ago and Laura isn't in Sent to: also send the same message to Laura and add Laura to Sent to. Set Last nudged = now on each.
+c. Half-closed, once a day: if now is at or after Daily follow-up time and any half-closed item has (Last nudged, else First sent) before today: text Mark one message: "Still open (reply with the number and sale / no sale / resolved):" followed by each such item's "[Digest #]. [Question] (you said: '[Answer]')", quoting at most 120 characters of the answer. Set Last nudged = now on each. Only Mark, never Laura.
 
 STEP 3. NEW ITEMS
 Waiting items = Type Clarify, Sales, Late order or Other with Status "Waiting". If there are none, finish.
 - If Invoice pending OR an open batch has any unanswered item: send ONLY the urgent Waiting items (if any). Otherwise send the next batch.
 - Next batch = up to Batch size Waiting items: urgent first, then oldest Created first.
-- Number them: the lowest Digest # values not used by any open item, starting at 1.
+- Number them: the lowest Digest # values not used by any item that isn't Resolved (half-closed items keep their numbers), starting at 1.
 - Text Mark one message:
   "Questions (reply with the number and your answer):
   1. [Question]

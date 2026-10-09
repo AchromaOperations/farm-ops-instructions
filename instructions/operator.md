@@ -1,7 +1,8 @@
-OPERATOR (version 5)
+OPERATOR (version 6)
 Written for: sheets-spec version 4
 
 Change log
+- v6 (2026-10-09): owner-digest is due every hourly run while Mark has an unanswered item (Config "Follow-up every (minutes)"), and once a morning for half-closed Sales items.
 - v5 (2026-10-09): Step 0c2 adds missing header labels and columns on THIS and NEXT week's tabs every run.
 - v4 (2026-10-08): Eastern time from TZ; catch-up delivery list only from THIS week's tab (never before Week 1); Sunday alert if the reminder never went out.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -14,7 +15,7 @@ This is a checklist, not a judgment task. Every check below is a yes/no answer f
 
 READ ONLY THESE
 - sheets-spec: the version line (it must say version 4; if not, record a Problem, text Shane once, end) and the System tab section (run flag and week tab rules).
-- Farm Reference: Config tab, System tab, Queue tab (Status, First sent, Last nudged columns only).
+- Farm Reference: Config tab, System tab, Queue tab (Type, Status, First sent, Last nudged columns only).
 - Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as defined in sheets-spec WEEK NAMES (read that section too).
 
 STEP 0. START
@@ -55,7 +56,10 @@ For each due step: open the file instructions/[name].md in this repository (for 
    Due if any customer row in THIS or NEXT week has "Confirm needed" filled and later than "Confirmation sent" (or "Confirmation sent" blank). Read only those two columns.
 
 5. owner-digest
-   Only count Queue rows whose Type is not Driver or Reminder. Due if any such row has Status "Waiting", OR has Status "Sent" and (Last nudged, or First sent if Last nudged is blank) is at least "Nudge after (hours)" ago.
+   Only count Queue rows whose Type is not Driver or Reminder. Due if any such row:
+   - has Status "Waiting"; OR
+   - has Status "Sent" and (Last nudged, or First sent if Last nudged is blank) is at least Config "Follow-up every (minutes)" ago (missing or blank = 55); OR
+   - is Type Sales with Status "Answered", now is at or after Config "Daily follow-up time" (missing or blank = 08:00), and (Last nudged, or First sent if Last nudged is blank) is before today.
 
 6. weekly-master-list: skip while Config "Weekly master list time" says "(not set yet)".
 7. finance-update: skip while Config "Finance update time" says "(not set yet)".

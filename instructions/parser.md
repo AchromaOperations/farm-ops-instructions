@@ -1,7 +1,8 @@
-PARSER (version 10)
+PARSER (version 11)
 Written for: sheets-spec version 4
 
 Change log
+- v11 (2026-10-09): digest answers also match half-closed Sales items (Status Answered), so "4 resolved" closes one; closing one is never a conflict.
 - v10 (2026-10-09): customers can't change their weekly share by text (milk, cream, whey, skips, pauses, cancelling): it becomes a Sales item, and Mark's digest answer makes or declines the change; add-ons in the same text are still written. Only weekly add-ons (Billed through Square) are orders by text. A dairy add-on with no amount or a vague one = 1 unit (not for "a few" or when the row already has some). Defaults rows win over built-in defaults. CANCEL, REVOKE and OPT OUT are opt-outs like STOP. A share Clarify always offers "no change" first.
 - v9 (2026-10-09): "eggs" with no amount = 1 dozen.
 - v8 (2026-10-09): before writing to a week tab, add any missing label or column it needs (sheets-spec rule 8).
@@ -68,7 +69,7 @@ A2. Reminder. Look at NEXT week's tab header (sheets-spec WEEK NAMES).
   - A short instruction about the wording ("make it Sunday", "add that we have honey") = apply it to the current "Reminder wording", and set "Reminder wording updated" = now.
   - Unclear = Clarify item "Not sure if this is the reminder wording: '[text]'".
 
-A3. Digest answers. Fits if the message refers to numbers that match open Queue items (Status Sent) by Digest #, e.g. "1 two dozen, 2 maple".
+A3. Digest answers. Fits if the message refers to numbers that match open Queue items by Digest # (Status Sent, or a Sales item with Status Answered that the daily follow-up asks about again), e.g. "1 two dozen, 2 maple", "4 resolved".
 For each number answered: fill Answer, Answered by, Status = Answered, then apply by Type:
 - Clarify about a held invoice (Question starts with "Invoice"): "send", "good", "ok" = fill that customer's "Invoice approved" (date-time + who). Anything else = write "Invoice held: [answer]. Fix it in Square, then fill Invoice sent by hand." in that row's Needs attention. Then Resolved.
 - Clarify about a held read-back (Question starts with "Read-back"): "send", "good", "it's fine" = fill that row's "Read-back approved". Otherwise treat the answer as a correction to that customer's order: apply it with ORDER WRITING (source "Mark" or "Laura") and set "Confirm needed" = now, so a corrected read-back goes on the next list. Then Resolved.
@@ -83,7 +84,7 @@ For each number answered: fill Answer, Answered by, Status = Answered, then appl
 - Sales (all others): "sale", "no sale", "resolved" (or clear equivalents) = Outcome, Status = Resolved. Anything else: keep the answer, Status = Answered.
 - Other: record the answer, Status = Resolved.
 Numbers that match nothing open: Clarify item "Got '[text]' but no open question has that number."
-Conflicts: if Mark and Laura both answer the same item (or the same invoice list or reminder) and the second answer differs from the first, keep the first, and create a Clarify item for both: "Mark said '[a]' and Laura said '[b]' about [item]. Which is right?" (The first answer stands until one of them replies.)
+Conflicts: if Mark and Laura both answer the same item (or the same invoice list or reminder) and the second answer differs from the first, keep the first, and create a Clarify item for both: "Mark said '[a]' and Laura said '[b]' about [item]. Which is right?" (The first answer stands until one of them replies.) Closing a Sales item that is already Answered with sale / no sale / resolved is not a conflict, whoever sends it.
 
 A4. Commands (apply directly, then log).
 - Order for a customer ("add 2 maple yogurt for Nate this week") = ORDER WRITING for that customer.
