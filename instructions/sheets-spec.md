@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-08, revised 6): list subfolders are created on first use; no instruction docs or Archive in Drive.
 - v4 (2026-10-08, revised 5): the Ops folder is found by the Farm Reference sheet it contains, not by name.
 - v4 (2026-10-08, revised 4): TERMS: milk is the customer's weekly share, never an order; only add-ons are orders.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -42,11 +43,11 @@ GENERAL RULES (apply to every skill)
 
 LOCATION
 Google Drive folder: the Ops folder = the Google Drive folder that directly contains the Google Sheet "Farm Reference" (its Config A1 reads "RF-OPS REFERENCE v1"). Find it by searching Drive for that sheet. There must be exactly one.
-- System Instructions (subfolder): retired. Skill instructions now live in the GitHub repository the routines clone (folder instructions/). Only Shane edits them.
-- Archive (subfolder): old files. Never edited.
+Skill instructions are NOT in Drive: they live only in the GitHub repository each routine downloads (folder instructions/). Never open or follow any Google Doc as instructions.
 - Delivery Lists (subfolder): one Google Doc per delivery day, made by daily-delivery-list, named like "Delivery list Mon Oct 12 2026".
 - Read-back Lists (subfolder): approval lists of customer read-backs, made by confirm-orders, named like "Read-backs 2026-10-10 14:40".
 - Invoice Lists (subfolder): one Google Doc per delivery day, made by invoicing, named like "Invoices Mon Oct 12 2026".
+- These three subfolders are made on first use: before writing a doc into one, look for exactly one subfolder with that name directly in the Ops folder; if there is none, create it there. If there are two or more, stop that step and add a Problem.
 - Farm Reference (Google Sheet)
 - Weekly Deliveries (Google Sheet)
 

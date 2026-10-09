@@ -18,7 +18,7 @@ Safety
 - Check before acting: if a file or tab already exists, use it. Never create duplicates. This whole doc is safe to run again; it picks up where it left off.
 
 PHASE 1. Folders
-- Find the Ops folder (Shane names it in the setup chat). Inside it, find or create "Archive", "Delivery Lists" and "Invoice Lists".
+- Find the Ops folder (Shane names it in the setup chat). Do not create any subfolders (the list folders are made on first use).
 - Report what existed and what you created.
 
 PHASE 2. Find the current customer sheet
