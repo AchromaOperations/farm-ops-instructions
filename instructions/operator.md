@@ -1,7 +1,8 @@
-OPERATOR (version 4)
+OPERATOR (version 5)
 Written for: sheets-spec version 4
 
 Change log
+- v5 (2026-10-09): Step 0c2 adds missing header labels and columns on THIS and NEXT week's tabs every run.
 - v4 (2026-10-08): Eastern time from TZ; catch-up delivery list only from THIS week's tab (never before Week 1); Sunday alert if the reminder never went out.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v3 (2026-10-08): confirm-orders step.
@@ -20,6 +21,7 @@ STEP 0. START
 a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.)
 b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section) exactly, using "Operator run in progress since" as your own flag. If the rule says end: write a run history row with the reason in Problems, and end WITHOUT clearing any flag (the flag belongs to the other run).
 c. Week tabs: find LAST, THIS and NEXT week's tabs (sheets-spec WEEK NAMES). If one is missing in the way the "Week tabs" rule describes, follow the "Week tabs" rule in sheets-spec, and skip every check below that needs the missing tab.
+c2. Labels: on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
 d. Quiet = now is at or after "Quiet hours start" or before "Quiet hours end". If Quiet, go to STEP 2. (Nothing is sent or started during quiet hours.)
 e. Parser late: if "Last parse finished" is blank or older than "Parser late after" minutes, AND "Parser late alert sent" is blank or more than 24 hours ago: text Shane "Operator: the parser hasn't finished since [Last parse finished]." Set "Parser late alert sent" = now. Continue.
 

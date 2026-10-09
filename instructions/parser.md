@@ -1,7 +1,8 @@
-PARSER (version 7)
+PARSER (version 8)
 Written for: sheets-spec version 4
 
 Change log
+- v8 (2026-10-09): before writing to a week tab, add any missing label or column it needs (sheets-spec rule 8).
 - v7 (2026-10-08): reminder approval needs two different people (Mark, Laura, Harry, Shane); Harry and Shane can approve the reminder preview.
 - v6 (2026-10-08, revised): first-week-only products always go to Mark as a question.
 - v6 (2026-10-08): system texts matched by number, text and time (Quo returns no ID on send); Eastern time from TZ; strict approval words; Harry's morning yes never confirms a route; STOP opt-outs; quoted texts kept short; system read-backs are never orders.
@@ -34,7 +35,7 @@ a. Fetch messages on the farm Quo number, incoming and outgoing, from (System "M
 b. Drop any message whose Quo message ID is already in the Inbox Log.
    Then match the system's own texts: for each OUTGOING message left, look for an Inbox Log row with Direction "Out (system)", Quo message ID "pending" or "(not returned by Quo)", the same To number, the same text, and a Time within 15 minutes of the message. If found: write the message's real ID into that row's Quo message ID and drop the message. Do not add a new row. Each log row matches at most one message.
 c. If nothing is left: set "Last parse finished" = now, write the run history row, clear your flag, end. This should be most runs. Do not read anything else.
-d. Otherwise: now read sheets-spec. It must say version 4; if not, record a Problem, clear your flag and end. Then read the other tabs you need.
+d. Otherwise: now read sheets-spec. Before writing any cell on a week tab, if its label or column is missing, add it first as sheets-spec rule 8 says (required, not optional). It must say version 4; if not, record a Problem, clear your flag and end. Then read the other tabs you need.
 
 =====================================================
 STEP 2. FOR EACH MESSAGE, OLDEST FIRST
