@@ -1,0 +1,43 @@
+Please sync standing orders from the Farm Reference Customers tab into the Weekly Deliveries week tabs. I'm Shane and I'm here to answer at the checkpoint. Do exactly the following and nothing else.
+
+RULES
+- First open instructions/sheets-spec.md from github.com/AchromaOperations/farm-ops-instructions. Its first line must say "SHEETS SPEC (version 4)". If not, stop and tell me. Follow its general rules for every write (cell kinds, date-time format, find things by label).
+- Open "Farm Reference" and "Weekly Deliveries" in the Ops folder (the Google Drive folder that directly contains the Google Sheet "Farm Reference") (exactly one of each; Config A1 must read "RF-OPS REFERENCE v1"). If not, stop and tell me.
+- Only touch customer rows whose "Locked" is blank. Never touch a locked row, a frozen tab, or anything else.
+- Never delete rows, tabs or files. Do not send any texts.
+- Skip test customers (Cust ID starting with "T") and Inactive customers entirely.
+
+STEP 1. READ
+- Products tab: every "Column name".
+- Customers tab: for every Active customer, the value in each standing-order column (a column whose header matches a Products "Column name").
+- Week tabs: start with the tab containing today, then every later tab.
+
+STEP 2. MISSING PRODUCT COLUMNS
+If a product has a standing-order column on Customers but no column on a week tab, that week tab needs it: insert the column in the product block, just before "Changes", with the exact Column name. (Don't do it yet; list it in Step 4.)
+
+STEP 3. PLAN (no writes yet)
+For each unlocked customer row in each week tab, and each standing-order product, compare the week cell to the standing order (blank and 0 both mean none):
+- Same: nothing to do.
+- Different, and the row's Changes has NO entry for that product: an update. Plan to set the week cell to the standing value.
+- Different, and the row's Changes HAS an entry for that product (a customer or Mark changed it): a CONFLICT. Do not plan anything for it.
+Also list every Active customer who has no row on a week tab: plan to add their row.
+
+STEP 4. CHECKPOINT
+Show me:
+- Product columns that would be added, and to how many tabs.
+- Updates: a count per week tab, plus the first 10 as examples ("Week 2, C014 Nate Clifton: Yogurt Maple blank > 2").
+- Missing rows to add: customer and how many weeks.
+- EVERY conflict, numbered: "[n]. Week [N], [Cust ID] [name], [product]: week says [x], standing says [y]. Changes: [the entry]."
+Then ask me: for each conflict, keep the week value or use the standing value? (I may answer "keep all", "standing all", or by number.)
+Wait for my answers. Do not write anything before I answer.
+
+STEP 5. APPLY (after my answers)
+Work one week tab at a time, in order. For each tab:
+1. Add any missing product columns (just before "Changes").
+2. Add missing customer rows in the right place (sorted by Day, then Route, then Stop #): Cust ID, Name, Day, Route, Stop #, product quantities = their standing orders, everything else blank.
+3. Apply the updates, and the conflicts I said to change to standing. For each changed cell, append to that row's Changes: "[date-time] [Column name] [old]>[new] (standing order sync)".
+Re-run safety: before each write, re-check the cell. If it already equals the planned value, skip it. If a row got Locked since the plan, skip that row and tell me.
+Work in batches of 10 tabs. After each batch, tell me how far you got. If the chat is getting long or a tool starts failing, stop after the current batch and tell me: "Start a new chat and paste the sync prompt again; it will skip what's already done." (Conflicts I already answered will show up again; I'll answer them the same way.)
+
+STEP 6. REPORT
+Tabs updated (first and last), cells changed, columns added, rows added, conflicts and what was done with each, and anything that failed.
