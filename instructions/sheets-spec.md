@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-08, revised 10): reminder preview goes to Mark, Laura, Harry and Shane; "Reminder approvals" records who approved; two different approvers needed.
 - v4 (2026-10-08, revised 9): Products "Weeks" column (All, First week only).
 - v4 (2026-10-08, revised 8): Quo send tools return no message ID; system texts are logged with ID "pending" and the parser fills it in by matching.
 - v4 (2026-10-08, revised 7): Customers "Notes" may start with "NO TEXTS" (customer opted out of texts: never text them).
@@ -182,7 +183,8 @@ Reminder wording updated |   (TRACKER: when the current wording was set)
 Reminder check failed |   (TRACKER: when the wording last failed the sanity check)
 Reminder final text |   (TRACKER: the exact formatted text in the latest preview; this is what gets sent)
 Reminder preview sent |   (TRACKER: when the latest preview went out)
-Reminder approved |   (STAMP: only valid if given after the latest preview, and the preview is newer than "Reminder wording updated")
+Reminder approvals |   (TRACKER: who approved the latest preview and when, e.g. "Mark 2026-10-09 10:12; Shane 2026-10-09 10:30". Cleared when a new preview goes out.)
+Reminder approved |   (STAMP: filled when two DIFFERENT people (any of Mark, Laura, Harry, Shane) have approved the latest preview. Only valid if given after the latest preview, and the preview is newer than "Reminder wording updated". Never tell anyone that two are needed.)
 Reminder sent |
 Reminder sent count |   (e.g. 105/107, 2 no phone)
 Reminder test sent |   (TRACKER: when the approved text went to the test phones while Mode was TEST)

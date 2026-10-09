@@ -1,7 +1,8 @@
-PARSER (version 6)
+PARSER (version 7)
 Written for: sheets-spec version 4
 
 Change log
+- v7 (2026-10-08): reminder approval needs two different people (Mark, Laura, Harry, Shane); Harry and Shane can approve the reminder preview.
 - v6 (2026-10-08, revised): first-week-only products always go to Mark as a question.
 - v6 (2026-10-08): system texts matched by number, text and time (Quo returns no ID on send); Eastern time from TZ; strict approval words; Harry's morning yes never confirms a route; STOP opt-outs; quoted texts kept short; system read-backs are never orders.
 - v5 (2026-10-08): share wording in examples.
@@ -59,7 +60,7 @@ A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status 
 
 A2. Reminder. Look at NEXT week's tab header (sheets-spec WEEK NAMES).
 - If "Reminder requested" is filled and "Reminder approved" is blank:
-  - Approval words (as in A1) AND "Reminder preview sent" is filled AND the preview is newer than "Reminder wording updated" = fill "Reminder approved" (date-time + who).
+  - Approval words (as in A1: the whole message) AND "Reminder preview sent" is filled AND the preview is newer than "Reminder wording updated" = REMINDER APPROVAL (below) for Mark or Laura.
   - A message that reads like a message to customers (an announcement or reminder to order) = it is the wording. If "Reminder wording received" is blank, fill it. Set "Reminder wording" to the text and "Reminder wording updated" = now.
   - A short instruction about the wording ("make it Sunday", "add that we have honey") = apply it to the current "Reminder wording", and set "Reminder wording updated" = now.
   - Unclear = Clarify item "Not sure if this is the reminder wording: '[text]'".
@@ -92,6 +93,7 @@ B. FROM HARRY
 "Open day" = among day rows (LAST or THIS week) with "Delivery list sent" filled, "Route confirmed" blank, AND (the day is before today, OR the day is today and now is at or after Config "Route check start"): the one Harry was asked about most recently ("Harry last asked"). If none has been asked yet, the earliest one. If Harry names a day ("Monday's done"), use that day.
 Check the first bullet before the others:
 - While a Driver item asking "Got today's added items?" has Status Sent: "GOT IT", "got it", "yes", "ok" answers only that item: Answer, Status Resolved. It never confirms a route.
+- Reminder: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval word (as in A1: the whole message) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
 - If there is no open day, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
 - Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all".
 - "No" to "everything delivered?" = create a Driver item for the open day: "What wasn't delivered, and to whom?"
@@ -133,7 +135,15 @@ Mark or Laura texted a customer from the Quo app.
 -----------------------------------------------------
 G. FROM SHANE
 -----------------------------------------------------
-Log only.
+- If NEXT week's "Reminder preview sent" is filled and "Reminder approved" is blank: an approval word (as in A1: the whole message), with the preview newer than "Reminder wording updated" = REMINDER APPROVAL (below) for Shane. A short instruction about the wording = apply it as in A2 (Shane counts like Mark).
+- Everything else: log only.
+
+-----------------------------------------------------
+REMINDER APPROVAL (used by A2, B and G)
+-----------------------------------------------------
+1. If this person is already in NEXT week's "Reminder approvals" with a time after "Reminder preview sent": do nothing more.
+2. Otherwise add "[Name] [now]" to "Reminder approvals" (separate entries with "; ").
+3. Count the DIFFERENT people in "Reminder approvals" whose time is after "Reminder preview sent". If two or more: fill "Reminder approved" = now + their names (e.g. "2026-10-09 10:30 Mark, Shane"). If only one: change nothing else. No one is told; the routines never send a reply about approvals.
 
 =====================================================
 ORDER WRITING (used by every section above)

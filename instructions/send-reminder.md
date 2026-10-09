@@ -1,7 +1,8 @@
-SEND REMINDER (version 6)
+SEND REMINDER (version 7)
 Written for: sheets-spec version 4
 
 Change log
+- v7 (2026-10-08): preview goes to Mark, Laura, Harry and Shane; the parser needs two different approvals (never mention this in any text).
 - v6 (2026-10-08): one text per phone number (shared numbers); NO TEXTS customers skipped; late approval moves the reply-by time.
 - v5 (2026-10-08): cutoff line no longer says "your order" (milk is a weekly share).
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -15,6 +16,7 @@ A checklist. Every stage is decided by cells in the header block of NEXT week's 
 
 Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Times in texts are friendly ("Sat Oct 10, 6pm").
 "Nudge after" = Config "Nudge after (hours)".
+Never tell anyone how many approvals are needed or who else has approved. No text may mention it.
 
 STAGE A. ASK FOR WORDING
 Condition: "Reminder requested" is blank.
@@ -39,16 +41,16 @@ Condition: "Reminder wording" is filled, AND "Reminder approved" is blank, AND (
    If it fails: text whoever sent the wording (Mark or Laura): "This week's reminder didn't look right: [one-line reason]. Can you send it again?" Set "Reminder check failed" = now. Finish.
 2. Format it: Mark's wording with spelling mistakes fixed (change nothing else), then a new line: "Reply with any changes for this week by [asked-for cutoff, e.g. Sat Oct 10, 6pm]." No prefix. If the asked-for cutoff is less than 6 hours from now, use "Sun [date], 2pm" instead.
 3. Set "Reminder final text" to exactly that.
-4. Send the final text, exactly as customers will get it, to Mark and to Laura (one text each).
+4. Send the final text, exactly as customers will get it, to Mark, Laura, Harry and Shane (Config phones, one text each).
 5. Then send each of them a second text:
    "That's the preview. Reply YES to send it to [N] customers[ if Mode is not LIVE: ' (TEST mode: only the test phones will get it)']. Or text changes."
    If you fixed spelling, add: "Fixed: [wrong] > [right], [wrong] > [right]."
    N = customer rows on next week's tab with a Phone.
-6. Set "Reminder preview sent" and "Reminder last asked" = now. Finish.
+6. Set "Reminder preview sent" and "Reminder last asked" = now. Clear "Reminder approvals". Finish.
 
 STAGE D. WAITING FOR APPROVAL
 Condition: "Reminder preview sent" is filled and "Reminder approved" is blank.
-- If "Reminder last asked" is at least Nudge after hours ago: text Mark and Laura "The customer reminder is still waiting for your YES (preview sent [time])." Set "Reminder last asked" = now.
+- If "Reminder last asked" is at least Nudge after hours ago: text each of Mark, Laura and Shane who is NOT in "Reminder approvals" "The customer reminder is still waiting for your YES (preview sent [time])." (Never nudge Harry.) Set "Reminder last asked" = now.
 - Otherwise do nothing. Finish.
 
 STAGE E. SEND
