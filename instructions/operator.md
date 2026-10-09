@@ -1,7 +1,8 @@
-OPERATOR (version 3)
+OPERATOR (version 4)
 Written for: sheets-spec version 4
 
 Change log
+- v4 (2026-10-08): Eastern time from TZ; catch-up delivery list only from THIS week's tab (never before Week 1); Sunday alert if the reminder never went out.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v3 (2026-10-08): confirm-orders step.
 - v2 (2026-10-07): shared run lock with the parser; morning exceptions; approvals never both open; missing week tab alert; held no-email invoices.
@@ -16,7 +17,7 @@ READ ONLY THESE
 - Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as defined in sheets-spec WEEK NAMES (read that section too).
 
 STEP 0. START
-a. Now = current date-time, Eastern.
+a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.)
 b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section) exactly, using "Operator run in progress since" as your own flag. If the rule says end: write a run history row with the reason in Problems, and end WITHOUT clearing any flag (the flag belongs to the other run).
 c. Week tabs: find LAST, THIS and NEXT week's tabs (sheets-spec WEEK NAMES). If one is missing in the way the "Week tabs" rule describes, follow the "Week tabs" rule in sheets-spec, and skip every check below that needs the missing tab.
 d. Quiet = now is at or after "Quiet hours start" or before "Quiet hours end". If Quiet, go to STEP 2. (Nothing is sent or started during quiet hours.)
@@ -28,10 +29,10 @@ For each due step: open the file instructions/[name].md in this repository (for 
 1. daily-delivery-list
    Due if EITHER:
    - tomorrow is Monday to Friday, AND now is at or after "Delivery list time", AND tomorrow's row "Delivery list sent" is blank (in the tab containing tomorrow); OR
-   - today is Monday to Friday AND today's row "Delivery list sent" is blank (missed last night; catch-up).
+   - today is Monday to Friday AND a THIS week tab exists AND today's row in THIS week's tab has "Delivery list sent" blank (missed last night; catch-up). Before Sun Oct 11 2026 there is no THIS week tab, so this part is never due. Never use the NEXT-week fallback for this check.
 
 1b. daily-delivery-list (morning exceptions)
-   Due if today is Monday to Friday, today's "Delivery list sent" is filled, AND some customer row for today has a Changes entry containing "after lock" that is later than today's "Exceptions sent" (or "Exceptions sent" is blank). Read only the Day and Changes columns of THIS week's customer table for this check. Run the doc's MORNING EXCEPTIONS part only.
+   Due if today is Monday to Friday, a THIS week tab exists, today's row in THIS week's tab has "Delivery list sent" filled, AND some customer row for today has a Changes entry containing "after lock" that is later than today's "Exceptions sent" (or "Exceptions sent" is blank). Read only the Day and Changes columns of THIS week's customer table for this check. Run the doc's MORNING EXCEPTIONS part only.
 
 2. delivery-check
    Due if any day row in LAST or THIS week has "Delivery list sent" filled AND "Route confirmed" blank, AND that day is before today OR now is at or after "Route check start".
@@ -46,6 +47,7 @@ For each due step: open the file instructions/[name].md in this repository (for 
 
 4. send-reminder
    Due if today is Friday and now is at or after the "Reminder request time", OR today is Saturday; AND NEXT week's "Reminder sent" is blank.
+   Not due on Sunday. Instead, if today is Sunday, now is before 08:00, Config Mode is LIVE, and THIS week's "Reminder sent" is blank: text Mark and Shane "This week's customer reminder never went out. Text customers by hand if needed." (Only the 7:40 run matches, so this goes once.)
 
 4b. confirm-orders
    Due if any customer row in THIS or NEXT week has "Confirm needed" filled and later than "Confirmation sent" (or "Confirmation sent" blank). Read only those two columns.

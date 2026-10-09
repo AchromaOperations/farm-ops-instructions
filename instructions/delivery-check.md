@@ -6,7 +6,7 @@ Change log
 - v1 (2026-10-07): first version.
 
 HOW TO WORK
-A checklist. No judgment: the parser reads Harry's replies; this step only asks. Every text you send: log it in the Inbox Log right away (Direction "Out (system)", Quo message ID). Only text Harry and Mark.
+A checklist. No judgment: the parser reads Harry's replies; this step only asks. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Only text Harry and Mark.
 
 Open days = day rows in LAST or THIS week with "Delivery list sent" filled, "Route confirmed" blank, and (the day is before today, or it is today and now is at or after "Route check start").
 Last hour = the hour before Config "Quiet hours start" (20:00 when quiet hours start at 21:00).

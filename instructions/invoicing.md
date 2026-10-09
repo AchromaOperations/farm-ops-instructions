@@ -10,7 +10,7 @@ Change log
 - v1 (2026-10-07): first version.
 
 HOW TO WORK
-A checklist with four parts. Do every part whose condition is true, in order. No judgment: amounts come from the week tab and prices from the Products tab. Every text you send: log it in the Inbox Log right away (Direction "Out (system)", Quo message ID).
+A checklist with four parts. Do every part whose condition is true, in order. No judgment: amounts come from the week tab and prices from the Products tab. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
 
 Only products whose Products "Billed through" is Square are invoiced. The weekly share (Milk (gal), paid as the monthly herdshare through Squarespace) never is.
 

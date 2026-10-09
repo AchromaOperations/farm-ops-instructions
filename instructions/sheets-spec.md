@@ -1,6 +1,8 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-08, revised 8): Quo send tools return no message ID; system texts are logged with ID "pending" and the parser fills it in by matching.
+- v4 (2026-10-08, revised 7): Customers "Notes" may start with "NO TEXTS" (customer opted out of texts: never text them).
 - v4 (2026-10-08, revised 6): list subfolders are created on first use; no instruction docs or Archive in Drive.
 - v4 (2026-10-08, revised 5): the Ops folder is found by the Farm Reference sheet it contains, not by name.
 - v4 (2026-10-08, revised 4): TERMS: milk is the customer's weekly share, never an order; only add-ons are orders.
@@ -35,7 +37,7 @@ GENERAL RULES (apply to every skill)
 
 6. Inbound texts are matched to customers by phone: compare the sender's number to both Phone and Phone 2 of every Active or Test customer. Exactly one match = that customer. No match = Unknown. More than one match = never guess; it becomes a Clarify item.
 
-7. Every text a skill sends is logged in the Inbox Log right after sending, with Direction "Out (system)" and its Quo message ID. This is how the parser knows which outbound texts were the system's own.
+7. Every text a skill sends is logged in the Inbox Log right after sending, with Direction "Out (system)", To = the number, the exact text in Action taken, and Quo message ID = "pending" (Quo's send tools do not return an ID). The parser later finds that message in Quo and writes its real ID into the same row. This is how the parser knows which outbound texts were the system's own.
 
 8. Missing labels: if a label or column this spec lists is missing from a tab (for example a week tab built under an older version), add it: a header-block label goes in a new row just above the day table; a column goes at the end of that header row. Never remove or rename existing labels or columns.
 
@@ -62,6 +64,7 @@ Cust ID | Name | Day | Route | Stop # | Status | Phone | Phone 2 | Email | Addre
 - Status (dropdown): Active, Inactive, Test. Inactive customers get no reminders and no new week rows.
 - Test customers: Cust ID starts with "T" (T001, ...), Status = Test. The parser matches their texts like any customer and may add their row at the bottom of a week tab's customer table when it needs one. Rows whose Cust ID starts with "T" are NEVER put on delivery lists, sent reminders, invoiced, or sent to Square.
 - Phone, Phone 2: written +15025551234.
+- Notes: free text. If it contains "NO TEXTS", the customer opted out: no step may text them (their weekly share continues).
 - Standing-order columns: a number, or blank for none. Only the weekly share (Milk (gal)) is standing for now.
 
 TAB: Products (one row per product, header in row 1)

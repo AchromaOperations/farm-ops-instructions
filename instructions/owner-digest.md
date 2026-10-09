@@ -8,7 +8,7 @@ Change log
 - v1 (2026-10-07): first version.
 
 HOW TO WORK
-A checklist over the Queue tab. No judgment needed: the parser already wrote each item's Question. Every text you send: log it in the Inbox Log right away (Direction "Out (system)", Quo message ID). Never send to anyone but Mark and Laura.
+A checklist over the Queue tab. No judgment needed: the parser already wrote each item's Question. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Never send to anyone but Mark and Laura.
 
 Definitions
 - Open batch = Queue items of Type Clarify, Sales, Late order or Other with Status "Sent".

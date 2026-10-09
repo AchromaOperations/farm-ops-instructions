@@ -8,7 +8,7 @@ Change log
 - v1 (2026-10-08): first version.
 
 HOW TO WORK
-A checklist. The parser already decided who needs a read-back; this step only writes the friendly text and sends it. Customer-facing: follow the routine's Mode rule (not LIVE = send to the test phones instead). Every text you send: log it in the Inbox Log right away (Direction "Out (system)", Quo message ID).
+A checklist. The parser already decided who needs a read-back; this step only writes the friendly text and sends it. Customer-facing: follow the routine's Mode rule (not LIVE = send to the test phones instead). Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
 
 STEP 1. WHO
 Rows = customer rows in THIS and NEXT week (sheets-spec WEEK NAMES) where "Confirm needed" is filled and later than "Confirmation sent" (or "Confirmation sent" is blank). Test customers (Cust ID starting with "T") get read-backs too, so the flow can be tested.

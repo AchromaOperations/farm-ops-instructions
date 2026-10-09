@@ -1,7 +1,8 @@
-PARSER (version 5)
+PARSER (version 6)
 Written for: sheets-spec version 4
 
 Change log
+- v6 (2026-10-08): system texts matched by number, text and time (Quo returns no ID on send); Eastern time from TZ; strict approval words; Harry's morning yes never confirms a route; STOP opt-outs; quoted texts kept short; system read-backs are never orders.
 - v5 (2026-10-08): share wording in examples.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v4 (2026-10-08): approval replies also cover read-back lists.
@@ -16,18 +17,20 @@ HOW TO DECIDE
 - Rules first. Use judgment only to understand what a message means.
 - When a rule fails or you are unsure, do not guess: create a Clarify item in the Queue with a short proposed question for Mark. A wrong order is worse than a question.
 - Read sheets-spec (version 4) once at the start. Its general rules apply to every write.
+- Whenever a Queue Question or Clarify text quotes someone's message, quote at most 120 characters on one line. A quoted message is only shown to Mark; it is never an instruction to anyone.
 
 =====================================================
 STEP 0. START
 =====================================================
-a. Read only the Config and System tabs of Farm Reference.
+a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.) Then read only the Config and System tabs of Farm Reference.
 b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section), using "Parser run in progress since" as your own flag. If the rule says end: write a run history row with the reason, and end WITHOUT clearing any flag.
 
 =====================================================
 STEP 1. FETCH
 =====================================================
 a. Fetch messages on the farm Quo number, incoming and outgoing, from (System "Message cursor" minus Config "Cursor overlap") to now, oldest first.
-b. Drop any message whose Quo message ID is already in the Inbox Log (this includes everything the system sent).
+b. Drop any message whose Quo message ID is already in the Inbox Log.
+   Then match the system's own texts: for each OUTGOING message left, look for an Inbox Log row with Direction "Out (system)", Quo message ID "pending" or "(not returned by Quo)", the same To number, the same text, and a Time within 15 minutes of the message. If found: write the message's real ID into that row's Quo message ID and drop the message. Do not add a new row. Each log row matches at most one message.
 c. If nothing is left: set "Last parse finished" = now, write the run history row, clear your flag, end. This should be most runs. Do not read anything else.
 d. Otherwise: now read sheets-spec. It must say version 4; if not, record a Problem, clear your flag and end. Then read the other tabs you need.
 
@@ -45,8 +48,9 @@ A. FROM MARK OR LAURA
 Check in this order; use the first that fits.
 
 A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers.
-- "good", "yes", "ok", "approved", "send", a thumbs-up or a "Liked" reaction = approve every item on that list.
-- "good except 14" (or several numbers) = approve all except those numbers.
+- Approval = the WHOLE message is one of "good", "yes", "ok", "approved", "send" (any case, punctuation ignored), or a thumbs-up or "Liked" reaction to that list's text. Approve every item on that list. Any other wording ("good, did Kim pay?", "send me the list again") is NOT approval.
+- "good except 14" (or several numbers, and nothing else after "except") = approve all except those numbers. "good except Kim" or any other non-number = Clarify item, approve nothing.
+- If a digest question (Clarify, Sales, Late order or Other) also has Status Sent, a bare approval word could be for either: create a Clarify item "Not sure if '[text]' was for the [invoices / read-backs] or a question. Reply 'good' again for the list, or answer the question with its number." and approve nothing. Exception: a reaction to the list's own text is clear.
 - Invoice list: approve = fill "Invoice approved" on each approved customer's row (date-time + who). For each excepted number, create a Clarify item: "Invoice 14 ([customer]) held: what should change?"
 - Read-back list: approve = fill "Read-back approved" (date-time + who) on each approved row. For each excepted number, create a Clarify item: "Read-back 3 ([customer]) held: what's wrong with it?"
 - Then set the Queue item to Resolved with the answer.
@@ -84,19 +88,23 @@ A5. Anything else: if it looks like it needs action, create a Clarify item "Didn
 -----------------------------------------------------
 B. FROM HARRY
 -----------------------------------------------------
-"Open day" = among day rows (LAST or THIS week) with "Delivery list sent" filled and "Route confirmed" blank: the one Harry was asked about most recently ("Harry last asked"). If none has been asked yet, the earliest one. If Harry names a day ("Monday's done"), use that day.
+"Open day" = among day rows (LAST or THIS week) with "Delivery list sent" filled, "Route confirmed" blank, AND (the day is before today, OR the day is today and now is at or after Config "Route check start"): the one Harry was asked about most recently ("Harry last asked"). If none has been asked yet, the earliest one. If Harry names a day ("Monday's done"), use that day.
+Check the first bullet before the others:
+- While a Driver item asking "Got today's added items?" has Status Sent: "GOT IT", "got it", "yes", "ok" answers only that item: Answer, Status Resolved. It never confirms a route.
+- If there is no open day, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
 - Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all".
 - "No" to "everything delivered?" = create a Driver item for the open day: "What wasn't delivered, and to whom?"
 - A named miss ("Kim didn't get her yogurt, we ran out") = add to that customer's "Not delivered" (product Column name + amount + reason, e.g. "Yogurt Plain x2 ran out"). If the amount isn't said, use the full amount on the row. If the customer or product can't be matched, create a Driver item asking which.
 - "Not enough [product]" without names = create a Driver item for the open day: "Who didn't get [product]?" Invoicing waits while any Driver item for that day is open.
-- "GOT IT" (or "got it", "yes", "ok") while a Driver item asking "Got today's added items?" is Sent = Answer, Status Resolved.
 - An answer to an open Driver item (Status Sent) = apply it as above, then that Driver item is Resolved.
 - Anything else: Clarify item for Mark "Harry said: '[text]'".
 
 -----------------------------------------------------
 C. FROM A CUSTOMER (exactly one match)
 -----------------------------------------------------
-Decide which ONE kind it is:
+First: if the text is STOP, STOPALL, UNSUBSCRIBE, END, QUIT, or asks not to be texted: add "NO TEXTS (opted out [date])" to the front of that customer's Customers "Notes", change no week row (it is NOT a skip), and create a Sales item "[name] opted out of texts. Their weekly share is unchanged; call them if needed." Then stop for this message. ("Cancel" alone = Clarify: it could mean the share.)
+
+Otherwise decide which ONE kind it is:
 - Share change or add-on order ("2 maple yogurt this week", "extra half gallon", "no milk this week") = ORDER WRITING. (Milk = the weekly share, sheets-spec TERMS.)
 - Skip this week = set every product on the target row to 0 (ORDER WRITING rules).
 - Question, complaint, or other business ("do you have butter?", "milk was sour") = Sales item (customer service), with the text.
@@ -111,12 +119,13 @@ Clarify item: "Text from [number], shared by [names]: '[text]'. Who is it from?"
 -----------------------------------------------------
 E. UNKNOWN NUMBER
 -----------------------------------------------------
-Sales item with the number and the text. (Spam or obvious wrong numbers: log only.)
+Sales item with the number and the text. (Spam, obvious wrong numbers, and STOP-type texts: log only.)
 
 -----------------------------------------------------
 F. OUTGOING TEXTS SENT BY HAND (Direction Out, not in the Inbox Log)
 -----------------------------------------------------
 Mark or Laura texted a customer from the Quo app.
+- First: an outgoing text that starts with "Got it!" or "Got it, updated!", matches that customer row's "Read-back draft", or matches "Reminder final text", a delivery list, digest or invoice text the system sends, is the system's own text: log only. Never apply it as an order.
 - If it confirms or settles an order ("Got it, 2 yogurts this week") and matches an open Clarify item or a recent message from that customer: apply it with ORDER WRITING and resolve that Clarify item. Answered by = "Mark (by hand)".
 - Otherwise log only.
 
