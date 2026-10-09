@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-08, revised 9): Products "Weeks" column (All, First week only).
 - v4 (2026-10-08, revised 8): Quo send tools return no message ID; system texts are logged with ID "pending" and the parser fills it in by matching.
 - v4 (2026-10-08, revised 7): Customers "Notes" may start with "NO TEXTS" (customer opted out of texts: never text them).
 - v4 (2026-10-08, revised 6): list subfolders are created on first use; no instruction docs or Archive in Drive.
@@ -68,7 +69,8 @@ Cust ID | Name | Day | Route | Stop # | Status | Phone | Phone 2 | Email | Addre
 - Standing-order columns: a number, or blank for none. Only the weekly share (Milk (gal)) is standing for now.
 
 TAB: Products (one row per product, header in row 1)
-Column name | Product | Variant | Unit | Price | Billed through | Active | Square item ID | Text name | Notes
+Column name | Product | Variant | Unit | Price | Billed through | Active | Square item ID | Text name | Notes | Weeks
+- Weeks (dropdown): All, First week only. Blank = All. "First week only" products (baked goods, crumble cheese) are made only for the first delivery week of each month. Which week counts as first is not defined yet, so the parser asks Mark about every such order.
 - Column name: the exact column header used on Customers and week tabs (for example "Milk (gal)", "Yogurt Plain"). Once week tabs exist, never rename it; add a new product instead.
 - Billed through (dropdown): Square (add-on invoices), Squarespace (monthly herdshare, never invoiced by this system), None.
 

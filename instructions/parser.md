@@ -2,6 +2,7 @@ PARSER (version 6)
 Written for: sheets-spec version 4
 
 Change log
+- v6 (2026-10-08, revised): first-week-only products always go to Mark as a question.
 - v6 (2026-10-08): system texts matched by number, text and time (Quo returns no ID on send); Eastern time from TZ; strict approval words; Harry's morning yes never confirms a route; STOP opt-outs; quoted texts kept short; system read-backs are never orders.
 - v5 (2026-10-08): share wording in examples.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -141,6 +142,7 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
 1. Customer: exactly one match.
 2. Every item maps to exactly one Products "Column name" (Active = Yes). Use the Defaults tab (All, or this Cust ID) for vague words. "Yogurt" with several yogurt products and no flavor = fails.
 3. Every amount is explicit, or set by a Defaults row.
+3b. First week only: if an item's Products "Weeks" is "First week only", it fails. Question: "[name] asked for [item] for the week of [dates]. That's a first-week-only item. Add it to that week, or hold it for the next first week?" (The rest of the same message can still be written if it passes.)
 4. Standing conflict: if the item has a standing order and the text could mean "in addition" or "instead" (e.g. "milk this week please"), it fails. Words like "extra", "another", "more" = in addition. "Just", "only", "change to", "instead" = instead.
 5. Target row (test customers, Cust ID starting with "T": if they have no row on the week tab, add one at the bottom of the customer table first):
    - This week's row for the customer, if its Locked is blank (no THIS week yet: NEXT week's row).
