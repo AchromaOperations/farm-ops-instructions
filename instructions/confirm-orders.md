@@ -1,7 +1,8 @@
-CONFIRM ORDERS (version 4)
+CONFIRM ORDERS (version 5)
 Written for: sheets-spec version 4
 
 Change log
+- v5 (2026-10-09): read-backs also wait while the customer's weekly share request is open with Mark.
 - v4 (2026-10-09): the read-back list waits only on sheets-spec rule 9; a reminder still waiting for wording no longer holds it.
 - v3 (2026-10-08): read-backs call milk the customer's weekly share; add-ons follow after "plus".
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -13,7 +14,7 @@ A checklist. The parser already decided who needs a read-back; this step only wr
 
 STEP 1. WHO
 Rows = customer rows in THIS and NEXT week (sheets-spec WEEK NAMES) where "Confirm needed" is filled and later than "Confirmation sent" (or "Confirmation sent" is blank). Test customers (Cust ID starting with "T") get read-backs too, so the flow can be tested.
-Skip a row for now (it will be picked up later) if that customer has a Queue item of Type Clarify or Late order that is not Resolved: they get one read-back once everything is settled.
+Skip a row for now (it will be picked up later) if that customer has a Queue item of Type Clarify or Late order that is not Resolved, or a Sales item whose Question contains "asked to change their weekly share" that is not Resolved: they get one read-back once everything is settled.
 If the same customer has rows in both weeks, send one text per row (one per delivery).
 
 STEP 2. WRITE THE TEXT (one per row)

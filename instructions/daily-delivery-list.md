@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 3)
+DAILY DELIVERY LIST (version 4)
 Written for: sheets-spec version 4
 
 Change log
+- v4 (2026-10-09): a customer's weekly share request still open at lock is flagged on the row, never guessed.
 - v3 (2026-10-08): share wording on the list and lock text.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v2 (2026-10-07): empty days count as no delivery (no list, no Harry texts); test customers left out; MORNING EXCEPTIONS part for items added after the list went out.
@@ -23,6 +24,7 @@ For each Queue item of Type Clarify (Status Waiting or Sent) for a customer in t
 - Set the item's Answer = "guessed at lock: [choice]", Answered by = "system", Status = Resolved, clear Digest #.
 - If no choice can be taken from the Question, leave the row as it is and put "UNCLEAR ORDER: [original message]" in Needs attention.
 Late order items for this day stay open (Mark decides); list them in the doc.
+For each Sales item that is not Resolved, whose Question contains "asked to change their weekly share", for a customer in this day's rows, and whose Week is this delivery's week: leave the row as it is (never guess a share change) and add "SHARE REQUEST NOT SETTLED: check with Mark" to that row's Needs attention, exactly this wording (never the customer's words). The item stays open.
 
 STEP 3. LOCK
 Fill "Locked" = now on every one of this day's rows that is blank.

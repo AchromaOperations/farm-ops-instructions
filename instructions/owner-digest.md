@@ -1,7 +1,8 @@
-OWNER DIGEST (version 3)
+OWNER DIGEST (version 4)
 Written for: sheets-spec version 4
 
 Change log
+- v4 (2026-10-09): share requests from customers ask Mark for the change to make, or 'no change'.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v3 (2026-10-08): nudges for read-back lists too.
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
@@ -36,7 +37,7 @@ Waiting items = Type Clarify, Sales, Late order or Other with Status "Waiting". 
   2. [Question]
   [if more are waiting:] ([n] more waiting after these)"
   Mark urgent items with "(for tomorrow)" or "(for today)" after the question.
-  After each Sales item add "(reply to the customer yourself; answer here with sale / no sale / resolved)".
+  After each Sales item add "(reply to the customer yourself; answer here with sale / no sale / resolved)". Except a share request (Question contains "asked to change their weekly share"): add "(reply to the customer yourself; answer here with the change to make, or 'no change')" instead.
 - For each item sent: Status = Sent, Digest # = its number, Sent to = Mark, First sent = now.
 
 FINISH
