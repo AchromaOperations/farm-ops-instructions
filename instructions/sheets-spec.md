@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-10, revised 18): Extra Milk, a paid add-on of extra half-gallon jars for one week, separate from the never-invoiced share; off until its Products row is Active.
 - v4 (2026-10-10, revised 17): approvals are read by intent, not exact words.
 - v4 (2026-10-09, revised 16): share cream (in place of a jar) is handled off the sheet: not invoiced, not counted.
 - v4 (2026-10-09, revised 15): milk goes out in half-gallon jars only.
@@ -83,6 +84,7 @@ Cust ID | Name | Day | Route | Stop # | Status | Phone | Phone 2 | Email | Addre
 
 TAB: Products (one row per product, header in row 1)
 Column name | Product | Variant | Unit | Price | Billed through | Active | Square item ID | Text name | Notes | Weeks
+- Extra Milk (product row): Column name "Extra Milk", Product Milk, Variant Extra, Unit "half-gallon jar", Billed through Square, Weeks All, Text name "extra half gallon". Quantity = jars (1 = an extra half gallon, 2 = an extra gallon). It switches on when Shane sets its Price and Active = Yes.
 - Weeks (dropdown): All, First week only. Blank = All. "First week only" products (baked goods, crumble cheese) are made only for the first delivery week of each month. Which week counts as first is not defined yet, so the parser asks Mark about every such order.
 - Column name: the exact column header used on Customers and week tabs (for example "Milk (gal)", "Yogurt Plain"). Once week tabs exist, never rename it; add a new product instead.
 - Billed through (dropdown): Square (add-on invoices), Squarespace (monthly herdshare, never invoiced by this system), None.
@@ -92,6 +94,7 @@ TERMS (every text and every doc you write)
 - Only add-on products (yogurt, cream, eggs, butter, cheese, honey, soap, baked goods) are "orders". Cream given in place of a jar of milk is part of that customer's share (see their Delivery notes). It is handled off the sheet: never put it on a week row, never invoice it, and don't change their Milk (gal) for it.
 - Customers may still text "milk"; that is fine to understand, just don't echo it back as an order.
 - Milk goes out in half-gallon jars only: jars = gallons x 2 (a 1.5 gal share is 3 jars).
+- Extra milk is different from the share: a customer can buy extra half-gallon jars for one week as a paid add-on, the product "Extra Milk" (counted in jars, Billed through Square). It is ordered, priced and invoiced like any add-on. The weekly share itself never is. Until the Products row "Extra Milk" exists with Active = Yes, extra milk asks are share requests for Mark.
 - Active (dropdown): Yes, No.
 - Text name: how the product reads in a text to a customer, singular (for example "vanilla maple yogurt", "dozen eggs", "butter"). Blank = use Column name in lower case.
 - A blank Price means billing must not invoice that product; it goes to Mark instead.

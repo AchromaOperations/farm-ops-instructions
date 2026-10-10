@@ -1,7 +1,8 @@
-PARSER (version 18)
+PARSER (version 19)
 Written for: sheets-spec version 4
 
 Change log
+- v19 (2026-10-10): extra milk for one week becomes an Extra Milk add-on order (jars, billed through Square) once its Products row is Active; until then it stays a share request for Mark.
 - v18 (2026-10-10): Harry's GOT IT and "good except" are read by intent too ("yep", "got them"; "good except Kim" when Kim is exactly one line).
 - v17 (2026-10-10): Queue questions quote the customer's whole message, never cut short with "...".
 - v16 (2026-10-10): approvals are read by intent, not exact words ("Good send all", "looks good", "go ahead" all count); a message that also asks, adds or holds something back still isn't one. Shane's decision, Oct 10.
@@ -127,10 +128,11 @@ First: if the whole text is STOP, STOPALL, UNSUBSCRIBE, CANCEL, END, QUIT, REVOK
 
 Otherwise sort out what the text asks for (one text can have more than one part):
 - Weekly share request. Customers can't change their weekly share by text. The weekly share is Milk (gal) (sheets-spec TERMS), anything given in place of part of it (for example cream or whey instead of a jar of milk; a customer's Delivery notes may say so, like "Cream is a share", and then any cream ask from them is a share request), and any product whose Products "Billed through" is not Square. Cream on its own is a paid add-on, not part of the share. A share request is any ask to change the share, for one week or for good: more, less or no milk, a different size, something in place of milk, skipping the week, pausing, cancelling ("extra half gallon", "no milk this week", "cream instead of one jar", "skip us this week", "cancel my share").
+  - Extra milk for one week is NOT a share request once the Products row "Extra Milk" exists with Active = Yes: "extra half gallon", "an extra gallon this week", "another jar", "2 gallons this week" when their share is 1 = an Extra Milk add-on order (ORDER WRITING). More milk for good ("from now on", "going forward", a bigger share) is still a share request, and so is anything unclear about whether it's just this week.
   - Read the text with the Defaults tab: if a Defaults row turns the customer's words into a share change, it is a share request. If a part might be a share request, treat it as one.
   - An add-on tied to a share change ("butter instead of milk", "swap my milk for yogurt") is part of the share request, not an order.
   - For a share request, change nothing on the sheet. Create a Sales item (customer service), Week = the week it is about (the week ORDER WRITING rule 5 would pick), Question: "[name] asked to change their weekly share: '[text]'. Nothing changed yet." Mark answers it in the digest (A3).
-- Weekly add-on order = items whose Products "Billed through" is Square ("2 maple yogurt this week", "can I get butter", "can I get cream") = ORDER WRITING.
+- Weekly add-on order = items whose Products "Billed through" is Square ("2 maple yogurt this week", "can I get butter", "can I get cream", and extra milk once Extra Milk is active) = ORDER WRITING.
 - If one text has both a share request and add-on orders: write the add-ons, and end the Sales question with " Add-ons from the same text were recorded: [items]."
 - Question, complaint, or other business ("do you have butter?", "milk was sour") = Sales item (customer service), with the text.
 - Thanks, ok, emoji, "see you Monday" = log only.
@@ -201,7 +203,8 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
 2. Every item maps to exactly one Products "Column name" (Active = Yes). Use the Defaults tab (All, or this Cust ID) for vague words. Yogurt with no flavor = Yogurt VM (vanilla maple; Mark's rule, Oct 9), unless a Defaults row says otherwise; "maple" or "vanilla maple" = Yogurt VM, "plain" = Yogurt Plain.
 3. Every amount is explicit, set by a Defaults row, or set by a built-in default below. A number or amount in the text always wins. A Defaults row for the phrase wins over a built-in default.
    - Eggs: "eggs" (plural) with no number or amount ("can I get eggs", "add eggs this week") = 1 of the eggs product, which is 1 dozen. ("2 dozen eggs", "half dozen eggs" are amounts and win.)
-   - Dairy add-ons: an add-on (Products "Billed through" = Square) made from milk, such as yogurt, cream, butter or cheese, with no number or only a vague amount ("can I get butter", "can I get cream", "some yogurt", "a little more cheese") = 1 of that product, which is one of its Products "Unit". ("3 butters", "2 pounds of butter" are amounts and win.) Never milk (the weekly share) or anything given in place of it: those have no built-in default.
+   - Dairy add-ons: an add-on (Products "Billed through" = Square) made from milk, such as yogurt, cream, butter or cheese, with no number or only a vague amount ("can I get butter", "can I get cream", "some yogurt", "a little more cheese") = 1 of that product, which is one of its Products "Unit". ("3 butters", "2 pounds of butter" are amounts and win.) Never Milk (gal) (the weekly share) or anything given in place of it: those have no built-in default.
+   - Extra Milk (only while the Products row "Extra Milk" exists with Active = Yes): quantity is in half-gallon jars: "half gallon" or "a jar" = 1, "a gallon" = 2, "a gallon and a half" = 3. "Extra milk" with no amount = 1. A stated total for the week above their share ("2 gallons this week" with a 1 gal share) = the difference, in jars. Write it to the Extra Milk column of that week's row only; never change Milk (gal) or Customers for it. This applies to Mark's and Laura's commands and screenshots too.
    - No built-in default for words or plurals that mean more than one without saying how many ("a few", "a couple", "several", "lots", "some yogurts"): fails. (Plain "eggs" is just the word for them, not a plural here.)
    - If the target row already has some of that product this week, a built-in default is unclear (one more, or the same one again?): fails, unless the text says "more", "extra" or "another" (= 1 more).
    A built-in default only sets the amount. Rules 2 (which product, e.g. yogurt flavor), 3b and 4 still apply.

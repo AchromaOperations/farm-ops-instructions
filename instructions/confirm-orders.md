@@ -1,7 +1,8 @@
-CONFIRM ORDERS (version 7)
+CONFIRM ORDERS (version 8)
 Written for: sheets-spec version 4
 
 Change log
+- v8 (2026-10-10): read-backs word Extra Milk in gallons right after the share.
 - v7 (2026-10-09): "(standing order sync)" entries don't make a read-back risky.
 - v6 (2026-10-09): the read-back list goes to Mark as text (sheets-spec rule 10), not a doc link.
 - v5 (2026-10-09): read-backs also wait while the customer's weekly share request is open with Mark.
@@ -22,6 +23,7 @@ If the same customer has rows in both weeks, send one text per row (one per deli
 STEP 2. WRITE THE TEXT (one per row)
 Items = every product on the row with a quantity above 0, using Products "Text name" (or Column name in lower case):
 - Milk (gal) is the weekly share (sheets-spec TERMS): 0.5 = "your weekly share (half gallon)", 1 = "your weekly share (1 gallon)", 1.5 = "your weekly share (1 and a half gallons)", 2 or more = "your weekly share ([n] gallons)". It always comes first.
+- Extra Milk (jars) comes right after the share, in gallons: 1 = "an extra half gallon", 2 = "an extra gallon", 3 = "an extra gallon and a half", 4 or more = "[jars/2] extra gallons".
 - Everything else: 1 = "a [text name]" (or just the name if "a" sounds wrong, e.g. "butter"), more = "[n] [text name, plural]".
 - Add-ons follow after "plus", joined as a natural list: "your weekly share (1 gallon), plus 2 vanilla maple yogurts, butter and a crumble cheese". No share this week: just the add-ons ("2 vanilla maple yogurts and butter").
 Day = the customer's delivery day on that row. Add the date ("Wednesday the 21st") when the row is NEXT week; just the day name when it is THIS week.
