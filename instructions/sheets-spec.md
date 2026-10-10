@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-09, revised 13): cream is a paid add-on; add-ons can be standing orders.
 - v4 (2026-10-09, revised 12): rule 10: approval lists go to Mark as the list in the text, not a doc link.
 - v4 (2026-10-09, revised 11): Config "Follow-up every (minutes)" (Mark followed up every hourly run) and "Daily follow-up time"; "Nudge after" now only paces Laura and Shane on the reminder; header label "Reminder others last asked"; a Digest # stays taken until Resolved.
 - v4 (2026-10-08, revised 10): reminder preview goes to Mark, Laura, Harry and Shane; "Reminder approvals" records who approved; two different approvers needed.
@@ -74,7 +75,7 @@ Cust ID | Name | Day | Route | Stop # | Status | Phone | Phone 2 | Email | Addre
 - Test customers: Cust ID starts with "T" (T001, ...), Status = Test. The parser matches their texts like any customer and may add their row at the bottom of a week tab's customer table when it needs one. Rows whose Cust ID starts with "T" are NEVER put on delivery lists, sent reminders, invoiced, or sent to Square.
 - Phone, Phone 2: written +15025551234.
 - Notes: free text. If it contains "NO TEXTS", the customer opted out: no step may text them (their weekly share continues).
-- Standing-order columns: a number, or blank for none. Only the weekly share (Milk (gal)) is standing for now.
+- Standing-order columns: a number, or blank for none. Every customer has a weekly share (Milk (gal)); some also get add-ons every week, and those are standing too. First-week-only products are never standing (until "first week" is defined).
 
 TAB: Products (one row per product, header in row 1)
 Column name | Product | Variant | Unit | Price | Billed through | Active | Square item ID | Text name | Notes | Weeks
@@ -84,7 +85,7 @@ Column name | Product | Variant | Unit | Price | Billed through | Active | Squar
 
 TERMS (every text and every doc you write)
 - The "Milk (gal)" column is the customer's WEEKLY SHARE: milk from their herdshare, not something they order or buy. In any text, to customers or family, call it their "weekly share" with its size ("your weekly share (1 gallon)"). Never write "milk order", "buy", "purchase" or a price for it.
-- Only add-on products (yogurt, eggs, butter, cheese, honey, baked goods) are "orders".
+- Only add-on products (yogurt, cream, eggs, butter, cheese, honey, soap, baked goods) are "orders". Cream given in place of a jar of milk is part of that customer's share (see their Delivery notes).
 - Customers may still text "milk"; that is fine to understand, just don't echo it back as an order.
 - Active (dropdown): Yes, No.
 - Text name: how the product reads in a text to a customer, singular (for example "maple yogurt", "dozen eggs", "butter"). Blank = use Column name in lower case.

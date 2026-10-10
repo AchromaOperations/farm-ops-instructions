@@ -1,7 +1,8 @@
-PARSER (version 13)
+PARSER (version 14)
 Written for: sheets-spec version 4
 
 Change log
+- v14 (2026-10-09): cream is a paid add-on (Products: Billed through Square), so "can I get cream" is an order with the 1-unit default; only cream or whey in place of milk is a share request.
 - v13 (2026-10-09): a reaction to any part of a list text (or its resend) counts as approval.
 - v12 (2026-10-09): section S: a screenshot of a customer's text conversation sent by Mark, Laura or Shane is read and processed as that customer's order (share changes applied, read-back goes to Mark's list first). Customer pictures are never opened.
 - v11 (2026-10-09): digest answers also match half-closed Sales items (Status Answered), so "4 resolved" closes one; closing one is never a conflict.
@@ -121,11 +122,11 @@ C. FROM A CUSTOMER (exactly one match)
 First: if the whole text is STOP, STOPALL, UNSUBSCRIBE, CANCEL, END, QUIT, REVOKE or OPT OUT (any case, punctuation ignored), or asks not to be texted: add "NO TEXTS (opted out [date])" to the front of that customer's Customers "Notes", change no week row (it is NOT a skip), and create a Sales item "[name] opted out of texts. Their weekly share is unchanged; call them if needed." For CANCEL, add " They may have meant their share." to that question. Then stop for this message.
 
 Otherwise sort out what the text asks for (one text can have more than one part):
-- Weekly share request. Customers can't change their weekly share by text. The weekly share is Milk (gal) (sheets-spec TERMS) and anything that makes it up or replaces part of it: cream, whey, and any product whose Products "Billed through" is not Square. A share request is any ask to change it, for one week or for good: more, less or no milk, a different size, cream or whey in place of milk, skipping the week, pausing, cancelling ("extra half gallon", "no milk this week", "can I get cream", "skip us this week", "cancel my share").
+- Weekly share request. Customers can't change their weekly share by text. The weekly share is Milk (gal) (sheets-spec TERMS), anything given in place of part of it (for example cream or whey instead of a jar of milk; a customer's Delivery notes may say so, like "Cream is a share", and then any cream ask from them is a share request), and any product whose Products "Billed through" is not Square. Cream on its own is a paid add-on, not part of the share. A share request is any ask to change the share, for one week or for good: more, less or no milk, a different size, something in place of milk, skipping the week, pausing, cancelling ("extra half gallon", "no milk this week", "cream instead of one jar", "skip us this week", "cancel my share").
   - Read the text with the Defaults tab: if a Defaults row turns the customer's words into a share change, it is a share request. If a part might be a share request, treat it as one.
   - An add-on tied to a share change ("butter instead of milk", "swap my milk for yogurt") is part of the share request, not an order.
   - For a share request, change nothing on the sheet. Create a Sales item (customer service), Week = the week it is about (the week ORDER WRITING rule 5 would pick), Question: "[name] asked to change their weekly share: '[text]'. Nothing changed yet." Mark answers it in the digest (A3).
-- Weekly add-on order = items whose Products "Billed through" is Square ("2 maple yogurt this week", "can I get butter") = ORDER WRITING.
+- Weekly add-on order = items whose Products "Billed through" is Square ("2 maple yogurt this week", "can I get butter", "can I get cream") = ORDER WRITING.
 - If one text has both a share request and add-on orders: write the add-ons, and end the Sales question with " Add-ons from the same text were recorded: [items]."
 - Question, complaint, or other business ("do you have butter?", "milk was sour") = Sales item (customer service), with the text.
 - Thanks, ok, emoji, "see you Monday" = log only.
@@ -196,7 +197,7 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
 2. Every item maps to exactly one Products "Column name" (Active = Yes). Use the Defaults tab (All, or this Cust ID) for vague words. "Yogurt" with several yogurt products and no flavor = fails.
 3. Every amount is explicit, set by a Defaults row, or set by a built-in default below. A number or amount in the text always wins. A Defaults row for the phrase wins over a built-in default.
    - Eggs: "eggs" (plural) with no number or amount ("can I get eggs", "add eggs this week") = 1 of the eggs product, which is 1 dozen. ("2 dozen eggs", "half dozen eggs" are amounts and win.)
-   - Dairy add-ons: an add-on (Products "Billed through" = Square) made from milk, such as yogurt, butter or cheese, with no number or only a vague amount ("can I get butter", "butter please", "some yogurt", "a little more cheese") = 1 of that product, which is one of its Products "Unit". ("3 butters", "2 pounds of butter" are amounts and win.) Never the weekly share or what makes it up (milk, cream, whey): those have no built-in default.
+   - Dairy add-ons: an add-on (Products "Billed through" = Square) made from milk, such as yogurt, cream, butter or cheese, with no number or only a vague amount ("can I get butter", "can I get cream", "some yogurt", "a little more cheese") = 1 of that product, which is one of its Products "Unit". ("3 butters", "2 pounds of butter" are amounts and win.) Never milk (the weekly share) or anything given in place of it: those have no built-in default.
    - No built-in default for words or plurals that mean more than one without saying how many ("a few", "a couple", "several", "lots", "some yogurts"): fails. (Plain "eggs" is just the word for them, not a plural here.)
    - If the target row already has some of that product this week, a built-in default is unclear (one more, or the same one again?): fails, unless the text says "more", "extra" or "another" (= 1 more).
    A built-in default only sets the amount. Rules 2 (which product, e.g. yogurt flavor), 3b and 4 still apply.
