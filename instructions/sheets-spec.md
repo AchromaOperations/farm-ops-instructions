@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-09, revised 14): "(standing order sync)" Changes entries are not changes (lists, read-back risk and sync conflicts ignore them).
 - v4 (2026-10-09, revised 13): cream is a paid add-on; add-ons can be standing orders.
 - v4 (2026-10-09, revised 12): rule 10: approval lists go to Mark as the list in the text, not a doc link.
 - v4 (2026-10-09, revised 11): Config "Follow-up every (minutes)" (Mark followed up every hourly run) and "Daily follow-up time"; "Nudge after" now only paces Laura and Shane on the reminder; header label "Reminder others last asked"; a Digest # stays taken until Resolved.
@@ -215,7 +216,7 @@ Cust ID | Name | Day | Route | Stop # | one column per product (same names as Pr
 - Confirmation sent (TRACKER): when confirm-orders last texted this customer a read-back for this row. A read-back is due when Confirm needed is later than Confirmation sent (or Confirmation sent is blank).
 - Rows sorted by Day (Mon to Fri), then Route, then Stop #.
 - Product cells (QUANTITY): this week's amount. Starts as the standing order.
-- Changes (LOG): one entry per change, separated by " ; ", e.g. "2026-10-09 09:14 Yogurt Plain 0>2 (text)".
+- Changes (LOG): one entry per change, separated by " ; ", e.g. "2026-10-09 09:14 Yogurt Plain 0>2 (text)". An entry ending "(standing order sync)" only copies the customer's standing order onto that week; it is not a change anyone asked for. Delivery lists, read-back risk checks and sync conflict checks ignore it.
 - Not delivered (LOG): product Column name + amount + reason, separated by " ; ", e.g. "Yogurt Plain x2 ran out". Billing subtracts these.
 - Locked (STAMP): filled when that day's delivery list goes out. THIS is the real order cutoff. Before Locked, any order for this week counts, even after the asked-for cutoff. After Locked, the row never changes, with one exception: a Late order that Mark answers "add it" (squeeze in) may change a quantity; the Changes entry must say "after lock, approved by Mark" and Needs attention must say "added after list went out". Otherwise new orders become a Late order Queue item for Mark.
 - A week tab is frozen when every row with an invoice has Invoice sent filled (or is marked not invoiced). Frozen tabs are never edited.

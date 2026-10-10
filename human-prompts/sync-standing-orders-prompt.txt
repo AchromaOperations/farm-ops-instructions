@@ -20,6 +20,7 @@ For each unlocked customer row in each week tab, and each standing-order product
 - Same: nothing to do.
 - Different, and the row's Changes has NO entry for that product: an update. Plan to set the week cell to the standing value.
 - Different, and the row's Changes HAS an entry for that product (a customer or Mark changed it): a CONFLICT. Do not plan anything for it.
+(Entries ending "(standing order sync)" are earlier syncs, not someone's order: ignore them when deciding update or conflict.)
 Also list every Active customer who has no row on a week tab: plan to add their row.
 
 STEP 4. CHECKPOINT

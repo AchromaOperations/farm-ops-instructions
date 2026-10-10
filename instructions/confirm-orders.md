@@ -1,7 +1,8 @@
-CONFIRM ORDERS (version 6)
+CONFIRM ORDERS (version 7)
 Written for: sheets-spec version 4
 
 Change log
+- v7 (2026-10-09): "(standing order sync)" entries don't make a read-back risky.
 - v6 (2026-10-09): the read-back list goes to Mark as text (sheets-spec rule 10), not a doc link.
 - v5 (2026-10-09): read-backs also wait while the customer's weekly share request is open with Mark.
 - v4 (2026-10-09): the read-back list waits only on sheets-spec rule 9; a reminder still waiting for wording no longer holds it.
@@ -33,7 +34,7 @@ No other wording, no questions, no prices.
 
 STEP 3. DECIDE: SEND NOW OR NEEDS APPROVAL
 Review = Config "Read-back review" (blank or missing = ALL).
-Risky = since this row's last "Confirmation sent", its Changes has any entry whose source is not "(text)" (for example "(Mark)", "(Laura)", "(Mark (by hand))", "(GUESS at lock)", or "after lock").
+Risky = since this row's last "Confirmation sent", its Changes has any entry whose source is not "(text)" (for example "(Mark)", "(Laura)", "(Mark (by hand))", "(GUESS at lock)", or "after lock"). Entries ending "(standing order sync)" don't count (sheets-spec Changes).
 - Review OFF: send now (Step 4).
 - Review RISKY ONLY: risky rows need approval (Step 5); others send now (Step 4).
 - Review ALL: every row needs approval (Step 5).
