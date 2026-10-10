@@ -10,7 +10,7 @@ Manual "run update": tap Run now on Farm ops. One run does both parts.
 ## Farm ops routine
 
 - Name: Farm ops
-- Model: see the note in HANDOFF (Opus reads texts and screenshots best; Sonnet uses less of the plan)
+- Model: Opus (Shane, Oct 10). Watch usage at claude.ai/settings/usage the first day; switch to Sonnet if it eats the plan.
 - Repositories: NONE (the prompt downloads the public repository itself; the farm account never signs in to GitHub)
 - Connectors: Quo, Google Drive, Square
 - Triggers: TWO schedule triggers on this one routine: Hourly at :10 and Hourly at :40. (A single schedule can't run more often than hourly; both triggers start the same job.)
