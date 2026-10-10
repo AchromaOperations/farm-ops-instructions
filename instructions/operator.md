@@ -1,7 +1,8 @@
-OPERATOR (version 9)
+OPERATOR (version 10)
 Written for: sheets-spec version 4
 
 Change log
+- v10 (2026-10-10): the Sunday alert is marked in System "Sunday alert sent" so it goes once now that runs are every 30 minutes.
 - v9 (2026-10-10): the Sunday alert goes to the family group and Shane.
 - v8 (2026-10-10): confirm-orders is due for read-backs on any later built week too.
 - v7 (2026-10-10): Step 0 b2 builds week tabs a few weeks ahead (Config "Weeks built ahead") and adds rows for new Active customers; 15 months of prebuilt tabs are no longer needed.
@@ -24,7 +25,7 @@ READ ONLY THESE
 STEP 0. START
 a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.)
 b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section) exactly, using "Operator run in progress since" as your own flag. If the rule says end: write a run history row with the reason in Problems, and end WITHOUT clearing any flag (the flag belongs to the other run).
-b2. Build ahead (runs during quiet hours too; it sends nothing): for THIS week (or NEXT week if there is no THIS week yet) and each of the following Config "Weeks built ahead" weeks (missing or blank = 4), if its tab is missing or unfinished, build or finish it as sheets-spec BUILDING A WEEK TAB says. Also add a row for any Active customer missing from those unlocked tabs. At most 2 tab builds per run (the next run continues). Note what you built in run history. Read Customers and Products only when something needs building or adding.
+b2. Build ahead (it sends nothing): for THIS week (or NEXT week if there is no THIS week yet) and each of the following Config "Weeks built ahead" weeks (missing or blank = 4), if its tab is missing or unfinished, build or finish it as sheets-spec BUILDING A WEEK TAB says. Also add a row for any Active customer missing from those unlocked tabs. At most 2 tab builds per run (the next run continues). Note what you built in run history. Read Customers and Products only when something needs building or adding.
 c. Week tabs: find LAST, THIS and NEXT week's tabs (sheets-spec WEEK NAMES). If one is missing in the way the "Week tabs" rule describes, follow the "Week tabs" rule in sheets-spec, and skip every check below that needs the missing tab.
 c2. Labels: on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
 d. Quiet = now is at or after "Quiet hours start" or before "Quiet hours end". If Quiet, go to STEP 2. (Nothing is sent or started during quiet hours.)
@@ -54,7 +55,7 @@ For each due step: open the file instructions/[name].md in this repository (for 
 
 4. send-reminder
    Due if today is Friday and now is at or after the "Reminder request time", OR today is Saturday; AND NEXT week's "Reminder sent" is blank.
-   Not due on Sunday. Instead, if today is Sunday, now is before 08:00, Config Mode is LIVE, and THIS week's "Reminder sent" is blank: text the family group (sheets-spec rule 11) and Shane (one-to-one) "This week's customer reminder never went out. Text customers by hand if needed." (Only the 7:40 run matches, so this goes once.)
+   Not due on Sunday. Instead, if today is Sunday, now is before 09:00, Config Mode is LIVE, THIS week's "Reminder sent" is blank, and System "Sunday alert sent" is not today's date: text the family group (sheets-spec rule 11) and Shane (one-to-one) "This week's customer reminder never went out. Text customers by hand if needed." Then set System "Sunday alert sent" = today's date, so it goes once.
 
 4b. confirm-orders
    Due if any customer row in THIS week or any later built week has "Confirm needed" filled and later than "Confirmation sent" (or "Confirmation sent" blank). Read only those two columns.

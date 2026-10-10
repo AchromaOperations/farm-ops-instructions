@@ -15,7 +15,7 @@ All data (customers, orders, week tabs, invoices) lives in Google Sheets and Dri
 ## Making a change
 1. Edit the file in `instructions/`, bump its version line and add a change-log entry.
 2. Commit and push to `main`.
-3. The next hourly run of each routine downloads `main` and uses the new version. Nothing to paste.
+3. The next Farm ops run (every 30 minutes) downloads `main` and uses the new version. Nothing to paste.
 
 Roll back by reverting the commit. Only Shane pushes to this repository.
 - `tools/`: scripts the routines run in their cloud sandbox (for example `delivery_list_pdf.py`). No customer data.

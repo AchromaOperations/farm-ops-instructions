@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-10, revised 23): one Farm ops routine (parser part, then operator part) twice an hour replaces the two routines; System "Sunday alert sent".
 - v4 (2026-10-10, revised 22): rule 11: texts for Mark and Laura go to one family group text; Laura after is retired; Nudge after now only paces Shane on the reminder.
 - v4 (2026-10-10, revised 21): Config "First weeks" lists which delivery weeks carry first-week-only products.
 - v4 (2026-10-10, revised 20): week tabs are built a few weeks ahead (Config "Weeks built ahead", default 4; BUILDING A WEEK TAB) instead of 15 months; Day, Route and Stop # are refreshed from Customers before each delivery list.
@@ -166,17 +167,18 @@ Time | Direction | From | To | Who | Classified as | Action taken | Written to |
 
 TAB: System (labels in column A, values in column B; all TRACKER cells)
 Message cursor | date-time of the newest message the parser has finished
-Parser run in progress since | date-time the Parser routine started; blank when not running
-Operator run in progress since | date-time the Operator routine started; blank when not running
-Last parse finished | date-time the Parser routine last finished
+Parser run in progress since | date-time the parser part of a run started; blank when not running
+Operator run in progress since | date-time the operator part of a run started; blank when not running
+Last parse finished | date-time the parser part last finished
 Parser late alert sent | date-time Shane was last told the parser is late
 Last payment check | date-time invoicing last checked Square for payments
 Missing doc alerts | date + doc names Shane was told about today, e.g. "2026-10-08: owner-digest, invoicing"
+Sunday alert sent | date the "reminder never went out" alert last went out
 Then a blank row, then the run history (LOG), header row starting with "Run start":
 Run start | Run end | Routine | Trigger | Steps run | Texts sent | Problems
 - If any label above is missing (for example an older setup), add it as a new row above the run history. Adding labels is allowed; never remove one.
 - Reading texts: start from (Message cursor minus Cursor overlap), and skip any message whose ID is already in the Inbox Log (only search Inbox Log rows from the last 2 days; older IDs can't be in the window). The overlap catches texts that arrive late or share a minute.
-- Run flags: the two routines never run at the same time. At start, each routine:
+- Run flags: one Farm ops routine runs twice an hour, parser part then operator part (routines/farm-ops.md). The parser and operator parts never run at the same time, even when two runs overlap. At start, each part:
   1. Checks BOTH flags. A flag older than "Stale run after" minutes is a crashed run: clear it and add a Problems note.
   2. If the other routine's flag is filled: wait 2 minutes and check again, up to 5 times. If it's still filled, end this run (note "skipped: other routine running"). If its OWN flag is filled, end immediately.
   3. Set its own flag to now, wait 30 seconds, and check the other flag once more. If the other flag is now filled with an EARLIER time than its own, clear its own flag and go back to step 2. (Tie: the Parser goes first.)
