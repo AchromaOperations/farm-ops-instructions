@@ -1,7 +1,8 @@
-OPERATOR (version 7)
+OPERATOR (version 8)
 Written for: sheets-spec version 4
 
 Change log
+- v8 (2026-10-10): confirm-orders is due for read-backs on any later built week too.
 - v7 (2026-10-10): Step 0 b2 builds week tabs a few weeks ahead (Config "Weeks built ahead") and adds rows for new Active customers; 15 months of prebuilt tabs are no longer needed.
 - v6 (2026-10-09): owner-digest is due every hourly run while Mark has an unanswered item (Config "Follow-up every (minutes)"), and once a morning for half-closed Sales items.
 - v5 (2026-10-09): Step 0c2 adds missing header labels and columns on THIS and NEXT week's tabs every run.
@@ -55,7 +56,7 @@ For each due step: open the file instructions/[name].md in this repository (for 
    Not due on Sunday. Instead, if today is Sunday, now is before 08:00, Config Mode is LIVE, and THIS week's "Reminder sent" is blank: text Mark and Shane "This week's customer reminder never went out. Text customers by hand if needed." (Only the 7:40 run matches, so this goes once.)
 
 4b. confirm-orders
-   Due if any customer row in THIS or NEXT week has "Confirm needed" filled and later than "Confirmation sent" (or "Confirmation sent" blank). Read only those two columns.
+   Due if any customer row in THIS week or any later built week has "Confirm needed" filled and later than "Confirmation sent" (or "Confirmation sent" blank). Read only those two columns.
 
 5. owner-digest
    Only count Queue rows whose Type is not Driver or Reminder. Due if any such row:

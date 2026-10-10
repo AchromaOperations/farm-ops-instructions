@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-10, revised 21): Config "First weeks" lists which delivery weeks carry first-week-only products.
 - v4 (2026-10-10, revised 20): week tabs are built a few weeks ahead (Config "Weeks built ahead", default 4; BUILDING A WEEK TAB) instead of 15 months; Day, Route and Stop # are refreshed from Customers before each delivery list.
 - v4 (2026-10-10, revised 19): Extra Milk has two rates: Products price for full shares (1 gal or more), Config "Extra milk price, half share" for half shares.
 - v4 (2026-10-10, revised 18): Extra Milk, a paid add-on of extra half-gallon jars for one week, separate from the never-invoiced share; off until its Products row is Active.
@@ -87,7 +88,7 @@ Cust ID | Name | Day | Route | Stop # | Status | Phone | Phone 2 | Email | Addre
 TAB: Products (one row per product, header in row 1)
 Column name | Product | Variant | Unit | Price | Billed through | Active | Square item ID | Text name | Notes | Weeks
 - Extra Milk (product row): Column name "Extra Milk", Product Milk, Variant Extra, Unit "half-gallon jar", Billed through Square, Weeks All, Text name "extra half gallon". Quantity = jars (1 = an extra half gallon, 2 = an extra gallon). It switches on when Shane sets its Price and Active = Yes. Its Price is the full-share rate (customers whose Milk (gal) is 1 or more); half shares pay Config "Extra milk price, half share".
-- Weeks (dropdown): All, First week only. Blank = All. "First week only" products (baked goods, crumble cheese) are made only for the first delivery week of each month. Which week counts as first is not defined yet, so the parser asks Mark about every such order.
+- Weeks (dropdown): All, First week only. Blank = All. "First week only" products (baked goods, crumble cheese) are made only in first weeks: the delivery weeks listed in Config "First weeks". It's Mark's schedule, not a formula (it isn't always the week with the 1st in it, and some months have none).
 - Column name: the exact column header used on Customers and week tabs (for example "Milk (gal)", "Yogurt Plain"). Once week tabs exist, never rename it; add a new product instead.
 - Billed through (dropdown): Square (add-on invoices), Squarespace (monthly herdshare, never invoiced by this system), None.
 
@@ -123,6 +124,7 @@ Settings and starting values:
 - Route check start: 15:00
 - Digest batch size: 3
 - Follow-up every (minutes): 55   (how often Mark is followed up on anything waiting for him; 55 = every hourly run. Missing or blank = 55.)
+- First weeks: 2026-11-01; 2026-12-06   (the Sunday dates of delivery weeks that carry first-week-only products, separated by "; ". Mark's schedule: November 1-6, December 6-13, none in January 2027 (vacation). Missing = every first-week-only order goes to Mark.)
 - Weeks built ahead: 4   (how many weeks after THIS week the operator keeps built. Missing or blank = 4.)
 - Extra milk price, half share: 7   (per half-gallon jar of Extra Milk for customers whose Milk (gal) is under 1; full shares pay the Products price)
 - Daily follow-up time: 08:00   (the once-a-day text about Sales items Mark answered but didn't close. Missing or blank = 08:00.)

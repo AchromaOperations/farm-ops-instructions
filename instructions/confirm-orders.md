@@ -1,7 +1,8 @@
-CONFIRM ORDERS (version 8)
+CONFIRM ORDERS (version 9)
 Written for: sheets-spec version 4
 
 Change log
+- v9 (2026-10-10): read-backs also cover orders placed on later weeks (for example a first-week item), with the date.
 - v8 (2026-10-10): read-backs word Extra Milk in gallons right after the share.
 - v7 (2026-10-09): "(standing order sync)" entries don't make a read-back risky.
 - v6 (2026-10-09): the read-back list goes to Mark as text (sheets-spec rule 10), not a doc link.
@@ -16,7 +17,7 @@ HOW TO WORK
 A checklist. The parser already decided who needs a read-back; this step only writes the friendly text and sends it. Customer-facing: follow the routine's Mode rule (not LIVE = send to the test phones instead). Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
 
 STEP 1. WHO
-Rows = customer rows in THIS and NEXT week (sheets-spec WEEK NAMES) where "Confirm needed" is filled and later than "Confirmation sent" (or "Confirmation sent" is blank). Test customers (Cust ID starting with "T") get read-backs too, so the flow can be tested.
+Rows = customer rows in THIS week and every later built week (sheets-spec WEEK NAMES) where "Confirm needed" is filled and later than "Confirmation sent" (or "Confirmation sent" is blank). Test customers (Cust ID starting with "T") get read-backs too, so the flow can be tested.
 Skip a row for now (it will be picked up later) if that customer has a Queue item of Type Clarify or Late order that is not Resolved, or a Sales item whose Question contains "asked to change their weekly share" that is not Resolved: they get one read-back once everything is settled.
 If the same customer has rows in both weeks, send one text per row (one per delivery).
 
@@ -26,7 +27,7 @@ Items = every product on the row with a quantity above 0, using Products "Text n
 - Extra Milk (jars) comes right after the share, in gallons: 1 = "an extra half gallon", 2 = "an extra gallon", 3 = "an extra gallon and a half", 4 or more = "[jars/2] extra gallons".
 - Everything else: 1 = "a [text name]" (or just the name if "a" sounds wrong, e.g. "butter"), more = "[n] [text name, plural]".
 - Add-ons follow after "plus", joined as a natural list: "your weekly share (1 gallon), plus 2 vanilla maple yogurts, butter and a crumble cheese". No share this week: just the add-ons ("2 vanilla maple yogurts and butter").
-Day = the customer's delivery day on that row. Add the date ("Wednesday the 21st") when the row is NEXT week; just the day name when it is THIS week.
+Day = the customer's delivery day on that row. Add the date ("Wednesday the 21st") when the row is a later week; just the day name when it is THIS week.
 
 Text:
 - First read-back for this row ("Confirmation sent" blank): "Got it! See you [Day] with [items]."

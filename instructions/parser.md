@@ -1,7 +1,8 @@
-PARSER (version 22)
+PARSER (version 23)
 Written for: sheets-spec version 4
 
 Change log
+- v23 (2026-10-10): first-week-only items go to the next first week in Config "First weeks" (Mark's schedule) instead of always asking Mark.
 - v22 (2026-10-10): an order for a week that isn't built yet builds that week's tab first.
 - v21 (2026-10-10): share-request examples no longer include "extra half gallon" (that's an Extra Milk order now that it's active).
 - v20 (2026-10-10): when Harry confirms a route, skipped rows get Delivered = "skipped".
@@ -211,7 +212,10 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
    - No built-in default for words or plurals that mean more than one without saying how many ("a few", "a couple", "several", "lots", "some yogurts"): fails. (Plain "eggs" is just the word for them, not a plural here.)
    - If the target row already has some of that product this week, a built-in default is unclear (one more, or the same one again?): fails, unless the text says "more", "extra" or "another" (= 1 more).
    A built-in default only sets the amount. Rules 2 (which product, e.g. yogurt flavor), 3b and 4 still apply.
-3b. First week only: if an item's Products "Weeks" is "First week only", it fails. Question: "[name] asked for [item] for the week of [dates]. That's a first-week-only item. Add it to that week, or hold it for the next first week?" (The rest of the same message can still be written if it passes.)
+3b. First week only: an item whose Products "Weeks" is "First week only" (crumble cheese, baked goods) is only made in the delivery weeks listed in Config "First weeks" (their Sunday dates).
+   - The target week (rule 5) is a listed first week: write it as usual.
+   - Otherwise: write it to the next listed first week's row instead (build that tab first if it isn't built). The read-back gives that date.
+   - It fails instead if the customer says they want it only this week, if no first week is listed after the target week, or if "First weeks" is missing. Question: "[name] asked for [item] (week of [dates]). It's only made in first weeks (next: [week of date, or none scheduled]). Hold it, or add it to a week?" with "Hold it" first. (The rest of the same message can still be written if it passes.)
 4. Standing conflict: if the item has a standing order and the text could mean "in addition" or "instead" (e.g. "milk this week please"), it fails. Words like "extra", "another", "more" = in addition. "Just", "only", "change to", "instead" = instead.
 5. Target row (test customers, Cust ID starting with "T": if they have no row on the week tab, add one at the bottom of the customer table first):
    - This week's row for the customer, if its Locked is blank (no THIS week yet: NEXT week's row).
