@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 5)
+DAILY DELIVERY LIST (version 6)
 Written for: sheets-spec version 4
 
 Change log
+- v6 (2026-10-09): milk is counted in half-gallon jars on the packing list and each stop (Mark: half-gallon jars only).
 - v5 (2026-10-09): "(standing order sync)" Changes entries don't flag a stop as CHANGED or put it on the change list.
 - v4 (2026-10-09): a customer's weekly share request still open at lock is flagged on the row, never guessed.
 - v3 (2026-10-08): share wording on the list and lock text.
@@ -38,10 +39,11 @@ Doc "Delivery list [Ddd Mon D YYYY]" in Delivery Lists. Plain and printable, lar
 PACKING LIST
 Product (Column name) | Total for this route
 (every product with a total above 0)
+Milk goes out in half-gallon jars only (sheets-spec TERMS). Write the milk line as jars first: "Milk: [jars] half-gallon jars ([gallons] gal)", where jars = gallons x 2.
 
 STOPS (in Stop # order)
-Stop # | Name | Address, City | Items (only products above 0, e.g. "share 1 gal, 2 Yogurt Maple") | Delivery notes | Flags
-Flags: "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text. Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
+Stop # | Name | Address, City | Items (only products above 0, e.g. "share 2 jars, 2 Yogurt VM"; share in half-gallon jars = gallons x 2) | Delivery notes | Flags
+Flags: "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text, and "!" if the share isn't a whole number of jars (gallons not a multiple of 0.5; write the gallons as they are). Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
 
 CHANGES THIS WEEK
 One line per stop that has a Changes entry (other than "(standing order sync)" entries) or Needs attention text: name, then the text.
