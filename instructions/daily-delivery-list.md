@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 4)
+DAILY DELIVERY LIST (version 5)
 Written for: sheets-spec version 4
 
 Change log
+- v5 (2026-10-09): "(standing order sync)" Changes entries don't flag a stop as CHANGED or put it on the change list.
 - v4 (2026-10-09): a customer's weekly share request still open at lock is flagged on the row, never guessed.
 - v3 (2026-10-08): share wording on the list and lock text.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -40,10 +41,10 @@ Product (Column name) | Total for this route
 
 STOPS (in Stop # order)
 Stop # | Name | Address, City | Items (only products above 0, e.g. "share 1 gal, 2 Yogurt Maple") | Delivery notes | Flags
-Flags: "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text.
+Flags: "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text. Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
 
 CHANGES THIS WEEK
-One line per stop that has a Changes entry or Needs attention text: name, then the text.
+One line per stop that has a Changes entry (other than "(standing order sync)" entries) or Needs attention text: name, then the text.
 
 PENDING (not packed)
 Open Late order items for this day: customer and what they asked for. "Mark hasn't decided; don't pack unless he says so."
