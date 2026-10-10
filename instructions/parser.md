@@ -1,7 +1,8 @@
-PARSER (version 12)
+PARSER (version 13)
 Written for: sheets-spec version 4
 
 Change log
+- v13 (2026-10-09): a reaction to any part of a list text (or its resend) counts as approval.
 - v12 (2026-10-09): section S: a screenshot of a customer's text conversation sent by Mark, Laura or Shane is read and processed as that customer's order (share changes applied, read-back goes to Mark's list first). Customer pictures are never opened.
 - v11 (2026-10-09): digest answers also match half-closed Sales items (Status Answered), so "4 resolved" closes one; closing one is never a conflict.
 - v10 (2026-10-09): customers can't change their weekly share by text (milk, cream, whey, skips, pauses, cancelling): it becomes a Sales item, and Mark's digest answer makes or declines the change; add-ons in the same text are still written. Only weekly add-ons (Billed through Square) are orders by text. A dairy add-on with no amount or a vague one = 1 unit (not for "a few" or when the row already has some). Defaults rows win over built-in defaults. CANCEL, REVOKE and OPT OUT are opt-outs like STOP. A share Clarify always offers "no change" first.
@@ -56,9 +57,9 @@ A message with a picture attached: section S first.
 Otherwise check in this order; use the first that fits.
 
 A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers.
-- Approval = the WHOLE message is one of "good", "yes", "ok", "approved", "send" (any case, punctuation ignored), or a thumbs-up or "Liked" reaction to that list's text. Approve every item on that list. Any other wording ("good, did Kim pay?", "send me the list again") is NOT approval.
+- Approval = the WHOLE message is one of "good", "yes", "ok", "approved", "send" (any case, punctuation ignored), or a thumbs-up or "Liked" reaction to any of that list's texts (any part of it, or a follow-up that resent it). Approve every item on that list. Any other wording ("good, did Kim pay?", "send me the list again") is NOT approval.
 - "good except 14" (or several numbers, and nothing else after "except") = approve all except those numbers. "good except Kim" or any other non-number = Clarify item, approve nothing.
-- If a digest question (Clarify, Sales, Late order or Other) also has Status Sent, a bare approval word could be for either: create a Clarify item "Not sure if '[text]' was for the [invoices / read-backs] or a question. Reply 'good' again for the list, or answer the question with its number." and approve nothing. Exception: a reaction to the list's own text is clear.
+- If a digest question (Clarify, Sales, Late order or Other) also has Status Sent, a bare approval word could be for either: create a Clarify item "Not sure if '[text]' was for the [invoices / read-backs] or a question. Reply 'good' again for the list, or answer the question with its number." and approve nothing. Exception: a reaction to one of the list's own texts is clear.
 - Invoice list: approve = fill "Invoice approved" on each approved customer's row (date-time + who). For each excepted number, create a Clarify item: "Invoice 14 ([customer]) held: what should change?"
 - Read-back list: approve = fill "Read-back approved" (date-time + who) on each approved row. For each excepted number, create a Clarify item: "Read-back 3 ([customer]) held: what's wrong with it?"
 - Then set the Queue item to Resolved with the answer.

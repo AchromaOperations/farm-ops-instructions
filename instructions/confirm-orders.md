@@ -1,7 +1,8 @@
-CONFIRM ORDERS (version 5)
+CONFIRM ORDERS (version 6)
 Written for: sheets-spec version 4
 
 Change log
+- v6 (2026-10-09): the read-back list goes to Mark as text (sheets-spec rule 10), not a doc link.
 - v5 (2026-10-09): read-backs also wait while the customer's weekly share request is open with Mark.
 - v4 (2026-10-09): the read-back list waits only on sheets-spec rule 9; a reminder still waiting for wording no longer holds it.
 - v3 (2026-10-08): read-backs call milk the customer's weekly share; add-ons follow after "plus".
@@ -48,7 +49,7 @@ Rows needing approval, EXCEPT rows already waiting on a list ("Read-back drafted
    "Read-backs waiting for your OK. Reply 'good' to send all, or 'good except [numbers]'."
    Then one numbered line per row: "[#]. [Name] ([Cust ID], [week]): [exact text]"
 3. Create a Queue item: Type Read-back, Question = the doc link, Original message = "[n] read-backs", Status = Waiting.
-4. Send it only if no approval is open (sheets-spec rule 9; a reminder still waiting for wording does NOT count): text Mark "[n] customer read-backs are ready for your OK: [link]. Reply 'good' to send all, or 'good except [numbers]'." Nothing else in that text. Then Status = Sent, Sent to = Mark, First sent = now.
+4. Send it only if no approval is open (sheets-spec rule 9; a reminder still waiting for wording does NOT count): text Mark the list as sheets-spec rule 10 says. Title: "[n] customer read-backs need your OK". Lines: "[#]. [Name]: [exact text]". Then Status = Sent, Sent to = Mark, First sent = now.
    Otherwise leave it Waiting; a later run sends it. (Nudges and Laura are handled by owner-digest.)
 Last line: if a Read-back Queue item is still Waiting (made by an earlier run), send the oldest one the same way, under the same conditions as item 4.
 

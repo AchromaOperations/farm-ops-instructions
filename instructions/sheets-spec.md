@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-09, revised 12): rule 10: approval lists go to Mark as the list in the text, not a doc link.
 - v4 (2026-10-09, revised 11): Config "Follow-up every (minutes)" (Mark followed up every hourly run) and "Daily follow-up time"; "Nudge after" now only paces Laura and Shane on the reminder; header label "Reminder others last asked"; a Digest # stays taken until Resolved.
 - v4 (2026-10-08, revised 10): reminder preview goes to Mark, Laura, Harry and Shane; "Reminder approvals" records who approved; two different approvers needed.
 - v4 (2026-10-08, revised 9): Products "Weeks" column (All, First week only).
@@ -45,6 +46,11 @@ GENERAL RULES (apply to every skill)
 8. Missing labels: if a label or column this spec lists is missing from a tab (for example a week tab built under an older version), add it: a header-block label goes in a new row just above the day table; a column goes at the end of that header row. Never remove or rename existing labels or columns.
 
 9. One approval at a time. An approval is OPEN when (a) a Queue item of Type Invoice or Read-back has Status Sent, or (b) NEXT week's "Reminder preview sent" is filled and "Reminder approved" is blank. While an approval is open, no skill sends Mark or Laura a new approval request (reminder preview, read-back list, invoice list). When more than one is ready, the order is: reminder preview first, then read-back list, then invoice list. This is what lets a bare "good" or "yes" mean exactly one thing.
+
+10. List texts. An approval list (read-backs, invoices) goes to Mark as the list itself in the text, never as a link (Mark can't easily open docs on his phone). The list doc is still made: it is the record, and the parser reads the numbers from it.
+   - First line: the title and "Reply 'good' to send all, or 'good except [numbers]'." Then the doc's numbered lines with the same numbers, one per line, shortened as each skill says (no Cust IDs, no links). Then any closing lines the skill gives (for example the invoice total).
+   - One text if it fits in 1,500 characters. Otherwise split it between numbered lines into texts of at most 1,500 characters, each starting "(1 of 2)", "(2 of 2)" and so on; the first keeps the title line.
+   - Nothing else goes in a list text (no digest questions, no other news).
 
 LOCATION
 Google Drive folder: the Ops folder = the Google Drive folder that directly contains the Google Sheet "Farm Reference" (its Config A1 reads "RF-OPS REFERENCE v1"). Find it by searching Drive for that sheet. There must be exactly one.
