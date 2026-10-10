@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-09, revised 16): share cream (in place of a jar) is handled off the sheet: not invoiced, not counted.
 - v4 (2026-10-09, revised 15): milk goes out in half-gallon jars only.
 - v4 (2026-10-09, revised 14): "(standing order sync)" Changes entries are not changes (lists, read-back risk and sync conflicts ignore them).
 - v4 (2026-10-09, revised 13): cream is a paid add-on; add-ons can be standing orders.
@@ -87,7 +88,7 @@ Column name | Product | Variant | Unit | Price | Billed through | Active | Squar
 
 TERMS (every text and every doc you write)
 - The "Milk (gal)" column is the customer's WEEKLY SHARE: milk from their herdshare, not something they order or buy. In any text, to customers or family, call it their "weekly share" with its size ("your weekly share (1 gallon)"). Never write "milk order", "buy", "purchase" or a price for it.
-- Only add-on products (yogurt, cream, eggs, butter, cheese, honey, soap, baked goods) are "orders". Cream given in place of a jar of milk is part of that customer's share (see their Delivery notes).
+- Only add-on products (yogurt, cream, eggs, butter, cheese, honey, soap, baked goods) are "orders". Cream given in place of a jar of milk is part of that customer's share (see their Delivery notes). It is handled off the sheet: never put it on a week row, never invoice it, and don't change their Milk (gal) for it.
 - Customers may still text "milk"; that is fine to understand, just don't echo it back as an order.
 - Milk goes out in half-gallon jars only: jars = gallons x 2 (a 1.5 gal share is 3 jars).
 - Active (dropdown): Yes, No.
