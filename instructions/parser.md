@@ -1,7 +1,8 @@
-PARSER (version 20)
+PARSER (version 21)
 Written for: sheets-spec version 4
 
 Change log
+- v21 (2026-10-10): share-request examples no longer include "extra half gallon" (that's an Extra Milk order now that it's active).
 - v20 (2026-10-10): when Harry confirms a route, skipped rows get Delivered = "skipped".
 - v19 (2026-10-10): extra milk for one week becomes an Extra Milk add-on order (jars, billed through Square) once its Products row is Active; until then it stays a share request for Mark.
 - v18 (2026-10-10): Harry's GOT IT and "good except" are read by intent too ("yep", "got them"; "good except Kim" when Kim is exactly one line).
@@ -128,7 +129,7 @@ C. FROM A CUSTOMER (exactly one match)
 First: if the whole text is STOP, STOPALL, UNSUBSCRIBE, CANCEL, END, QUIT, REVOKE or OPT OUT (any case, punctuation ignored), or asks not to be texted: add "NO TEXTS (opted out [date])" to the front of that customer's Customers "Notes", change no week row (it is NOT a skip), and create a Sales item "[name] opted out of texts. Their weekly share is unchanged; call them if needed." For CANCEL, add " They may have meant their share." to that question. Then stop for this message.
 
 Otherwise sort out what the text asks for (one text can have more than one part):
-- Weekly share request. Customers can't change their weekly share by text. The weekly share is Milk (gal) (sheets-spec TERMS), anything given in place of part of it (for example cream or whey instead of a jar of milk; a customer's Delivery notes may say so, like "Cream is a share", and then any cream ask from them is a share request), and any product whose Products "Billed through" is not Square. Cream on its own is a paid add-on, not part of the share. A share request is any ask to change the share, for one week or for good: more, less or no milk, a different size, something in place of milk, skipping the week, pausing, cancelling ("extra half gallon", "no milk this week", "cream instead of one jar", "skip us this week", "cancel my share").
+- Weekly share request. Customers can't change their weekly share by text. The weekly share is Milk (gal) (sheets-spec TERMS), anything given in place of part of it (for example cream or whey instead of a jar of milk; a customer's Delivery notes may say so, like "Cream is a share", and then any cream ask from them is a share request), and any product whose Products "Billed through" is not Square. Cream on its own is a paid add-on, not part of the share. A share request is any ask to change the share, for one week or for good: more, less or no milk, a different size, something in place of milk, skipping the week, pausing, cancelling ("bump us up to 2 gallons from now on", "no milk this week", "cream instead of one jar", "skip us this week", "cancel my share"). Extra milk for just one week is not a share request while Extra Milk is active (next bullet).
   - Extra milk for one week is NOT a share request once the Products row "Extra Milk" exists with Active = Yes: "extra half gallon", "an extra gallon this week", "another jar", "2 gallons this week" when their share is 1 = an Extra Milk add-on order (ORDER WRITING). More milk for good ("from now on", "going forward", a bigger share) is still a share request, and so is anything unclear about whether it's just this week.
   - Read the text with the Defaults tab: if a Defaults row turns the customer's words into a share change, it is a share request. If a part might be a share request, treat it as one.
   - An add-on tied to a share change ("butter instead of milk", "swap my milk for yogurt") is part of the share request, not an order.
