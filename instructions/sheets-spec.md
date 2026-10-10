@@ -92,7 +92,7 @@ TERMS (every text and every doc you write)
 - Customers may still text "milk"; that is fine to understand, just don't echo it back as an order.
 - Milk goes out in half-gallon jars only: jars = gallons x 2 (a 1.5 gal share is 3 jars).
 - Active (dropdown): Yes, No.
-- Text name: how the product reads in a text to a customer, singular (for example "maple yogurt", "dozen eggs", "butter"). Blank = use Column name in lower case.
+- Text name: how the product reads in a text to a customer, singular (for example "vanilla maple yogurt", "dozen eggs", "butter"). Blank = use Column name in lower case.
 - A blank Price means billing must not invoice that product; it goes to Mark instead.
 
 TAB: Routes (header in row 1)

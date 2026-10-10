@@ -1,7 +1,8 @@
-PARSER (version 14)
+PARSER (version 15)
 Written for: sheets-spec version 4
 
 Change log
+- v15 (2026-10-09): yogurt with no flavor = Yogurt VM (vanilla maple), no longer a question for Mark.
 - v14 (2026-10-09): cream is a paid add-on (Products: Billed through Square), so "can I get cream" is an order with the 1-unit default; only cream or whey in place of milk is a share request.
 - v13 (2026-10-09): a reaction to any part of a list text (or its resend) counts as approval.
 - v12 (2026-10-09): section S: a screenshot of a customer's text conversation sent by Mark, Laura or Shane is read and processed as that customer's order (share changes applied, read-back goes to Mark's list first). Customer pictures are never opened.
@@ -194,7 +195,7 @@ ORDER WRITING (used by every section above)
 =====================================================
 Rule checks. All must pass, or create a Clarify item with a proposed question instead:
 1. Customer: exactly one match.
-2. Every item maps to exactly one Products "Column name" (Active = Yes). Use the Defaults tab (All, or this Cust ID) for vague words. "Yogurt" with several yogurt products and no flavor = fails.
+2. Every item maps to exactly one Products "Column name" (Active = Yes). Use the Defaults tab (All, or this Cust ID) for vague words. Yogurt with no flavor = Yogurt VM (vanilla maple; Mark's rule, Oct 9), unless a Defaults row says otherwise; "maple" or "vanilla maple" = Yogurt VM, "plain" = Yogurt Plain.
 3. Every amount is explicit, set by a Defaults row, or set by a built-in default below. A number or amount in the text always wins. A Defaults row for the phrase wins over a built-in default.
    - Eggs: "eggs" (plural) with no number or amount ("can I get eggs", "add eggs this week") = 1 of the eggs product, which is 1 dozen. ("2 dozen eggs", "half dozen eggs" are amounts and win.)
    - Dairy add-ons: an add-on (Products "Billed through" = Square) made from milk, such as yogurt, cream, butter or cheese, with no number or only a vague amount ("can I get butter", "can I get cream", "some yogurt", "a little more cheese") = 1 of that product, which is one of its Products "Unit". ("3 butters", "2 pounds of butter" are amounts and win.) Never milk (the weekly share) or anything given in place of it: those have no built-in default.
@@ -213,7 +214,7 @@ Read-back flag: after writing, set the row's "Confirm needed" = now when the cha
 
 Writing: set each QUANTITY cell to the new total for the week (for "instead", the stated amount; for "in addition", current + stated). Append to Changes: "[date-time] [Column name] [old]>[new] ([source])", where source is "text", "Mark", "Laura", "Mark (by hand)", or "[sender] (screenshot)".
 
-Clarify items: Type Clarify, Created, Week, Cust ID, Customer, Original message, Question = a short question Mark can answer in a few words, offering the likely choices with the MOST likely first ("Nate: '2 yogurt'. Plain or Maple?"). If nobody answers before the delivery list locks, the first choice is packed as a marked guess. When a Clarify item could change a weekly share, its first choice is always "no change", so a guess never changes a share., Status = Waiting. Sales and Driver items: same columns, Status = Waiting. Never set Digest #; the digest does that.
+Clarify items: Type Clarify, Created, Week, Cust ID, Customer, Original message, Question = a short question Mark can answer in a few words, offering the likely choices with the MOST likely first ("Nate: 'honey'. Bear, pint or quart?"). If nobody answers before the delivery list locks, the first choice is packed as a marked guess. When a Clarify item could change a weekly share, its first choice is always "no change", so a guess never changes a share., Status = Waiting. Sales and Driver items: same columns, Status = Waiting. Never set Digest #; the digest does that.
 
 =====================================================
 STEP 3. FINISH

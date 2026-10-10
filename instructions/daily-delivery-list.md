@@ -66,7 +66,7 @@ Changes approved after the list went out (Mark said "add it" to a Late order) mu
 1. Delivery day = today. New exceptions = today's customer rows with a Changes entry containing "after lock" that is later than today's "Exceptions sent" (all of them if it's blank).
 2. Text Mark, Laura and Harry one message:
    "Changes to today's ([Day]) delivery list:
-   - [Name], stop [#]: [what changed, e.g. +2 Yogurt Maple]
+   - [Name], stop [#]: [what changed, e.g. +2 Yogurt VM]
    Harry, reply GOT IT when you have these."
 3. Append the same lines to the day's delivery list doc under a heading "ADDED AFTER LIST WENT OUT".
 4. Create a Queue item: Type Driver, Week, Question = "Got today's added items? ([names]) Reply GOT IT", Status = Waiting. (delivery-check sends and re-asks it; the parser records Harry's answer.)
