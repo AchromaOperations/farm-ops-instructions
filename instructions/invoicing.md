@@ -1,7 +1,8 @@
-INVOICING (version 6)
+INVOICING (version 7)
 Written for: sheets-spec version 4
 
 Change log
+- v7 (2026-10-10): Extra Milk is priced by share: full share (1 gal or more) at the Products price, half share at Config "Extra milk price, half share".
 - v6 (2026-10-09): the invoice list goes to Mark as text (sheets-spec rule 10), not a doc link.
 - v5 (2026-10-09): the invoice list waits only on sheets-spec rule 9 (a reminder still waiting for wording no longer holds it), and yields to a reminder preview that is about to go out.
 - v4 (2026-10-08): weekly share wording.
@@ -25,7 +26,8 @@ For each day row in LAST or THIS week with "Route confirmed" filled and "Invoice
    - Any line whose product has a blank Price: do not draft this customer. Create a Clarify item "Invoice for [name] held: no price set for [product]." Put "Invoice held: no price for [product]" in Needs attention. Next customer.
    - No email on the Customers tab: do not draft. Put "Invoice held: no email" in Needs attention (if not already there) and create a Clarify item "No email for [name], so their invoice ($[total]) is held. Text me their email." Next customer.
    - Find the customer in Square by email, then by phone. If not found, create the Square customer with name, email and phone.
-   - Create a DRAFT Square invoice (do not publish or send it) with the lines at the current Products prices.
+   - Extra Milk is priced by the customer's share (their Customers "Milk (gal)"): 1 gallon or more = the Products Price for Extra Milk; less than 1 gallon (a half share) = Config "Extra milk price, half share". If that Config value is missing or blank and this customer has a half share, hold this customer the same way as a blank Price.
+   - Create a DRAFT Square invoice (do not publish or send it) with the lines at the current Products prices (Extra Milk as above, per half-gallon jar).
    - Fill "Invoice link" with the Square invoice link.
 3. Make (or, if it already exists, rebuild) the Google Doc "Invoices [Ddd Mon D YYYY]" in Invoice Lists. Large plain text, no colors:
    "Invoices for [Day, date]. Reply 'good' to send all, or 'good except [numbers]'."
