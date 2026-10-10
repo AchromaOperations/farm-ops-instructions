@@ -1,7 +1,8 @@
-PARSER (version 17)
+PARSER (version 18)
 Written for: sheets-spec version 4
 
 Change log
+- v18 (2026-10-10): Harry's GOT IT and "good except" are read by intent too ("yep", "got them"; "good except Kim" when Kim is exactly one line).
 - v17 (2026-10-10): Queue questions quote the customer's whole message, never cut short with "...".
 - v16 (2026-10-10): approvals are read by intent, not exact words ("Good send all", "looks good", "go ahead" all count); a message that also asks, adds or holds something back still isn't one. Shane's decision, Oct 10.
 - v15 (2026-10-09): yogurt with no flavor = Yogurt VM (vanilla maple), no longer a question for Mark.
@@ -62,7 +63,7 @@ Otherwise check in this order; use the first that fits.
 
 A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers.
 - Approval = a message whose only point is to OK the open list, in any wording ("good", "yes", "ok", "approved", "send", "Good send all", "looks good", "yes please", "go ahead", "send them", a thumbs-up), or a thumbs-up or "Liked" reaction to any of that list's texts (any part of it, or a follow-up that resent it). Approve every item on that list. NOT approval: a message that also asks something, adds information or holds something back ("good, did Kim pay?", "send me the list again", "looks good but wait on Kim"); "thanks" on its own; anything you are unsure about.
-- "good except 14" (or several numbers, and nothing else after "except") = approve all except those numbers. "good except Kim" or any other non-number = Clarify item, approve nothing.
+- An approval that holds some lines back ("good except 14", "send all but 3 and 7", "good except Kim") = approve all except those. A name counts as a line only if it matches exactly one line on that list. If any held-back line can't be matched to exactly one number, or anything else is added, create a Clarify item and approve nothing.
 - If a digest question (Clarify, Sales, Late order or Other) also has Status Sent, a bare OK ("good", "yes", "ok", a thumbs-up message) could be for either: create a Clarify item "Not sure if '[text]' was for the [invoices / read-backs] or a question. Reply 'good' again for the list, or answer the question with its number." and approve nothing. Clear: wording that names the list or sending it ("send all", "send the invoices", "read-backs look good"), or a reaction to one of the list's own texts. Those approve the list.
 - Invoice list: approve = fill "Invoice approved" on each approved customer's row (date-time + who). For each excepted number, create a Clarify item: "Invoice 14 ([customer]) held: what should change?"
 - Read-back list: approve = fill "Read-back approved" (date-time + who) on each approved row. For each excepted number, create a Clarify item: "Read-back 3 ([customer]) held: what's wrong with it?"
@@ -109,7 +110,7 @@ B. FROM HARRY
 -----------------------------------------------------
 "Open day" = among day rows (LAST or THIS week) with "Delivery list sent" filled, "Route confirmed" blank, AND (the day is before today, OR the day is today and now is at or after Config "Route check start"): the one Harry was asked about most recently ("Harry last asked"). If none has been asked yet, the earliest one. If Harry names a day ("Monday's done"), use that day.
 Check the first bullet before the others:
-- While a Driver item asking "Got today's added items?" has Status Sent: "GOT IT", "got it", "yes", "ok" answers only that item: Answer, Status Resolved. It never confirms a route.
+- While a Driver item asking "Got today's added items?" has Status Sent: any acknowledgement in any wording ("GOT IT", "got them", "yep", "ok", a thumbs-up) answers only that item: Answer, Status Resolved. It never confirms a route.
 - Reminder: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval (as in A1) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
 - If there is no open day, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
 - Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all".
