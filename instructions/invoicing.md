@@ -1,7 +1,8 @@
-INVOICING (version 7)
+INVOICING (version 8)
 Written for: sheets-spec version 4
 
 Change log
+- v8 (2026-10-10): the invoice list goes to the family group (sheets-spec rule 11).
 - v7 (2026-10-10): Extra Milk is priced by share: full share (1 gal or more) at the Products price, half share at Config "Extra milk price, half share".
 - v6 (2026-10-09): the invoice list goes to Mark as text (sheets-spec rule 10), not a doc link.
 - v5 (2026-10-09): the invoice list waits only on sheets-spec rule 9 (a reminder still waiting for wording no longer holds it), and yields to a reminder preview that is about to go out.
@@ -45,8 +46,8 @@ Only if ALL of these are true:
 - no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), AND
 - NEXT week's reminder preview is not about to go out (sheets-spec WEEK NAMES): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
 Then take the oldest Invoice item with Status Waiting:
-- Text Mark the list as sheets-spec rule 10 says. Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links). Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])".
-- Status = Sent, Sent to = Mark, First sent = now.
+- Text the family group the list as sheets-spec rules 10 and 11 say. Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links). Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])".
+- Status = Sent, Sent to = Group, First sent = now.
 (Nudges and Laura are handled by owner-digest.)
 
 PART C. SEND APPROVED INVOICES

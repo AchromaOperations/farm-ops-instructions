@@ -1,12 +1,13 @@
-DELIVERY CHECK (version 1)
+DELIVERY CHECK (version 2)
 Written for: sheets-spec version 4
 
 Change log
+- v2 (2026-10-10): Mark's alert goes to the family group (sheets-spec rule 11).
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v1 (2026-10-07): first version.
 
 HOW TO WORK
-A checklist. No judgment: the parser reads Harry's replies; this step only asks. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Only text Harry and Mark.
+A checklist. No judgment: the parser reads Harry's replies; this step only asks. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Only text Harry and the family group (Mark and Laura, sheets-spec rule 11).
 
 Open days = day rows in LAST or THIS week with "Delivery list sent" filled, "Route confirmed" blank, and (the day is before today, or it is today and now is at or after "Route check start").
 Last hour = the hour before Config "Quiet hours start" (20:00 when quiet hours start at 21:00).
@@ -24,7 +25,7 @@ For the open days whose "Harry last asked" is blank or at least 55 minutes ago:
 
 STEP 3. TELL MARK
 For each open day whose "Mark alerted" is blank, where the day is before today, OR it is today and this run is in the Last hour:
-- Text Mark: "Haven't heard from Harry about [Day]'s route. Asked [count] times."
+- Text the family group: "Haven't heard from Harry about [Day]'s route. Asked [count] times."
 - Fill "Mark alerted" = now.
 
 FINISH

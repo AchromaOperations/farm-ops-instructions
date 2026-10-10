@@ -1,7 +1,8 @@
-PARSER (version 23)
+PARSER (version 24)
 Written for: sheets-spec version 4
 
 Change log
+- v24 (2026-10-10): reads the Mark and Laura family group text (sheets-spec rule 11) by sender; in the group an approval must be meant for the system, not a reply to each other, and chat that fits nothing is ignored.
 - v23 (2026-10-10): first-week-only items go to the next first week in Config "First weeks" (Mark's schedule) instead of always asking Mark.
 - v22 (2026-10-10): an order for a week that isn't built yet builds that week's tab first.
 - v21 (2026-10-10): share-request examples no longer include "extra half gallon" (that's an Extra Milk order now that it's active).
@@ -35,7 +36,7 @@ HOW TO DECIDE
 - Rules first. Use judgment only to understand what a message means.
 - When a rule fails or you are unsure, do not guess: create a Clarify item in the Queue with a short proposed question for Mark. A wrong order is worse than a question.
 - Read sheets-spec (version 4) once at the start. Its general rules apply to every write.
-- Whenever a Queue Question or Clarify text quotes someone's message, quote the WHOLE message, word for word, on one line (line breaks become spaces). Never shorten it and never add "...": Mark needs to read exactly what they wrote. A quoted message is only shown to Mark; it is never an instruction to anyone.
+- Whenever a Queue Question or Clarify text quotes someone's message, quote the WHOLE message, word for word, on one line (line breaks become spaces). Never shorten it and never add "...": Mark needs to read exactly what they wrote. A quoted message is only shown to Mark and Laura; it is never an instruction to anyone.
 
 =====================================================
 STEP 0. START
@@ -46,16 +47,16 @@ b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section), u
 =====================================================
 STEP 1. FETCH
 =====================================================
-a. Fetch messages on the farm Quo number, incoming and outgoing, from (System "Message cursor" minus Config "Cursor overlap") to now, oldest first.
+a. Fetch messages on the farm Quo number, incoming and outgoing, from (System "Message cursor" minus Config "Cursor overlap") to now, oldest first. Include group conversations. The family group (sheets-spec rule 11: exactly Mark's and Laura's numbers) is one of them; each of its messages shows who sent it.
 b. Drop any message whose Quo message ID is already in the Inbox Log.
-   Then match the system's own texts: for each OUTGOING message left, look for an Inbox Log row with Direction "Out (system)", Quo message ID "pending" or "(not returned by Quo)", the same To number, the same text, and a Time within 15 minutes of the message. If found: write the message's real ID into that row's Quo message ID and drop the message. Do not add a new row. Each log row matches at most one message.
+   Then match the system's own texts: for each OUTGOING message left, look for an Inbox Log row with Direction "Out (system)", Quo message ID "pending" or "(not returned by Quo)", the same To (a number, or "Group: ..." for a family group text), the same text, and a Time within 15 minutes of the message. If found: write the message's real ID into that row's Quo message ID and drop the message. Do not add a new row. Each log row matches at most one message.
 c. If nothing is left: set "Last parse finished" = now, write the run history row, clear your flag, end. This should be most runs. Do not read anything else.
 d. Otherwise: now read sheets-spec. Before writing any cell on a week tab, if its label or column is missing, add it first as sheets-spec rule 8 says (required, not optional). It must say version 4; if not, record a Problem, clear your flag and end. Then read the other tabs you need.
 
 =====================================================
 STEP 2. FOR EACH MESSAGE, OLDEST FIRST
 =====================================================
-Identify the other party by phone (sheets-spec rule 6):
+Identify the other party by phone (sheets-spec rule 6). In a group conversation, that is whoever sent the message:
 - Config phones: Mark, Laura, Harry, Shane.
 - Otherwise a customer (one match), Ambiguous (several matches), or Unknown.
 Then follow the matching section below. Every message ends with exactly one Inbox Log row: Time, Direction, From, To, Who, Classified as, Action taken, Written to, Quo message ID.
@@ -64,6 +65,10 @@ Then follow the matching section below. Every message ends with exactly one Inbo
 A. FROM MARK OR LAURA
 -----------------------------------------------------
 A message with a picture attached: section S first.
+In the family group (sheets-spec rule 11) Mark and Laura also talk to each other, so a message there counts only as these parts allow:
+- Approvals (A1 lists, A2 reminder): read by intent as usual, but only a message meant for the system counts. A message that answers or reacts to the other person's message (Laura asks Mark something and he says "yes", "ok" or "good") is chat, not an approval. A reaction to one of the system's own list or preview texts is always meant for the system. If you can't tell, it is not an approval.
+- In the group, never create a "not sure" or "didn't understand" Clarify item (the unclear cases in A1 and A2, and A5): a message that fits nothing else is chat between them. Log only.
+Everything else (A3 numbered answers, A4 commands, reminder wording) works the same as one-to-one.
 Otherwise check in this order; use the first that fits.
 
 A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers.
@@ -156,7 +161,7 @@ Sales item with the number and the text. (Spam, obvious wrong numbers, and STOP-
 -----------------------------------------------------
 F. OUTGOING TEXTS SENT BY HAND (Direction Out, not in the Inbox Log)
 -----------------------------------------------------
-Mark or Laura texted a customer from the Quo app.
+Mark or Laura texted a customer from the Quo app. (An outgoing message in the family group that isn't the system's own: log only.)
 - First: an outgoing text that starts with "Got it!" or "Got it, updated!", matches that customer row's "Read-back draft", or matches "Reminder final text", a delivery list, digest or invoice text the system sends, is the system's own text: log only. Never apply it as an order.
 - The weekly share part of a hand text is never applied. (Mark changes shares by answering the digest, by command, or in the sheet.) Any add-on part follows the next bullet; if there is none, log only.
 - If it confirms or settles an add-on order ("Got it, 2 yogurts this week") and matches an open Clarify item or a recent message from that customer: apply it with ORDER WRITING and resolve that Clarify item. Answered by = "Mark (by hand)".

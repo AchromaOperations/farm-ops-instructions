@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-10, revised 22): rule 11: texts for Mark and Laura go to one family group text; Laura after is retired; Nudge after now only paces Shane on the reminder.
 - v4 (2026-10-10, revised 21): Config "First weeks" lists which delivery weeks carry first-week-only products.
 - v4 (2026-10-10, revised 20): week tabs are built a few weeks ahead (Config "Weeks built ahead", default 4; BUILDING A WEEK TAB) instead of 15 months; Day, Route and Stop # are refreshed from Customers before each delivery list.
 - v4 (2026-10-10, revised 19): Extra Milk has two rates: Products price for full shares (1 gal or more), Config "Extra milk price, half share" for half shares.
@@ -50,16 +51,18 @@ GENERAL RULES (apply to every skill)
 
 6. Inbound texts are matched to customers by phone: compare the sender's number to both Phone and Phone 2 of every Active or Test customer. Exactly one match = that customer. No match = Unknown. More than one match = never guess; it becomes a Clarify item.
 
-7. Every text a skill sends is logged in the Inbox Log right after sending, with Direction "Out (system)", To = the number, the exact text in Action taken, and Quo message ID = "pending" (Quo's send tools do not return an ID). The parser later finds that message in Quo and writes its real ID into the same row. This is how the parser knows which outbound texts were the system's own.
+7. Every text a skill sends is logged in the Inbox Log right after sending, with Direction "Out (system)", To = the number, the exact text in Action taken, and Quo message ID = "pending" (Quo's send tools do not return an ID). The parser later finds that message in Quo and writes its real ID into the same row. This is how the parser knows which outbound texts were the system's own. A text to the family group (rule 11) is logged once, with To = "Group: [Mark's phone], [Laura's phone]".
 
 8. Missing labels: if a label or column this spec lists is missing from a tab (for example a week tab built under an older version), add it: a header-block label goes in a new row just above the day table; a column goes at the end of that header row. Never remove or rename existing labels or columns.
 
 9. One approval at a time. An approval is OPEN when (a) a Queue item of Type Invoice or Read-back has Status Sent, or (b) NEXT week's "Reminder preview sent" is filled and "Reminder approved" is blank. While an approval is open, no skill sends Mark or Laura a new approval request (reminder preview, read-back list, invoice list). When more than one is ready, the order is: reminder preview first, then read-back list, then invoice list. This is what lets a plain "good" or "yes" mean exactly one thing. Approvals are read by intent, not exact words (parser A1); this rule is what keeps that safe.
 
-10. List texts. An approval list (read-backs, invoices) goes to Mark as the list itself in the text, never as a link (Mark can't easily open docs on his phone). The list doc is still made: it is the record, and the parser reads the numbers from it.
+10. List texts. An approval list (read-backs, invoices) goes to the family group (rule 11) as the list itself in the text, never as a link (Mark can't easily open docs on his phone). The list doc is still made: it is the record, and the parser reads the numbers from it.
    - First line: the title and "Reply 'good' to send all, or 'good except [numbers]'." Then the doc's numbered lines with the same numbers, one per line, shortened as each skill says (no Cust IDs, no links). Then any closing lines the skill gives (for example the invoice total).
    - One text if it fits in 1,500 characters. Otherwise split it between numbered lines into texts of at most 1,500 characters, each starting "(1 of 2)", "(2 of 2)" and so on; the first keeps the title line.
    - Nothing else goes in a list text (no digest questions, no other news).
+
+11. Family group text. Everything the system sends to Mark and/or Laura goes as ONE group text to the two of them together (Config "Owner (Mark) phone" and "Backup (Laura) phone"), using Quo's group message, never as separate one-to-one texts. Either of them may answer. No one else is ever added to this group. When the same text also goes to Harry or Shane, they each get their own one-to-one copy. If one of the two Config phones is blank, text the other one-to-one instead (a group needs both). In this group Mark and Laura can also talk to each other, so the parser is stricter there (parser section A).
 
 LOCATION
 Google Drive folder: the Ops folder = the Google Drive folder that directly contains the Google Sheet "Farm Reference" (its Config A1 reads "RF-OPS REFERENCE v1"). Find it by searching Drive for that sheet. There must be exactly one.
@@ -128,8 +131,8 @@ Settings and starting values:
 - Weeks built ahead: 4   (how many weeks after THIS week the operator keeps built. Missing or blank = 4.)
 - Extra milk price, half share: 7   (per half-gallon jar of Extra Milk for customers whose Milk (gal) is under 1; full shares pay the Products price)
 - Daily follow-up time: 08:00   (the once-a-day text about Sales items Mark answered but didn't close. Missing or blank = 08:00.)
-- Nudge after (hours): 3   (reminder only: when Laura is first asked for the wording, and how often Laura and Shane hear again)
-- Laura after (hours): 6   (when Laura gets a copy of Mark's open questions and list approvals)
+- Nudge after (hours): 3   (reminder only: how often Shane hears again about an unapproved preview)
+- Laura after (hours): 6   (no longer used: Laura is in the family group, rule 11)
 - Bulk send batch size: 40
 - Stale run after (minutes): 50
 - Parser late after (minutes): 90
@@ -152,7 +155,7 @@ Q# | Type | Created | Week | Cust ID | Customer | Original message | Question | 
   Read-back items hold the link to a read-back approval list in Question.
   Driver items are questions for Harry (sent by delivery-check, not the digest). Invoice items hold the link to that day's invoice list doc in Question.
 - Digest # (TRACKER): the number Mark sees in the current digest (1, 2, 3). Cleared when the item is Resolved. Never two items that aren't Resolved with the same Digest #.
-- Status (dropdown): Waiting, Sent, Answered, Resolved.   (Waiting = not yet sent to anyone. Answered = a Sales item Mark answered without sale / no sale / resolved; owner-digest follows these up once a day.)
+- Status (dropdown): Waiting, Sent, Answered, Resolved.   (Waiting = not yet sent to anyone. Answered = a Sales item Mark or Laura answered without sale / no sale / resolved; owner-digest follows these up once a day.) Sent to: "Group" for the family group (rule 11), or a name.
 - Outcome (dropdown, Sales only): Sale, No sale, Resolved.
 
 TAB: Inbox Log (header in row 1). One row per text the parser handled, in and out.

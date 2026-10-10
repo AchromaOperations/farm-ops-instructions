@@ -1,7 +1,8 @@
-SEND REMINDER (version 8)
+SEND REMINDER (version 9)
 Written for: sheets-spec version 4
 
 Change log
+- v9 (2026-10-10): Mark and Laura get every reminder text as one family group text (sheets-spec rule 11), followed up hourly; Shane stays one-to-one every Nudge after hours; Laura's separate wording ask is gone.
 - v8 (2026-10-09): Mark is followed up at every hourly run while the wording or his YES is missing; Laura and Shane stay at every Nudge after hours (new label "Reminder others last asked"); Laura is first asked Nudge after hours after the request.
 - v7 (2026-10-08): preview goes to Mark, Laura, Harry and Shane; the parser needs two different approvals (never mention this in any text).
 - v6 (2026-10-08): one text per phone number (shared numbers); NO TEXTS customers skipped; late approval moves the reply-by time.
@@ -16,20 +17,19 @@ HOW TO WORK
 A checklist. Every stage is decided by cells in the header block of NEXT week's tab (sheets-spec WEEK NAMES; on Fri Oct 9 2026 that is Week 1). Do exactly ONE stage per run: the first one whose condition is true, then finish. The only judgment is the wording check in Stage C.
 
 Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Times in texts are friendly ("Sat Oct 10, 6pm").
-"Follow-up every" = Config "Follow-up every (minutes)"; missing or blank = 55 (Mark hears again at every hourly run).
-"Nudge after" = Config "Nudge after (hours)" (how often Laura and Shane hear again, and when Laura is first asked).
-Never tell anyone how many approvals are needed or who else has approved. No text may mention it.
+"Follow-up every" = Config "Follow-up every (minutes)"; missing or blank = 55 (the family group hears again at every hourly run).
+"Nudge after" = Config "Nudge after (hours)" (how often Shane hears again).
+"Family group" = one group text to Mark and Laura together (sheets-spec rule 11).
+Never tell anyone how many approvals are needed or who else has approved. No text may mention it. (Mark and Laura will see each other's replies in the family group; that's fine, just never say it.)
 
 STAGE A. ASK FOR WORDING
 Condition: "Reminder requested" is blank.
-- Text Mark: "Good morning! Please text back this week's reminder for customers (deliveries Mon [date] to Fri [date]). I'll send you a preview before anything goes out."
+- Text the family group: "Good morning! Please text back this week's reminder for customers (deliveries Mon [date] to Fri [date]). I'll send you a preview before anything goes out."
 - Fill "Reminder requested" and "Reminder last asked" = now. Finish.
 
 STAGE B. WAITING FOR WORDING
 Condition: "Reminder wording received" is blank.
-- Mark: if "Reminder last asked" is at least Follow-up every minutes ago: text Mark "Still need this week's customer reminder wording when you get a chance." Set "Reminder last asked" = now.
-- Laura: if "Reminder asked Laura" is blank and "Reminder requested" is at least Nudge after hours ago (3 hours: a 9am request reaches Laura at the noon run): text Laura "Hi Laura, Mark hasn't sent this week's customer reminder yet. Could either of you text it back?" Fill "Reminder asked Laura" and "Reminder others last asked" = now.
-  Else if "Reminder asked Laura" is filled and the later of "Reminder others last asked" and "Reminder asked Laura" is at least Nudge after hours ago: text Laura "Still need this week's customer reminder wording when you get a chance." Set "Reminder others last asked" = now.
+- If "Reminder last asked" is at least Follow-up every minutes ago: text the family group "Still need this week's customer reminder wording when you get a chance." Set "Reminder last asked" = now.
 - Finish.
 
 STAGE C. CHECK AND PREVIEW
@@ -41,11 +41,11 @@ Condition: "Reminder wording" is filled, AND "Reminder approved" is blank, AND (
    - longer than 300 characters (before the cutoff line is added)
    - reads like a personal reply ("ok sounds good", "call me") rather than a message to customers
    - doesn't make sense as a reminder to order, or is wildly unlike past reminders (past "Reminder final text" values in earlier week tabs, if any)
-   If it fails: text whoever sent the wording (Mark or Laura): "This week's reminder didn't look right: [one-line reason]. Can you send it again?" Set "Reminder check failed" = now. Finish.
+   If it fails: text the family group: "This week's reminder didn't look right: [one-line reason]. Can you send it again?" Set "Reminder check failed" = now. Finish.
 2. Format it: Mark's wording with spelling mistakes fixed (change nothing else), then a new line: "Reply with any changes for this week by [asked-for cutoff, e.g. Sat Oct 10, 6pm]." No prefix. If the asked-for cutoff is less than 6 hours from now, use "Sun [date], 2pm" instead.
 3. Set "Reminder final text" to exactly that.
-4. Send the final text, exactly as customers will get it, to Mark, Laura, Harry and Shane (Config phones, one text each).
-5. Then send each of them a second text:
+4. Send the final text, exactly as customers will get it, to the family group, and one-to-one to Harry and to Shane.
+5. Then send the family group, Harry and Shane a second text:
    "That's the preview. Reply YES to send it to [N] customers[ if Mode is not LIVE: ' (TEST mode: only the test phones will get it)']. Or text changes."
    If you fixed spelling, add: "Fixed: [wrong] > [right], [wrong] > [right]."
    N = customer rows on next week's tab with a Phone.
@@ -53,9 +53,9 @@ Condition: "Reminder wording" is filled, AND "Reminder approved" is blank, AND (
 
 STAGE D. WAITING FOR APPROVAL
 Condition: "Reminder preview sent" is filled and "Reminder approved" is blank.
-Follow-up text: "The customer reminder is still waiting for your YES (preview sent [time])." Never to Harry.
-- Mark: if Mark is NOT in "Reminder approvals" and "Reminder last asked" is at least Follow-up every minutes ago: text Mark the follow-up. Set "Reminder last asked" = now.
-- Laura and Shane: if the later of "Reminder others last asked" and "Reminder preview sent" is at least Nudge after hours ago: text each of Laura and Shane who is NOT in "Reminder approvals" the follow-up. Set "Reminder others last asked" = now.
+Follow-up text: "The customer reminder (preview sent [time]) hasn't gone out yet. Reply YES if it looks good." Never to Harry.
+- Family group: if "Reminder last asked" is at least Follow-up every minutes ago: text the family group the follow-up. Set "Reminder last asked" = now.
+- Shane: if Shane is NOT in "Reminder approvals" and the later of "Reminder others last asked" and "Reminder preview sent" is at least Nudge after hours ago: text Shane the follow-up. Set "Reminder others last asked" = now.
 - Finish.
 
 STAGE E. SEND
@@ -73,7 +73,7 @@ If Mode is LIVE:
 3. Send "Reminder final text" in batches of Config "Bulk send batch size" (individual texts, never a group text). Right after EACH batch, before the next one: fill "Reminder sent" = now on every row in that batch, and log the sends in the Inbox Log.
 4. If a send or a sheet write fails: stop sending, add a Problem saying how far it got, and finish. The next run continues from the blank rows (and the duplicate guard catches anything sent but not stamped).
 5. When no blank rows with a phone remain: fill "Reminder sent" (header) = now and "Reminder sent count" = "[sent]/[total rows]" plus ", [n] no phone" if any.
-6. Text Mark: "Reminder sent to [sent] customers.[ No phone: names.]" Finish.
+6. Text the family group: "Reminder sent to [sent] customers.[ No phone: names.]" Finish.
 
 FINISH
 Report to the operator: which stage ran and how many texts were sent.

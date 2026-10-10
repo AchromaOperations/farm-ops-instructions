@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 9)
+DAILY DELIVERY LIST (version 10)
 Written for: sheets-spec version 4
 
 Change log
+- v10 (2026-10-10): Mark and Laura get the list texts as one family group text; Harry still gets his own.
 - v9 (2026-10-10): Day, Route and Stop # are refreshed from Customers on unlocked rows before the list is built; a blank Stop # is flagged "!".
 - v8 (2026-10-10): skipped stops stay on the route in their place, flagged SKIP, and are listed in a box at the top (with no-milk stops); the text says how many are skipping; a skip added after lock reads "SKIP, no delivery today".
 - v7 (2026-10-10): Extra Milk jars are packed with the share jars and shown as "+ N extra" at the stop.
@@ -62,7 +63,7 @@ PENDING (not packed)
 Open Late order items for this day: customer and what they asked for. "Mark hasn't decided; don't pack unless he says so."
 
 STEP 5. SEND
-- Text Mark, Laura and Harry: "[Day]'s delivery list is ready: [link]. [n] stops to deliver, [routes]. [s] skipping (boxed at the top). [g] guesses marked. Shares and orders for [Day] are now locked."
+- Text the family group (sheets-spec rule 11) and Harry (one-to-one) the same text: "[Day]'s delivery list is ready: [link]. [n] stops to deliver, [routes]. [s] skipping (boxed at the top). [g] guesses marked. Shares and orders for [Day] are now locked."
 - Log each text in the Inbox Log (Out (system)).
 - Fill that day's "Delivery list sent" = now.
 
@@ -74,7 +75,7 @@ MORNING EXCEPTIONS (run only this part when the operator says so)
 =====================================================
 Changes approved after the list went out (Mark said "add it" to a Late order) must reach Harry before he leaves.
 1. Delivery day = today. New exceptions = today's customer rows with a Changes entry containing "after lock" that is later than today's "Exceptions sent" (all of them if it's blank).
-2. Text Mark, Laura and Harry one message:
+2. Text the family group and Harry (one-to-one) the same message:
    "Changes to today's ([Day]) delivery list:
    - [Name], stop [#]: [what changed, e.g. +2 Yogurt VM; if their whole order is now 0: SKIP, no delivery today]
    Harry, reply GOT IT when you have these."
