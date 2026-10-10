@@ -1,7 +1,8 @@
-PARSER (version 19)
+PARSER (version 20)
 Written for: sheets-spec version 4
 
 Change log
+- v20 (2026-10-10): when Harry confirms a route, skipped rows get Delivered = "skipped".
 - v19 (2026-10-10): extra milk for one week becomes an Extra Milk add-on order (jars, billed through Square) once its Products row is Active; until then it stays a share request for Mark.
 - v18 (2026-10-10): Harry's GOT IT and "good except" are read by intent too ("yep", "got them"; "good except Kim" when Kim is exactly one line).
 - v17 (2026-10-10): Queue questions quote the customer's whole message, never cut short with "...".
@@ -114,7 +115,7 @@ Check the first bullet before the others:
 - While a Driver item asking "Got today's added items?" has Status Sent: any acknowledgement in any wording ("GOT IT", "got them", "yep", "ok", a thumbs-up) answers only that item: Answer, Status Resolved. It never confirms a route.
 - Reminder: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval (as in A1) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
 - If there is no open day, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
-- Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all".
+- Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all" (on a skipped row, every product 0, write "skipped" instead of the time).
 - "No" to "everything delivered?" = create a Driver item for the open day: "What wasn't delivered, and to whom?"
 - A named miss ("Kim didn't get her yogurt, we ran out") = add to that customer's "Not delivered" (product Column name + amount + reason, e.g. "Yogurt Plain x2 ran out"). If the amount isn't said, use the full amount on the row. If the customer or product can't be matched, create a Driver item asking which.
 - "Not enough [product]" without names = create a Driver item for the open day: "Who didn't get [product]?" Invoicing waits while any Driver item for that day is open.

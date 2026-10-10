@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 7)
+DAILY DELIVERY LIST (version 8)
 Written for: sheets-spec version 4
 
 Change log
+- v8 (2026-10-10): skipped stops stay on the route in their place, flagged SKIP, and are listed in a box at the top (with no-milk stops); the text says how many are skipping; a skip added after lock reads "SKIP, no delivery today".
 - v7 (2026-10-10): Extra Milk jars are packed with the share jars and shown as "+ N extra" at the stop.
 - v6 (2026-10-09): milk is counted in half-gallon jars on the packing list and each stop (Mark: half-gallon jars only).
 - v5 (2026-10-09): "(standing order sync)" Changes entries don't flag a stop as CHANGED or put it on the change list.
@@ -37,13 +38,20 @@ Doc "Delivery list [Ddd Mon D YYYY]" in Delivery Lists. Plain and printable, lar
 
 [Route] - [Day, date] - Driver: [Routes tab Driver]
 
+SKIPS: DO NOT DELIVER (first thing on the route, in a box)
+A skip = a stop whose row has every product at 0 or blank this week, however it got there (the customer asked, Mark or Laura put it in, or someone zeroed it in the sheet by hand). One line each: "Stop [#]: [Name], [Address, City]: SKIP, nothing to deliver this week".
+Under it, "NO MILK THIS WEEK": stops whose Milk (gal) is 0 this week while their Customers Milk (gal) is above 0, but who still get add-ons: "Stop [#]: [Name]: NO MILK, add-ons only".
+Make it impossible to miss on paper: a one-cell table with a thick border and bold text. If you can't make a box, put a full line of ■ symbols above and below it. If there are none, the box says "No skips this week", so the driver knows it was checked.
+
 PACKING LIST
 Product (Column name) | Total for this route
 (every product with a total above 0)
 Milk goes out in half-gallon jars only (sheets-spec TERMS). Write the milk line as jars first: "Milk: [jars] half-gallon jars ([gallons] gal)", where jars = share jars (gallons x 2) plus Extra Milk jars. If any Extra Milk is on the route, add "including [n] extra".
 
 STOPS (in Stop # order)
+Every customer row of the day is listed in its Stop # place, skips included. Never leave a stop off the list.
 Stop # | Name | Address, City | Items (only products above 0, e.g. "share 2 jars + 1 extra, 2 Yogurt VM"; share in half-gallon jars = gallons x 2; Extra Milk is already in jars) | Delivery notes | Flags
+A skip: Items = "SKIP: NO DELIVERY", Flags = "SKIP". No milk with add-ons: Items start with "NO MILK", Flags include "NO MILK".
 Flags: "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text, and "!" if the share isn't a whole number of jars (gallons not a multiple of 0.5; write the gallons as they are). Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
 
 CHANGES THIS WEEK
@@ -53,7 +61,7 @@ PENDING (not packed)
 Open Late order items for this day: customer and what they asked for. "Mark hasn't decided; don't pack unless he says so."
 
 STEP 5. SEND
-- Text Mark, Laura and Harry: "[Day]'s delivery list is ready: [link]. [n] stops, [routes]. [g] guesses marked. Shares and orders for [Day] are now locked."
+- Text Mark, Laura and Harry: "[Day]'s delivery list is ready: [link]. [n] stops to deliver, [routes]. [s] skipping (boxed at the top). [g] guesses marked. Shares and orders for [Day] are now locked."
 - Log each text in the Inbox Log (Out (system)).
 - Fill that day's "Delivery list sent" = now.
 
@@ -67,7 +75,7 @@ Changes approved after the list went out (Mark said "add it" to a Late order) mu
 1. Delivery day = today. New exceptions = today's customer rows with a Changes entry containing "after lock" that is later than today's "Exceptions sent" (all of them if it's blank).
 2. Text Mark, Laura and Harry one message:
    "Changes to today's ([Day]) delivery list:
-   - [Name], stop [#]: [what changed, e.g. +2 Yogurt VM]
+   - [Name], stop [#]: [what changed, e.g. +2 Yogurt VM; if their whole order is now 0: SKIP, no delivery today]
    Harry, reply GOT IT when you have these."
 3. Append the same lines to the day's delivery list doc under a heading "ADDED AFTER LIST WENT OUT".
 4. Create a Queue item: Type Driver, Week, Question = "Got today's added items? ([names]) Reply GOT IT", Status = Waiting. (delivery-check sends and re-asks it; the parser records Harry's answer.)
