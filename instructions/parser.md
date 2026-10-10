@@ -1,7 +1,8 @@
-PARSER (version 15)
+PARSER (version 16)
 Written for: sheets-spec version 4
 
 Change log
+- v16 (2026-10-10): approvals are read by intent, not exact words ("Good send all", "looks good", "go ahead" all count); a message that also asks, adds or holds something back still isn't one. Shane's decision, Oct 10.
 - v15 (2026-10-09): yogurt with no flavor = Yogurt VM (vanilla maple), no longer a question for Mark.
 - v14 (2026-10-09): cream is a paid add-on (Products: Billed through Square), so "can I get cream" is an order with the 1-unit default; only cream or whey in place of milk is a share request.
 - v13 (2026-10-09): a reaction to any part of a list text (or its resend) counts as approval.
@@ -59,9 +60,9 @@ A message with a picture attached: section S first.
 Otherwise check in this order; use the first that fits.
 
 A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers.
-- Approval = the WHOLE message is one of "good", "yes", "ok", "approved", "send" (any case, punctuation ignored), or a thumbs-up or "Liked" reaction to any of that list's texts (any part of it, or a follow-up that resent it). Approve every item on that list. Any other wording ("good, did Kim pay?", "send me the list again") is NOT approval.
+- Approval = a message whose only point is to OK the open list, in any wording ("good", "yes", "ok", "approved", "send", "Good send all", "looks good", "yes please", "go ahead", "send them", a thumbs-up), or a thumbs-up or "Liked" reaction to any of that list's texts (any part of it, or a follow-up that resent it). Approve every item on that list. NOT approval: a message that also asks something, adds information or holds something back ("good, did Kim pay?", "send me the list again", "looks good but wait on Kim"); "thanks" on its own; anything you are unsure about.
 - "good except 14" (or several numbers, and nothing else after "except") = approve all except those numbers. "good except Kim" or any other non-number = Clarify item, approve nothing.
-- If a digest question (Clarify, Sales, Late order or Other) also has Status Sent, a bare approval word could be for either: create a Clarify item "Not sure if '[text]' was for the [invoices / read-backs] or a question. Reply 'good' again for the list, or answer the question with its number." and approve nothing. Exception: a reaction to one of the list's own texts is clear.
+- If a digest question (Clarify, Sales, Late order or Other) also has Status Sent, a bare OK ("good", "yes", "ok", a thumbs-up message) could be for either: create a Clarify item "Not sure if '[text]' was for the [invoices / read-backs] or a question. Reply 'good' again for the list, or answer the question with its number." and approve nothing. Clear: wording that names the list or sending it ("send all", "send the invoices", "read-backs look good"), or a reaction to one of the list's own texts. Those approve the list.
 - Invoice list: approve = fill "Invoice approved" on each approved customer's row (date-time + who). For each excepted number, create a Clarify item: "Invoice 14 ([customer]) held: what should change?"
 - Read-back list: approve = fill "Read-back approved" (date-time + who) on each approved row. For each excepted number, create a Clarify item: "Read-back 3 ([customer]) held: what's wrong with it?"
 - Then set the Queue item to Resolved with the answer.
@@ -69,15 +70,15 @@ A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status 
 
 A2. Reminder. Look at NEXT week's tab header (sheets-spec WEEK NAMES).
 - If "Reminder requested" is filled and "Reminder approved" is blank:
-  - Approval words (as in A1: the whole message) AND "Reminder preview sent" is filled AND the preview is newer than "Reminder wording updated" = REMINDER APPROVAL (below) for Mark or Laura.
+  - An approval (as in A1: any wording whose only point is to OK it, or a reaction to the preview) AND "Reminder preview sent" is filled AND the preview is newer than "Reminder wording updated" = REMINDER APPROVAL (below) for Mark or Laura.
   - A message that reads like a message to customers (an announcement or reminder to order) = it is the wording. If "Reminder wording received" is blank, fill it. Set "Reminder wording" to the text and "Reminder wording updated" = now.
   - A short instruction about the wording ("make it Sunday", "add that we have honey") = apply it to the current "Reminder wording", and set "Reminder wording updated" = now.
   - Unclear = Clarify item "Not sure if this is the reminder wording: '[text]'".
 
 A3. Digest answers. Fits if the message refers to numbers that match open Queue items by Digest # (Status Sent, or a Sales item with Status Answered that the daily follow-up asks about again), e.g. "1 two dozen, 2 maple", "4 resolved".
 For each number answered: fill Answer, Answered by, Status = Answered, then apply by Type:
-- Clarify about a held invoice (Question starts with "Invoice"): "send", "good", "ok" = fill that customer's "Invoice approved" (date-time + who). Anything else = write "Invoice held: [answer]. Fix it in Square, then fill Invoice sent by hand." in that row's Needs attention. Then Resolved.
-- Clarify about a held read-back (Question starts with "Read-back"): "send", "good", "it's fine" = fill that row's "Read-back approved". Otherwise treat the answer as a correction to that customer's order: apply it with ORDER WRITING (source "Mark" or "Laura") and set "Confirm needed" = now, so a corrected read-back goes on the next list. Then Resolved.
+- Clarify about a held invoice (Question starts with "Invoice"): an OK in any wording ("send", "good", "ok", "send it", "it's fine") = fill that customer's "Invoice approved" (date-time + who). Anything else = write "Invoice held: [answer]. Fix it in Square, then fill Invoice sent by hand." in that row's Needs attention. Then Resolved.
+- Clarify about a held read-back (Question starts with "Read-back"): an OK in any wording ("send", "good", "it's fine", "send it") = fill that row's "Read-back approved". Otherwise treat the answer as a correction to that customer's order: apply it with ORDER WRITING (source "Mark" or "Laura") and set "Confirm needed" = now, so a corrected read-back goes on the next list. Then Resolved.
 - Clarify (all others): make the change the answer describes (see ORDER WRITING). Then Status = Resolved, clear Digest #. If Mark states a general rule ("when she says the usual she means 1 gal"), also ADD a Defaults row.
 - Late order: "next week"/"roll" = write it to the customer's next week row. "add it"/"squeeze in"/"yes" = write it to this week's row using the Late order exception in sheets-spec. Then Resolved.
 - Sales that is a share request (Question contains "asked to change their weekly share"):
@@ -108,7 +109,7 @@ B. FROM HARRY
 "Open day" = among day rows (LAST or THIS week) with "Delivery list sent" filled, "Route confirmed" blank, AND (the day is before today, OR the day is today and now is at or after Config "Route check start"): the one Harry was asked about most recently ("Harry last asked"). If none has been asked yet, the earliest one. If Harry names a day ("Monday's done"), use that day.
 Check the first bullet before the others:
 - While a Driver item asking "Got today's added items?" has Status Sent: "GOT IT", "got it", "yes", "ok" answers only that item: Answer, Status Resolved. It never confirms a route.
-- Reminder: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval word (as in A1: the whole message) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
+- Reminder: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval (as in A1) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
 - If there is no open day, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
 - Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all".
 - "No" to "everything delivered?" = create a Driver item for the open day: "What wasn't delivered, and to whom?"
@@ -157,7 +158,7 @@ Mark or Laura texted a customer from the Quo app.
 G. FROM SHANE
 -----------------------------------------------------
 - A message with a picture attached: section S first.
-- If NEXT week's "Reminder preview sent" is filled and "Reminder approved" is blank: an approval word (as in A1: the whole message), with the preview newer than "Reminder wording updated" = REMINDER APPROVAL (below) for Shane. A short instruction about the wording = apply it as in A2 (Shane counts like Mark).
+- If NEXT week's "Reminder preview sent" is filled and "Reminder approved" is blank: an approval (as in A1), with the preview newer than "Reminder wording updated" = REMINDER APPROVAL (below) for Shane. A short instruction about the wording = apply it as in A2 (Shane counts like Mark).
 - Everything else: log only.
 
 -----------------------------------------------------

@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-10, revised 17): approvals are read by intent, not exact words.
 - v4 (2026-10-09, revised 16): share cream (in place of a jar) is handled off the sheet: not invoiced, not counted.
 - v4 (2026-10-09, revised 15): milk goes out in half-gallon jars only.
 - v4 (2026-10-09, revised 14): "(standing order sync)" Changes entries are not changes (lists, read-back risk and sync conflicts ignore them).
@@ -49,7 +50,7 @@ GENERAL RULES (apply to every skill)
 
 8. Missing labels: if a label or column this spec lists is missing from a tab (for example a week tab built under an older version), add it: a header-block label goes in a new row just above the day table; a column goes at the end of that header row. Never remove or rename existing labels or columns.
 
-9. One approval at a time. An approval is OPEN when (a) a Queue item of Type Invoice or Read-back has Status Sent, or (b) NEXT week's "Reminder preview sent" is filled and "Reminder approved" is blank. While an approval is open, no skill sends Mark or Laura a new approval request (reminder preview, read-back list, invoice list). When more than one is ready, the order is: reminder preview first, then read-back list, then invoice list. This is what lets a bare "good" or "yes" mean exactly one thing.
+9. One approval at a time. An approval is OPEN when (a) a Queue item of Type Invoice or Read-back has Status Sent, or (b) NEXT week's "Reminder preview sent" is filled and "Reminder approved" is blank. While an approval is open, no skill sends Mark or Laura a new approval request (reminder preview, read-back list, invoice list). When more than one is ready, the order is: reminder preview first, then read-back list, then invoice list. This is what lets a plain "good" or "yes" mean exactly one thing. Approvals are read by intent, not exact words (parser A1); this rule is what keeps that safe.
 
 10. List texts. An approval list (read-backs, invoices) goes to Mark as the list itself in the text, never as a link (Mark can't easily open docs on his phone). The list doc is still made: it is the record, and the parser reads the numbers from it.
    - First line: the title and "Reply 'good' to send all, or 'good except [numbers]'." Then the doc's numbered lines with the same numbers, one per line, shortened as each skill says (no Cust IDs, no links). Then any closing lines the skill gives (for example the invoice total).
