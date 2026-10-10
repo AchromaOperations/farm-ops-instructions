@@ -1,7 +1,8 @@
-PARSER (version 21)
+PARSER (version 22)
 Written for: sheets-spec version 4
 
 Change log
+- v22 (2026-10-10): an order for a week that isn't built yet builds that week's tab first.
 - v21 (2026-10-10): share-request examples no longer include "extra half gallon" (that's an Extra Milk order now that it's active).
 - v20 (2026-10-10): when Harry confirms a route, skipped rows get Delivered = "skipped".
 - v19 (2026-10-10): extra milk for one week becomes an Extra Milk add-on order (jars, billed through Square) once its Products row is Active; until then it stays a share request for Mark.
@@ -216,7 +217,7 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
    - This week's row for the customer, if its Locked is blank (no THIS week yet: NEXT week's row).
    - If Locked is filled and Delivered is filled (this week's delivery already happened): next week's row.
    - If Locked is filled and Delivered is blank (list already out, not yet delivered): do not write. Create a Late order item: "[customer] ordered '[text]' after the list went out. Add it or next week?"
-   - If the text names a specific later week ("for the 26th"), use that week's row.
+   - If the text names a specific later week ("for the 26th"), use that week's row. If that week's tab isn't built yet, build it first (sheets-spec BUILDING A WEEK TAB).
 
 Read-back flag: after writing, set the row's "Confirm needed" = now when the change came from the customer's own text (section C; not when that text also had a weekly share request, since Mark replies to those by hand), or from Mark or Laura settling a Clarify item that started from that customer's text (section A3, or F), or from a screenshot (section S, share changes included). Do NOT set it for guesses at lock, Mark/Laura commands (A4), Late order decisions, or standing order changes. (confirm-orders sends the text; you never do.)
 

@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-10, revised 20): week tabs are built a few weeks ahead (Config "Weeks built ahead", default 4; BUILDING A WEEK TAB) instead of 15 months; Day, Route and Stop # are refreshed from Customers before each delivery list.
 - v4 (2026-10-10, revised 19): Extra Milk has two rates: Products price for full shares (1 gal or more), Config "Extra milk price, half share" for half shares.
 - v4 (2026-10-10, revised 18): Extra Milk, a paid add-on of extra half-gallon jars for one week, separate from the never-invoiced share; off until its Products row is Active.
 - v4 (2026-10-10, revised 17): approvals are read by intent, not exact words.
@@ -122,6 +123,7 @@ Settings and starting values:
 - Route check start: 15:00
 - Digest batch size: 3
 - Follow-up every (minutes): 55   (how often Mark is followed up on anything waiting for him; 55 = every hourly run. Missing or blank = 55.)
+- Weeks built ahead: 4   (how many weeks after THIS week the operator keeps built. Missing or blank = 4.)
 - Extra milk price, half share: 7   (per half-gallon jar of Extra Milk for customers whose Milk (gal) is under 1; full shares pay the Products price)
 - Daily follow-up time: 08:00   (the once-a-day text about Sales items Mark answered but didn't close. Missing or blank = 08:00.)
 - Nudge after (hours): 3   (reminder only: when Laura is first asked for the wording, and how often Laura and Shane hear again)
@@ -173,12 +175,13 @@ Run start | Run end | Routine | Trigger | Steps run | Texts sent | Problems
   1. Checks BOTH flags. A flag older than "Stale run after" minutes is a crashed run: clear it and add a Problems note.
   2. If the other routine's flag is filled: wait 2 minutes and check again, up to 5 times. If it's still filled, end this run (note "skipped: other routine running"). If its OWN flag is filled, end immediately.
   3. Set its own flag to now, wait 30 seconds, and check the other flag once more. If the other flag is now filled with an EARLIER time than its own, clear its own flag and go back to step 2. (Tie: the Parser goes first.)
-- Week tabs: if NEXT week's tab can't be found, or THIS week's tab can't be found on or after Sun Oct 11 2026, add "Week tab missing: [name]" to "Missing doc alerts" handling (text Shane once per day) and skip every step that needs that tab.
+- Week tabs: the operator builds missing tabs first (BUILDING A WEEK TAB). If NEXT week's tab still can't be found, or THIS week's tab can't be found on or after Sun Oct 11 2026, add "Week tab missing: [name]" to "Missing doc alerts" handling (text Shane once per day) and skip every step that needs that tab.
 
 =====================================================
 WORKBOOK 2: Weekly Deliveries
 =====================================================
 One tab per delivery week, Sunday to Saturday. Week 1 = Sunday Oct 11 2026.
+Tabs are built a few weeks ahead, not months: the operator keeps THIS week through Config "Weeks built ahead" weeks later built (BUILDING A WEEK TAB, below). Shane may delete old or far-future tabs by hand; routines never delete tabs.
 
 WEEK NAMES (every skill uses these)
 - THIS week = the tab whose Sunday-to-Saturday dates include today. Before Week 1 starts (before Sun Oct 11 2026) there is no THIS week; that is normal, not missing.
@@ -189,6 +192,13 @@ Tab names:
 - Same month: "Delivery week 1 Oct 11-17 2026"
 - Two months: "Delivery week 3 Oct 25-31 2026", "Delivery week 4 Nov 1-7 2026", "Delivery week 8 Nov 29-Dec 5 2026"
 - Two years: "Delivery week 12 Dec 27 2026-Jan 2 2027"
+
+BUILDING A WEEK TAB (the operator's build-ahead, or the parser when an order names a week that isn't built yet)
+1. Name it by the tab name rules above. Week number = weeks since Sun Oct 11 2026, plus 1. Put the tab after the previous week's tab.
+2. Header block: every label in HEADER BLOCK, in order. Values: Week, Dates, and Asked-for order cutoff (the Saturday before the week, at Config "Asked-for order cutoff" time). Everything else blank.
+3. Day table: the DAY TABLE header, then Monday to Friday rows, all blank.
+4. Customer table, after one blank row: the CUSTOMER TABLE header, with one column per Products row whose Active is Yes, in Products order, between Stop # and Changes. Then one row per Customers row with Status Active (never Test), sorted by Day, Route, Stop #: Cust ID, Name, Day, Route and Stop # copied from Customers, and each product cell = that customer's standing order (blank if none). Every other cell blank. Starting amounts are not changes: no Changes entries.
+5. Never build a second tab with the same name. A tab that exists but has no "Cust ID" header row is unfinished: finish it. An Active customer with no row on an unlocked built tab: add their row in sorted place, built as in step 4.
 
 HEADER BLOCK (labels in column A, values in column B)
 Week | N
@@ -229,4 +239,5 @@ Cust ID | Name | Day | Route | Stop # | one column per product (same names as Pr
 - Not delivered (LOG): product Column name + amount + reason, separated by " ; ", e.g. "Yogurt Plain x2 ran out". Billing subtracts these.
 - Locked (STAMP): filled when that day's delivery list goes out. THIS is the real order cutoff. Before Locked, any order for this week counts, even after the asked-for cutoff. After Locked, the row never changes, with one exception: a Late order that Mark answers "add it" (squeeze in) may change a quantity; the Changes entry must say "after lock, approved by Mark" and Needs attention must say "added after list went out". Otherwise new orders become a Late order Queue item for Mark.
 - A week tab is frozen when every row with an invoice has Invoice sent filled (or is marked not invoiced). Frozen tabs are never edited.
-- Future week tabs are prefilled. When Reference changes (add/remove customer, standing order change, "run sync"), only rows whose Locked is blank are updated.
+- Week tabs are built a few weeks ahead from Customers (BUILDING A WEEK TAB). When Reference changes (add/remove customer, standing order change, "run sync"), only rows whose Locked is blank are updated.
+- Day, Route and Stop # on a week row are copies of Customers. daily-delivery-list refreshes them on unlocked rows before it builds a list, so a customer moved to another day or stop shows up in the right place.

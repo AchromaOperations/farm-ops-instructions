@@ -1,7 +1,8 @@
-FARM SETUP (version 4)
+FARM SETUP (version 5)
 Written for: sheets-spec version 4
 
 Change log
+- v5 (2026-10-10): builds week tabs only Config "Weeks built ahead" weeks ahead; the operator builds the rest as they come.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v4 (2026-10-07): written for sheets-spec v4 (also creates Delivery Lists and Invoice Lists folders).
 - v3 (2026-10-07): System tab labels per sheets-spec v3.
@@ -62,7 +63,7 @@ Read back and report: number of customers per day, number of products, anything 
 
 PHASE 4. Build Weekly Deliveries
 If a Google Sheet named "Weekly Deliveries" already exists in the Ops folder, use it. Otherwise create it there.
-Create week tabs as described in sheets-spec, starting with Delivery week 1 (Sun Oct 11 2026), through the week containing Jan 31 2028.
+Create week tabs as described in sheets-spec, starting with Delivery week 1 (Sun Oct 11 2026), through Config "Weeks built ahead" weeks after the current week (sheets-spec BUILDING A WEEK TAB). The operator builds later weeks as they come.
 For each tab:
 - Skip it if a tab with that name already exists.
 - Tab name: follow the naming rules in sheets-spec (including weeks that cross a month or a year).

@@ -1,7 +1,8 @@
-OPERATOR (version 6)
+OPERATOR (version 7)
 Written for: sheets-spec version 4
 
 Change log
+- v7 (2026-10-10): Step 0 b2 builds week tabs a few weeks ahead (Config "Weeks built ahead") and adds rows for new Active customers; 15 months of prebuilt tabs are no longer needed.
 - v6 (2026-10-09): owner-digest is due every hourly run while Mark has an unanswered item (Config "Follow-up every (minutes)"), and once a morning for half-closed Sales items.
 - v5 (2026-10-09): Step 0c2 adds missing header labels and columns on THIS and NEXT week's tabs every run.
 - v4 (2026-10-08): Eastern time from TZ; catch-up delivery list only from THIS week's tab (never before Week 1); Sunday alert if the reminder never went out.
@@ -15,12 +16,13 @@ This is a checklist, not a judgment task. Every check below is a yes/no answer f
 
 READ ONLY THESE
 - sheets-spec: the version line (it must say version 4; if not, record a Problem, text Shane once, end) and the System tab section (run flag and week tab rules).
-- Farm Reference: Config tab, System tab, Queue tab (Type, Status, First sent, Last nudged columns only).
+- Farm Reference: Config tab, System tab, Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b2 (build ahead), when something needs building.
 - Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as defined in sheets-spec WEEK NAMES (read that section too).
 
 STEP 0. START
 a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.)
 b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section) exactly, using "Operator run in progress since" as your own flag. If the rule says end: write a run history row with the reason in Problems, and end WITHOUT clearing any flag (the flag belongs to the other run).
+b2. Build ahead (runs during quiet hours too; it sends nothing): for THIS week (or NEXT week if there is no THIS week yet) and each of the following Config "Weeks built ahead" weeks (missing or blank = 4), if its tab is missing or unfinished, build or finish it as sheets-spec BUILDING A WEEK TAB says. Also add a row for any Active customer missing from those unlocked tabs. At most 2 tab builds per run (the next run continues). Note what you built in run history. Read Customers and Products only when something needs building or adding.
 c. Week tabs: find LAST, THIS and NEXT week's tabs (sheets-spec WEEK NAMES). If one is missing in the way the "Week tabs" rule describes, follow the "Week tabs" rule in sheets-spec, and skip every check below that needs the missing tab.
 c2. Labels: on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
 d. Quiet = now is at or after "Quiet hours start" or before "Quiet hours end". If Quiet, go to STEP 2. (Nothing is sent or started during quiet hours.)

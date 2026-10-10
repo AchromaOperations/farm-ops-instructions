@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 8)
+DAILY DELIVERY LIST (version 9)
 Written for: sheets-spec version 4
 
 Change log
+- v9 (2026-10-10): Day, Route and Stop # are refreshed from Customers on unlocked rows before the list is built; a blank Stop # is flagged "!".
 - v8 (2026-10-10): skipped stops stay on the route in their place, flagged SKIP, and are listed in a box at the top (with no-milk stops); the text says how many are skipping; a skip added after lock reads "SKIP, no delivery today".
 - v7 (2026-10-10): Extra Milk jars are packed with the share jars and shown as "+ N extra" at the stop.
 - v6 (2026-10-09): milk is counted in half-gallon jars on the packing list and each stop (Mark: half-gallon jars only).
@@ -15,7 +16,7 @@ Change log
 HOW TO WORK
 A checklist. It locks one delivery day's orders, makes one printable Google Doc for that day, and texts the link. The only judgment is the marked guess in Step 2.
 
-Delivery day = tomorrow (normal run) or today (catch-up run), whichever the operator found due. Use the week tab containing that day. Day rows = customer rows whose Day is that weekday, EXCEPT rows whose Cust ID starts with "T" (test customers), which are always left out.
+Delivery day = tomorrow (normal run) or today (catch-up run), whichever the operator found due. Use the week tab containing that day. First, on every customer row of that tab whose Locked is blank, copy Day, Route and Stop # from Customers (week rows only hold copies; Customers is the truth). Then: Day rows = customer rows whose Day is that weekday, EXCEPT rows whose Cust ID starts with "T" (test customers), which are always left out.
 
 STEP 1. CHECK
 - If that day's "Delivery list sent" is already filled, finish (nothing to do).
@@ -52,7 +53,7 @@ STOPS (in Stop # order)
 Every customer row of the day is listed in its Stop # place, skips included. Never leave a stop off the list.
 Stop # | Name | Address, City | Items (only products above 0, e.g. "share 2 jars + 1 extra, 2 Yogurt VM"; share in half-gallon jars = gallons x 2; Extra Milk is already in jars) | Delivery notes | Flags
 A skip: Items = "SKIP: NO DELIVERY", Flags = "SKIP". No milk with add-ons: Items start with "NO MILK", Flags include "NO MILK".
-Flags: "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text, and "!" if the share isn't a whole number of jars (gallons not a multiple of 0.5; write the gallons as they are). Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
+Flags: "!" if Stop # is blank (no stop number yet). "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text, and "!" if the share isn't a whole number of jars (gallons not a multiple of 0.5; write the gallons as they are). Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
 
 CHANGES THIS WEEK
 One line per stop that has a Changes entry (other than "(standing order sync)" entries) or Needs attention text: name, then the text.
