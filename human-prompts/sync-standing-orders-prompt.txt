@@ -1,7 +1,7 @@
 Please sync standing orders from the Farm Reference Customers tab into the Weekly Deliveries week tabs. I'm Shane and I'm here to answer at the checkpoint. Do exactly the following and nothing else.
 
 RULES
-- First open instructions/sheets-spec.md from github.com/AchromaOperations/farm-ops-instructions. Its first line must say "SHEETS SPEC (version 4)". If not, stop and tell me. Follow its general rules for every write (cell kinds, date-time format, find things by label).
+- First read https://raw.githubusercontent.com/AchromaOperations/farm-ops-instructions/main/instructions/sheets-spec.md (a public web page: just open the link; do not add or connect any repository). Its first line must say "SHEETS SPEC (version 4)". If not, stop and tell me. Follow its general rules for every write (cell kinds, date-time format, find things by label).
 - Open "Farm Reference" and "Weekly Deliveries" in the Ops folder (the Google Drive folder that directly contains the Google Sheet "Farm Reference") (exactly one of each; Config A1 must read "RF-OPS REFERENCE v1"). If not, stop and tell me.
 - Only touch customer rows whose "Locked" is blank. Never touch a locked row, a frozen tab, or anything else.
 - Never delete rows, tabs or files. Do not send any texts.
