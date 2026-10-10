@@ -1,0 +1,13 @@
+You're a one-time test run on the farm's Claude account. I'm Shane. No one is watching; don't stop to ask questions. Test whether this cloud environment can make the delivery list PDF and save it to Google Drive. Do exactly this and nothing else: don't edit any sheet, don't send any texts, don't delete anything.
+
+1. Run: git clone --depth 1 https://github.com/AchromaOperations/farm-ops-instructions.git ops
+2. Run: pip install reportlab   (note the version installed, or the exact error)
+3. Run: python ops/tools/delivery_list_pdf.py ops/tools/sample-delivery-day.json sample.pdf   (note its one-line output, or the error). The sample is made-up data.
+4. In Google Drive, find the Ops folder: the folder that directly contains the Google Sheet "Farm Reference". Inside it, find the folder "Delivery Lists".
+5. Save sample.pdf into Delivery Lists as a PDF file named "Delivery list SAMPLE design test.pdf". It must stay a PDF: do not convert it to a Google Doc. Use whichever Google Drive tool can upload a file.
+6. Report, in this order:
+   - reportlab: installed version, or the error
+   - PDF made: yes/no (and the script's output or error)
+   - Upload: the exact tool you used and the file's link, or "no tool can upload a file"
+   - Every Google Drive tool you have, one line each, with what it can do
+   - Anything else that failed
