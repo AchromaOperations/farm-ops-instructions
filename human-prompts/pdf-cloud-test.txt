@@ -1,13 +1,24 @@
-You're a one-time test run on the farm's Claude account. I'm Shane. No one is watching; don't stop to ask questions. Test whether this cloud environment can make the delivery list PDF and save it to Google Drive. Do exactly this and nothing else: don't edit any sheet, don't send any texts, don't delete anything.
+You're a one-time test run on the farm's Claude account. I'm Shane. No one is watching; don't stop to ask questions. Test whether this cloud environment can make the farm's PDFs and save them to Google Drive. Do exactly this and nothing else: don't edit any sheet, don't send any texts, don't delete anything. Both samples are made-up data.
 
 1. Run: git clone --depth 1 https://github.com/AchromaOperations/farm-ops-instructions.git ops
-2. Run: pip install reportlab   (note the version installed, or the exact error)
-3. Run: python ops/tools/delivery_list_pdf.py ops/tools/sample-delivery-day.json sample.pdf   (note its one-line output, or the error). The sample is made-up data.
-4. In Google Drive, find the Ops folder: the folder that directly contains the Google Sheet "Farm Reference". Inside it, find the folder "Delivery Lists".
-5. Save sample.pdf into Delivery Lists as a PDF file named "Delivery list SAMPLE design test.pdf". It must stay a PDF: do not convert it to a Google Doc. Use whichever Google Drive tool can upload a file.
-6. Report, in this order:
+
+MASTER LIST (standard library only, nothing to install)
+2. Run: python3 -I ops/tools/master_list_pdf.py ops/tools/sample-master-list.json master.pdf   (note the "bytes", "send" and "reason" values from its one line of output, or the error)
+3. In Google Drive, find the Ops folder: the folder that directly contains the Google Sheet "Farm Reference". Inside it, find the folder "Master Lists"; if there isn't one, create it there.
+4. Save master.pdf into Master Lists as a PDF file named "Master list SAMPLE design test.pdf". It must stay a PDF: do not convert it to a Google Doc. The file is plain text on purpose: if the Drive tool takes the contents as text, give it the file's text exactly; if it wants base64, run `base64 -i master.pdf` and give it that output exactly.
+5. If your Drive tool can set sharing, set that file to "anyone with the link can view".
+
+DELIVERY LIST (needs reportlab)
+6. Run: pip install reportlab   (note the version installed, or the exact error)
+7. Run: python ops/tools/delivery_list_pdf.py ops/tools/sample-delivery-day.json sample.pdf   (note its one-line output, or the error)
+8. Save sample.pdf into the Ops folder's "Delivery Lists" folder as a PDF file named "Delivery list SAMPLE design test.pdf", the same way as step 4.
+
+9. Report, in this order:
+   - Master list PDF made: yes/no, with its bytes, or the error
+   - Master list upload: the exact tool you used, whether you gave it the text or base64, and the file's link; or "no tool can upload a file"
+   - Sharing: did setting "anyone with the link can view" work? (yes / no tool for it / error)
+   - Did you have to create the Master Lists folder? (yes/no)
    - reportlab: installed version, or the error
-   - PDF made: yes/no (and the script's output or error)
-   - Upload: the exact tool you used and the file's link, or "no tool can upload a file"
+   - Delivery list PDF made and uploaded: yes/no, link or error
    - Every Google Drive tool you have, one line each, with what it can do
    - Anything else that failed

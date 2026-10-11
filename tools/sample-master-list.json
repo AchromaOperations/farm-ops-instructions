@@ -1,0 +1,35 @@
+{
+  "farm": "Restoration Farmstead",
+  "week": 1,
+  "monday": "2026-10-12",
+  "now": "2026-10-13 20:41",
+  "last_sent": "2026-10-12 20:41",
+  "first_week": false,
+  "products": [
+    {"column": "Milk (gal)", "unit": "gal", "weeks": "All"},
+    {"column": "Yogurt Plain", "unit": "16 oz", "weeks": "All"},
+    {"column": "Yogurt VM", "unit": "16 oz", "weeks": "All"},
+    {"column": "Cream", "unit": "pint", "weeks": "All"},
+    {"column": "Eggs", "unit": "dozen", "weeks": "All"},
+    {"column": "Butter", "unit": "8 oz", "weeks": "All"},
+    {"column": "Crumble Cheese", "unit": "16 oz", "weeks": "First week only"},
+    {"column": "Honey", "unit": "bear", "weeks": "All"},
+    {"column": "Soap", "unit": "bar", "weeks": "All"},
+    {"column": "Extra Milk", "unit": "half-gallon jar", "weeks": "All"}
+  ],
+  "columns": ["Cust ID", "Name", "Day", "Milk (gal)", "Yogurt Plain", "Yogurt VM", "Cream", "Eggs", "Butter", "Crumble Cheese", "Honey", "Soap", "Extra Milk", "Changes"],
+  "rows": [
+    ["S001", "Sample Alpha", "Monday", "0.5", "", "2", "", "", "", "", "", "", "", "2026-10-12 08:10 Yogurt VM 0>2 (text)"],
+    ["S002", "Sample Bravo", "Monday", "1", "", "", "", "1", "", "", "", "", "", ""],
+    ["S003", "Sample Charlie", "Tuesday", "1", "", "", "1", "", "", "", "", "", "", "2026-10-09 20:49 Cream 0>1 (standing order sync)"],
+    ["S004", "Sample Delta", "Wednesday", "0", "", "", "", "", "", "", "", "", "", "2026-10-13 09:12 Milk (gal) 1>0 (Mark)"],
+    ["S005", "Sample Echo", "Wednesday", "1", "", "", "", "3", "", "", "", "", "1", "2026-10-13 11:30 Eggs 1>3 (text) ; 2026-10-13 11:31 Extra Milk 0>1 (text)"],
+    ["S006", "Sample Foxtrot", "Thursday", "2", "1", "", "", "", "", "", "", "", "", "2026-10-13 19:40 Yogurt Plain 0>1 (GUESS at lock)"],
+    ["S007", "Sample Golf", "Thursday", "1.5", "", "", "", "2", "", "", "", "", "", "2026-10-13 14:02 Eggs 0>2 (standing order sync)"],
+    ["S008", "Sample Hotel", "Friday", "1.5", "", "", "", "", "1", "", "1", "2", "", "2026-10-13 15:20 Butter 0>1 (text) ; 2026-10-13 15:20 Soap 0>3 (text) ; 2026-10-13 15:45 Soap 3>2 (text)"],
+    ["S009", "Sample India", "Friday", "1", "", "", "", "", "", "", "", "", "", "2026-10-13 16:00 Honey 0>1 (text)"],
+    ["S010", "Sample Juliet", "", "0.5", "", "", "", "", "", "", "", "", "", ""],
+    ["S011", "Sample Kilo", "Friday", "1", "", "", "", "a dozen", "", "", "", "", "", ""],
+    ["T001", "Test Customer", "Monday", "1", "", "", "", "", "", "", "", "", "", ""]
+  ]
+}

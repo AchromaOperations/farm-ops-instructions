@@ -1,7 +1,8 @@
-PARSER (version 24)
+PARSER (version 25)
 Written for: sheets-spec version 4
 
 Change log
+- v25 (2026-10-10): in the family group, a bare OK or a reaction that follows an information-only system text (delivery list, morning exceptions, master list) is about that text, never an approval of an open list or preview.
 - v24 (2026-10-10): reads the Mark and Laura family group text (sheets-spec rule 11) by sender; in the group an approval must be meant for the system, not a reply to each other, and chat that fits nothing is ignored.
 - v23 (2026-10-10): first-week-only items go to the next first week in Config "First weeks" (Mark's schedule) instead of always asking Mark.
 - v22 (2026-10-10): an order for a week that isn't built yet builds that week's tab first.
@@ -67,6 +68,7 @@ A. FROM MARK OR LAURA
 A message with a picture attached: section S first.
 In the family group (sheets-spec rule 11) Mark and Laura also talk to each other, so a message there counts only as these parts allow:
 - Approvals (A1 lists, A2 reminder): read by intent as usual, but only a message meant for the system counts. A message that answers or reacts to the other person's message (Laura asks Mark something and he says "yes", "ok" or "good") is chat, not an approval. A reaction to one of the system's own list or preview texts is always meant for the system. If you can't tell, it is not an approval.
+- Information-only texts: the delivery list, morning exceptions and master list texts ask for nothing from Mark or Laura. Find the system's latest text to the group before this message (Inbox Log, Direction Out (system), To starting "Group:"). If it was one of those, and it is newer than the latest text of the open list or reminder preview, then a bare OK ("good", "ok", "yes", "thanks", a thumbs-up message) is about that text: log only, approve nothing. A reaction counts only for the text it reacts to, so a reaction to an information-only text never approves anything. Wording that names the list or sending it ("send the invoices", "read-backs look good") still approves as in A1.
 - In the group, never create a "not sure" or "didn't understand" Clarify item (the unclear cases in A1 and A2, and A5): a message that fits nothing else is chat between them. Log only.
 Everything else (A3 numbered answers, A4 commands, reminder wording) works the same as one-to-one.
 Otherwise check in this order; use the first that fits.

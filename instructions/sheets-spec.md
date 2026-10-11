@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-10, revised 24): weekly master list: Config "Weekly master list time" 20:30, header labels "Weekly master list last sent" and "Weekly master list checked", Master Lists folder for its PDFs.
 - v4 (2026-10-10, revised 23): one Farm ops routine (parser part, then operator part) twice an hour replaces the two routines; System "Sunday alert sent".
 - v4 (2026-10-10, revised 22): rule 11: texts for Mark and Laura go to one family group text; Laura after is retired; Nudge after now only paces Shane on the reminder.
 - v4 (2026-10-10, revised 21): Config "First weeks" lists which delivery weeks carry first-week-only products.
@@ -71,7 +72,8 @@ Skill instructions are NOT in Drive: they live only in the GitHub repository eac
 - Delivery Lists (subfolder): one Google Doc per delivery day, made by daily-delivery-list, named like "Delivery list Mon Oct 12 2026".
 - Read-back Lists (subfolder): approval lists of customer read-backs, made by confirm-orders, named like "Read-backs 2026-10-10 14:40".
 - Invoice Lists (subfolder): one Google Doc per delivery day, made by invoicing, named like "Invoices Mon Oct 12 2026".
-- These three subfolders are made on first use: before writing a doc into one, look for exactly one subfolder with that name directly in the Ops folder; if there is none, create it there. If there are two or more, stop that step and add a Problem.
+- Master Lists (subfolder): one PDF file per master list sent, made by weekly-master-list, named like "Master list week 1 2026-10-10 20.41 full.pdf". PDF files, never converted to Docs.
+- These four subfolders are made on first use: before writing a doc into one, look for exactly one subfolder with that name directly in the Ops folder; if there is none, create it there. If there are two or more, stop that step and add a Problem.
 - Farm Reference (Google Sheet)
 - Weekly Deliveries (Google Sheet)
 
@@ -137,7 +139,7 @@ Settings and starting values:
 - Bulk send batch size: 40
 - Stale run after (minutes): 50
 - Parser late after (minutes): 90
-- Weekly master list time: (not set yet)
+- Weekly master list time: 20:30   (the first run at or after this time sends the master list: normally the 8:40pm run, so it arrives about 8:45pm. Runs after 9pm skip the operator part, so keep it before 20:40. "(not set yet)" = off.)
 - Finance update time: (not set yet)
 - Cursor overlap (minutes): 60
 - Read-back review (dropdown ALL, RISKY ONLY, OFF): ALL. ALL = Mark approves every read-back before it goes to a customer. RISKY ONLY = only read-backs whose changes did not come straight from the customer's own text (a question Mark settled, a lock-time guess, an "after lock" change) need approval; the rest send automatically. OFF = no approval. Missing or blank = treat as ALL.
@@ -226,7 +228,9 @@ Reminder approved |   (STAMP: filled when two DIFFERENT people (any of Mark, Lau
 Reminder sent |
 Reminder sent count |   (e.g. 105/107, 2 no phone)
 Reminder test sent |   (TRACKER: when the approved text went to the test phones while Mode was TEST)
-Weekly master list sent |
+Weekly master list sent |   (STAMP: when the first master list for this week went out)
+Weekly master list last sent |   (TRACKER: the sheet read time of the latest master list; the next update lists changes after it)
+Weekly master list checked |   (TRACKER: yyyy-mm-dd of the last night weekly-master-list ran for this week, sent or not)
 Finance update sent |
 
 DAY TABLE (directly below, header row starts with "Day")

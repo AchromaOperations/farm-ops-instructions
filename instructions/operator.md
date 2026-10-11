@@ -1,7 +1,8 @@
-OPERATOR (version 10)
+OPERATOR (version 11)
 Written for: sheets-spec version 4
 
 Change log
+- v11 (2026-10-10): weekly-master-list is due once a night at Config "Weekly master list time": Saturdays for NEXT week, Sunday to Thursday for THIS week (it sends only if something changed).
 - v10 (2026-10-10): the Sunday alert is marked in System "Sunday alert sent" so it goes once now that runs are every 30 minutes.
 - v9 (2026-10-10): the Sunday alert goes to the family group and Shane.
 - v8 (2026-10-10): confirm-orders is due for read-backs on any later built week too.
@@ -66,7 +67,11 @@ For each due step: open the file instructions/[name].md in this repository (for 
    - has Status "Sent" and (Last nudged, or First sent if Last nudged is blank) is at least Config "Follow-up every (minutes)" ago (missing or blank = 55); OR
    - is Type Sales with Status "Answered", now is at or after Config "Daily follow-up time" (missing or blank = 08:00), and (Last nudged, or First sent if Last nudged is blank) is before today.
 
-6. weekly-master-list: skip while Config "Weekly master list time" says "(not set yet)".
+6. weekly-master-list
+   Never due on Friday, and skipped while Config "Weekly master list time" says "(not set yet)". Otherwise due if now is at or after that time AND either:
+   - today is Saturday, a NEXT week tab exists, and NEXT week's "Weekly master list checked" is not today's date; or
+   - today is Sunday to Thursday, a THIS week tab exists, and THIS week's "Weekly master list checked" is not today's date.
+   Read only those header-block cells for this check. The doc itself decides whether anything is sent.
 7. finance-update: skip while Config "Finance update time" says "(not set yet)".
 
 MISSING DOC
