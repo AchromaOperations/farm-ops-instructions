@@ -15,12 +15,14 @@ Input (JSON):
   "locked_at": "Sun Oct 11, 7:40pm",
   "products": [{"column": "Milk (gal)", "unit": "gal"}, {"column": "Eggs", "unit": "dozen"}, ...],  # Products order
   "rows": [{"cust_id": "C001", "name": "...", "stop": "1", "address": "...", "city": "...",
+            "phone": "+15025551234", "phone2": "",   # Customers Phone and Phone 2, as stored
             "delivery_notes": "...", "needs_attention": "...", "changes": "...",
             "standing_milk": 1, "quantities": {"Milk (gal)": 1, "Eggs": 2}}, ...],
   "pending": [{"customer": "...", "asked_for": "..."}]
 }
 """
 import json
+import re
 import sys
 from datetime import datetime
 from urllib.parse import quote_plus
@@ -84,6 +86,21 @@ def fmt(x):
 
 def esc(t):
     return (t or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def phone_html(*numbers):
+    """Tap-to-call links like (502) 555-1234; a number that isn't +1 and 10 digits is shown as stored."""
+    out = []
+    for n in numbers:
+        n = (n or "").strip()
+        if not n:
+            continue
+        m = re.fullmatch(r"\+1(\d{3})(\d{3})(\d{4})", n)
+        if m:
+            out.append(f"<link href='tel:{n}' color='#0072B2'><u>({m[1]})&nbsp;{m[2]}-{m[3]}</u></link>")
+        else:
+            out.append(esc(n))
+    return "<br/>".join(out) if out else "no phone"
 
 
 class Box(Flowable):
@@ -222,7 +239,8 @@ def stops_table(stops, units):
     for i, s in enumerate(stops, start=1):
         maps = "https://www.google.com/maps/search/?api=1&query=" + quote_plus(f"{s.get('address', '')}, {s.get('city', '')} KY")
         cust = Paragraph(f"<b>{esc(s['name'])}</b><br/><link href='{maps}' color='#0072B2'><u>"
-                         f"{esc(s.get('address', ''))}</u></link>, {esc(s.get('city', ''))}", S["cell"])
+                         f"{esc(s.get('address', ''))}</u></link>, {esc(s.get('city', ''))}"
+                         f"<br/>{phone_html(s.get('phone'), s.get('phone2'))}", S["cell"])
         if s["skip"]:
             deliver = Paragraph("<b>SKIP: NO DELIVERY</b>", S["cellb"])
             styles.append(("BACKGROUND", (0, i), (-1, i), SKIPFILL))
