@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 10)
+DAILY DELIVERY LIST (version 11)
 Written for: sheets-spec version 4
 
 Change log
+- v11 (2026-10-13): every stop shows the customer's phone number next to the address (Phone, plus Phone 2 if filled).
 - v10 (2026-10-10): Mark and Laura get the list texts as one family group text; Harry still gets his own.
 - v9 (2026-10-10): Day, Route and Stop # are refreshed from Customers on unlocked rows before the list is built; a blank Stop # is flagged "!".
 - v8 (2026-10-10): skipped stops stay on the route in their place, flagged SKIP, and are listed in a box at the top (with no-milk stops); the text says how many are skipping; a skip added after lock reads "SKIP, no delivery today".
@@ -52,7 +53,8 @@ Milk goes out in half-gallon jars only (sheets-spec TERMS). Write the milk line 
 
 STOPS (in Stop # order)
 Every customer row of the day is listed in its Stop # place, skips included. Never leave a stop off the list.
-Stop # | Name | Address, City | Items (only products above 0, e.g. "share 2 jars + 1 extra, 2 Yogurt VM"; share in half-gallon jars = gallons x 2; Extra Milk is already in jars) | Delivery notes | Flags
+Stop # | Name | Address, City, Phone | Items (only products above 0, e.g. "share 2 jars + 1 extra, 2 Yogurt VM"; share in half-gallon jars = gallons x 2; Extra Milk is already in jars) | Delivery notes | Flags
+Address, City, Phone: the address and city, then on the next line in the same cell the customer's phone number from Customers "Phone", written like (502) 555-1234 (the real number, in that format) so it can be tapped to call. If Customers "Phone 2" is filled, add it after a " / ". If both are blank, write "no phone". A number that isn't +1 and 10 digits is written exactly as stored. Every stop gets this, skips included, and "NO TEXTS" customers too (the driver may need to call; nothing is texted).
 A skip: Items = "SKIP: NO DELIVERY", Flags = "SKIP". No milk with add-ons: Items start with "NO MILK", Flags include "NO MILK".
 Flags: "!" if Stop # is blank (no stop number yet). "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text, and "!" if the share isn't a whole number of jars (gallons not a multiple of 0.5; write the gallons as they are). Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
 
