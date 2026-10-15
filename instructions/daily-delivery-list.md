@@ -1,7 +1,8 @@
-DAILY DELIVERY LIST (version 11)
+DAILY DELIVERY LIST (version 12)
 Written for: sheets-spec version 4
 
 Change log
+- v12 (2026-10-15): the doc's layout is fixed: tools/delivery_list_html.py writes the whole list as HTML and the doc is created from it (HTML converted to a Google Doc), so every day looks the same. Never lay the doc out by hand; plain text only as a reported fallback. (Thursday Oct 15's list came out as plain text.)
 - v11 (2026-10-13): every stop shows the customer's phone number next to the address (Phone, plus Phone 2 if filled).
 - v10 (2026-10-10): Mark and Laura get the list texts as one family group text; Harry still gets his own.
 - v9 (2026-10-10): Day, Route and Stop # are refreshed from Customers on unlocked rows before the list is built; a blank Stop # is flagged "!".
@@ -16,14 +17,14 @@ Change log
 - v1 (2026-10-07): first version.
 
 HOW TO WORK
-A checklist. It locks one delivery day's orders, makes one printable Google Doc for that day, and texts the link. The only judgment is the marked guess in Step 2.
+A checklist. It locks one delivery day's orders, makes one printable Google Doc for that day, and texts the link. The only judgment is the marked guess in Step 2. The doc's layout and counts come from a script (Step 4); you never lay it out yourself.
 
 Delivery day = tomorrow (normal run) or today (catch-up run), whichever the operator found due. Use the week tab containing that day. First, on every customer row of that tab whose Locked is blank, copy Day, Route and Stop # from Customers (week rows only hold copies; Customers is the truth). Then: Day rows = customer rows whose Day is that weekday, EXCEPT rows whose Cust ID starts with "T" (test customers), which are always left out.
 
 STEP 1. CHECK
 - If that day's "Delivery list sent" is already filled, finish (nothing to do).
 - Empty day (holidays work this way): if the day has no rows, or every product quantity on every day row is 0 or blank, there is no delivery. Fill that day's "Delivery list sent", "Route confirmed", "Invoices drafted", "Invoices approved" and "Invoices sent" with "No delivery", lock nothing, send nothing, and finish. (Mark empties a day by moving or zeroing those customers' orders on the week tab ahead of time.)
-- If a Google Doc named "Delivery list [Ddd Mon D YYYY]" already exists in Delivery Lists, reuse it (a previous run made it and stopped): clear its content and rebuild it below. Never make a second one.
+- If a Google Doc named "Delivery list [Ddd Mon D YYYY]" already exists in Delivery Lists, a previous run made it and stopped. Never make a second one: in Step 4, replace its whole content with the new HTML if your Drive tool can update a doc from HTML; if it can't, leave that doc as it is and use it.
 
 STEP 2. SETTLE UNANSWERED QUESTIONS
 For each Queue item of Type Clarify (Status Waiting or Sent) for a customer in this day's rows:
@@ -36,36 +37,28 @@ For each Sales item that is not Resolved, whose Question contains "asked to chan
 STEP 3. LOCK
 Fill "Locked" = now on every one of this day's rows that is blank.
 
-STEP 4. BUILD THE DOC
-Doc "Delivery list [Ddd Mon D YYYY]" in Delivery Lists. Plain and printable, large text, no colors (bold and symbols only). One section per route (Route column; if blank, one section for the day), each starting on a new page:
+STEP 4. BUILD THE DOC (the script makes it; never lay it out yourself)
+1. Make a new empty folder `dl` and write `dl/day.json` in exactly the form of tools/sample-delivery-day.json:
+   - "farm": "Restoration Farmstead", "day": the weekday name, "date": the delivery date yyyy-mm-dd, "locked_at": when you locked, written like "Sun Oct 11, 7:40pm".
+   - "drivers": {"[Route]": "[Driver]", ...} from the Routes tab rows for this weekday (leave out a route whose Driver is blank).
+   - "products": one {"column": [Column name], "unit": [Unit]} per Products row whose Active is Yes, in Products order.
+   - "rows": one per Day row (Step 3's rows, test rows already left out). From the week row: "cust_id", "name", "stop" (Stop #), "route" (Route), "changes" (the whole Changes cell), "needs_attention" (Needs attention), and "quantities": {"[Column name]": [cell], ...} for every product cell that isn't blank. From Customers (same Cust ID): "address", "city", "phone" (Phone), "phone2" (Phone 2), "delivery_notes" (Delivery notes), "standing_milk" (Customers Milk (gal)). Copy every value exactly as the cell reads; "" for a blank. Never add, round or fix anything.
+   - "pending": one {"customer": [Customer], "asked_for": [what they asked for]} per open Late order Queue item for this day.
+   Count the Day rows and check "rows" has the same number before running.
+2. Run `python3 -I ops/tools/delivery_list_html.py dl/day.json dl/list.html`. It prints one line of JSON and also writes dl/list.txt. If it prints "error" or "rows_read" isn't your count, fix day.json and run it again; if it still fails, add a Problem and use the fallback in 4.
+3. Create the Google Doc "Delivery list [Ddd Mon D YYYY]" in Delivery Lists from dl/list.html: give the Drive tool the file's contents exactly, with the source type text/html, so Drive converts it into a Google Doc (the result must be a Google Doc, not an .html file). Never retype, shorten or rearrange it. Then open the doc and check it starts with the title line and has tables (not raw tags like <table>, not one block of plain text).
+4. Fallback, only if 3 can't be done: make the doc from dl/list.txt's text exactly (same list, no boxes or tables), add a Problem "delivery list made as plain text: [reason]", and unless it's quiet hours text Shane (one-to-one) once: "Delivery list for [Day] went out as plain text: [reason]". Still never lay it out yourself.
 
-[Route] - [Day, date] - Driver: [Routes tab Driver]
-
-SKIPS: DO NOT DELIVER (first thing on the route, in a box)
-A skip = a stop whose row has every product at 0 or blank this week, however it got there (the customer asked, Mark or Laura put it in, or someone zeroed it in the sheet by hand). One line each: "Stop [#]: [Name], [Address, City]: SKIP, nothing to deliver this week".
-Under it, "NO MILK THIS WEEK": stops whose Milk (gal) is 0 this week while their Customers Milk (gal) is above 0, but who still get add-ons: "Stop [#]: [Name]: NO MILK, add-ons only".
-Make it impossible to miss on paper: a one-cell table with a thick border and bold text. If you can't make a box, put a full line of ■ symbols above and below it. If there are none, the box says "No skips this week", so the driver knows it was checked.
-
-PACKING LIST
-Product (Column name) | Total for this route
-(every product with a total above 0)
-Milk goes out in half-gallon jars only (sheets-spec TERMS). Write the milk line as jars first: "Milk: [jars] half-gallon jars ([gallons] gal)", where jars = share jars (gallons x 2) plus Extra Milk jars. If any Extra Milk is on the route, add "including [n] extra".
-
-STOPS (in Stop # order)
-Every customer row of the day is listed in its Stop # place, skips included. Never leave a stop off the list.
-Stop # | Name | Address, City, Phone | Items (only products above 0, e.g. "share 2 jars + 1 extra, 2 Yogurt VM"; share in half-gallon jars = gallons x 2; Extra Milk is already in jars) | Delivery notes | Flags
-Address, City, Phone: the address and city, then on the next line in the same cell the customer's phone number from Customers "Phone", written like (502) 555-1234 (the real number, in that format) so it can be tapped to call. If Customers "Phone 2" is filled, add it after a " / ". If both are blank, write "no phone". A number that isn't +1 and 10 digits is written exactly as stored. Every stop gets this, skips included, and "NO TEXTS" customers too (the driver may need to call; nothing is texted).
-A skip: Items = "SKIP: NO DELIVERY", Flags = "SKIP". No milk with add-ons: Items start with "NO MILK", Flags include "NO MILK".
-Flags: "!" if Stop # is blank (no stop number yet). "GUESS" if Needs attention starts with GUESS, "CHANGED" if Changes has an entry this week, "!" for any other Needs attention text, and "!" if the share isn't a whole number of jars (gallons not a multiple of 0.5; write the gallons as they are). Entries ending "(standing order sync)" never count as a change here: they only copy a customer's every-week order onto the week.
-
-CHANGES THIS WEEK
-One line per stop that has a Changes entry (other than "(standing order sync)" entries) or Needs attention text: name, then the text.
-
-PENDING (not packed)
-Open Late order items for this day: customer and what they asked for. "Mark hasn't decided; don't pack unless he says so."
+WHAT THE SCRIPT MAKES (for reference; the script decides, so never change its output to match this)
+One section per route (Route column; if blank, one section for the day), each starting on a new page, titled "[Route, or the weekday] - [Ddd, Mon D YYYY] - Driver: [Routes tab Driver, or (not set)]". Then:
+- A thick-bordered box first: "SKIPS: DO NOT DELIVER" (a skip = a stop whose row has every product at 0 or blank this week, however it got there: "Stop [#]: [Name], [Address, City]: SKIP, nothing to deliver this week"), then "NO MILK THIS WEEK" (Milk (gal) 0 this week while their Customers Milk (gal) is above 0, add-ons still going: "Stop [#]: [Name]: NO MILK, add-ons only"). If there are none: "No skips this week".
+- PACKING LIST table, Product | Total for this route: every product above 0. Milk as jars first: "[jars] half-gallon jars ([gallons] gal)", jars = share jars (gallons x 2) plus Extra Milk jars, with "including [n] extra" if any (sheets-spec TERMS: half-gallon jars only).
+- STOPS table in Stop # order, every Day row in its place, skips included (shaded): Stop # | Name | Address, City, Phone | Items | Delivery notes | Flags. Phone: the Customers Phone written like (502) 555-1234 on the line under the address, Phone 2 on the line below that, "no phone" if both are blank, any other format as stored; every stop, NO TEXTS customers too (nothing is texted). Items: only products above 0, e.g. "share 2 jars + 1 extra, 2 Yogurt VM"; a skip is "SKIP: NO DELIVERY"; no milk starts "NO MILK". Flags: SKIP, NO MILK, GUESS (Needs attention starts with GUESS), CHANGED (a Changes entry that isn't "(standing order sync)"), "!" for a blank Stop #, any other Needs attention text, or a share that isn't whole jars.
+- CHANGES THIS WEEK: one line per stop with a real Changes entry or Needs attention text.
+- PENDING (not packed), only if there are open Late order items: customer and what they asked for, "Mark hasn't decided; don't pack unless he says so."
 
 STEP 5. SEND
-- Text the family group (sheets-spec rule 11) and Harry (one-to-one) the same text: "[Day]'s delivery list is ready: [link]. [n] stops to deliver, [routes]. [s] skipping (boxed at the top). [g] guesses marked. Shares and orders for [Day] are now locked."
+- Text the family group (sheets-spec rule 11) and Harry (one-to-one) the same text: the script's "message" with {LINK} replaced by the doc's link ("[Day]'s delivery list is ready: [link]. [n] stops to deliver, [routes]. [s] skipping (boxed at the top). [g] guesses marked. Shares and orders for [Day] are now locked.").
 - Log each text in the Inbox Log (Out (system)).
 - Fill that day's "Delivery list sent" = now.
 

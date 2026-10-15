@@ -18,4 +18,4 @@ All data (customers, orders, week tabs, invoices) lives in Google Sheets and Dri
 3. The next Farm ops run (every 30 minutes) downloads `main` and uses the new version. Nothing to paste.
 
 Roll back by reverting the commit. Only Shane pushes to this repository.
-- `tools/`: scripts the routine runs in its cloud sandbox (`master_list_pdf.py`: standard library only, nothing to install; `delivery_list_pdf.py`: not wired in yet). Samples use made-up data. No customer data.
+- `tools/`: scripts the routine runs in its cloud sandbox (`master_list_pdf.py` and `delivery_list_html.py`: standard library only, nothing to install; `delivery_list_pdf.py`: not wired in yet). Samples use made-up data. No customer data.
