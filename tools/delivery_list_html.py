@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Delivery list Google Doc for one delivery day, as fixed HTML.
+"""Delivery list Google Doc for one delivery day, as fixed HTML: the FALLBACK for when the
+PDF (tools/delivery_list_pdf.py, the approved design) can't be saved. Same sections, same order.
 
 Usage: python3 -I delivery_list_html.py day.json list.html
 
@@ -25,13 +26,17 @@ MILK = "Milk (gal)"
 EXTRA = "Extra Milk"
 
 FONT = "font-family:Arial,sans-serif;"
-P = FONT + "font-size:12pt;margin:0 0 4pt 0;"
-H1 = FONT + "font-size:22pt;font-weight:bold;margin:0 0 10pt 0;"
-H2 = FONT + "font-size:15pt;font-weight:bold;margin:16pt 0 6pt 0;"
+P = FONT + "color:#270307;font-size:11pt;margin:0 0 3pt 0;"
+H2 = FONT + "color:#270307;font-size:13pt;font-weight:bold;margin:14pt 0 4pt 0;"
 TABLE = "border-collapse:collapse;width:100%;"
-TH = FONT + "font-size:11pt;font-weight:bold;border:1pt solid #000000;padding:4pt 6pt;background-color:#E6E6E6;text-align:left;vertical-align:top;"
-TD = FONT + "font-size:12pt;border:1pt solid #000000;padding:4pt 6pt;vertical-align:top;"
-BOX = FONT + "font-size:13pt;border:3pt solid #000000;padding:8pt 10pt;"
+NOBORDER = "border-top:none;border-left:none;border-right:none;"
+# Colors from restorationfarmsteadky.com: cream #FFF8E8, maroon text #270307, sage #B7B990, navy #004990 (links)
+LOGO_URL = "https://raw.githubusercontent.com/AchromaOperations/farm-ops-instructions/main/tools/logo.png"
+BAND = FONT + "background-color:#FFF8E8;color:#270307;border:none;border-bottom:2pt solid #270307;padding:8pt 10pt;vertical-align:middle;"
+TILE = FONT + "color:#270307;border:1pt solid #270307;padding:6pt;vertical-align:middle;"
+HEAD = FONT + NOBORDER + "font-size:8pt;font-weight:bold;color:#6B5E5C;border-bottom:0.5pt solid #B7B990;padding:4pt 6pt;text-align:left;vertical-align:bottom;"
+ROW = FONT + NOBORDER + "color:#270307;font-size:10pt;border-bottom:0.5pt solid #B7B990;padding:5pt 6pt;vertical-align:top;"
+BOXCHAR = '<span style="font-size:15pt;">\u2610</span>'
 
 
 def num(x):
@@ -127,7 +132,8 @@ def analyse(day):
             items = ", ".join(parts)
             if no_milk:
                 items = "NO MILK, " + items
-        stops.append(dict(r, q=q, milk=milk, extra=extra, skip=skip, no_milk=no_milk, flags=flags, items=items))
+        stops.append(dict(r, q=q, milk=milk, extra=extra, addons=addons, odd=odd, skip=skip, no_milk=no_milk,
+                          flags=flags, items=items))
     stops.sort(key=stop_key)
     return products, stops
 
@@ -140,79 +146,125 @@ def totals_for(stops):
     return t
 
 
+def cell(style, inner, extra=""):
+    return '<td style="%s%s">%s</td>' % (style, extra, inner)
+
+
 def section(day, route, stops, products, first):
     d = datetime.strptime(day["date"], "%Y-%m-%d")
     drivers = day.get("drivers") or {}
-    driver = drivers.get(route) or day.get("driver") or "(not set)"
-    title = "%s - %s, %s %d %d - Driver: %s" % (route or day["day"], d.strftime("%a"), d.strftime("%b"), d.day, d.year, driver)
+    driver = drivers.get(route) or day.get("driver") or "____________"
+    title = "%s · %s %d, %d" % (day["day"].upper(), d.strftime("%b"), d.day, d.year)
+    sub = "%s · Driver: %s · Locked %s" % (route or "All %s stops" % day["day"], driver, day.get("locked_at", ""))
     h, t = [], []
     if not first:
         h.append('<p style="page-break-before:always;%s"></p>' % P)
-    h.append('<p style="%s">%s</p>' % (H1, escape(title)))
-    t.append(title.upper())
+    h.append('<table style="%s"><tr>%s%s</tr></table>' % (TABLE,
+             cell(BAND, '<img src="%s" width="64" height="64" alt="%s">' % (LOGO_URL, escape(day.get("farm", ""))), "width:12%;"),
+             cell(BAND, '<p style="%sfont-size:24pt;font-weight:bold;color:#270307;margin:0;">%s</p>'
+                        '<p style="%sfont-size:10.5pt;color:#270307;margin:2pt 0 0 0;">%s</p>' % (FONT, escape(title), FONT, escape(sub)),
+                  "width:88%;")))
+    t += [title, sub, ""]
+
+    tot = totals_for(stops)
+    deliver = sum(1 for s in stops if not s["skip"])
+    skipping = sum(1 for s in stops if s["skip"])
+    jars = tot.get(MILK, 0) * 2 + tot.get(EXTRA, 0)
+    addon_items = sum(v for p, v in tot.items() if p not in (MILK, EXTRA))
+    tiles = "".join(cell(TILE, '<p style="%sfont-size:22pt;font-weight:bold;text-align:center;margin:0;">%s</p>'
+                                '<p style="%sfont-size:8pt;font-weight:bold;color:#6B5E5C;text-align:center;margin:0;">%s</p>'
+                         % (FONT, fmt(n), FONT, lab), "width:25%;")
+                    for n, lab in zip((deliver, skipping, jars, addon_items),
+                                      ("STOPS TO DELIVER", "SKIPPING", "MILK JARS", "ADD-ON ITEMS")))
+    h.append('<p style="%s"></p><table style="%s"><tr>%s</tr></table><p style="%s"></p>' % (P, TABLE, tiles, P))
+    t.append("%d stops to deliver, %d skipping, %s milk jars, %s add-on items" % (deliver, skipping, fmt(jars), fmt(addon_items)))
     t.append("")
 
     skips = [s for s in stops if s["skip"]]
     nomilk = [s for s in stops if s["no_milk"]]
     box = []
     if skips:
-        box.append('<p style="%sfont-size:14pt;font-weight:bold;margin:0 0 4pt 0;">SKIPS: DO NOT DELIVER</p>' % FONT)
-        t.append("#### SKIPS: DO NOT DELIVER ####")
+        box.append('<p style="%sfont-size:14pt;font-weight:bold;margin:0 0 4pt 0;">X&nbsp;&nbsp;DO NOT DELIVER</p>' % FONT)
+        t.append("#### X  DO NOT DELIVER ####")
         for s in skips:
             line = "Stop %s: %s, %s, %s: SKIP, nothing to deliver this week" % (
                 s.get("stop") or "?", s.get("name", ""), s.get("address", ""), s.get("city", ""))
-            box.append('<p style="%s">%s</p>' % (P, escape(line)))
+            box.append('<p style="%s"><b>Stop %s: %s</b>, %s, %s: SKIP, nothing to deliver this week</p>' % (
+                P, escape(str(s.get("stop") or "?")), escape(s.get("name", "")), escape(s.get("address", "")), escape(s.get("city", ""))))
             t.append(line)
     if nomilk:
-        box.append('<p style="%sfont-size:14pt;font-weight:bold;margin:8pt 0 4pt 0;">NO MILK THIS WEEK</p>' % FONT)
-        t.append("#### NO MILK THIS WEEK ####")
+        box.append('<p style="%sfont-size:14pt;font-weight:bold;margin:8pt 0 4pt 0;">NO MILK THIS WEEK (add-ons only)</p>' % FONT)
+        t.append("#### NO MILK THIS WEEK (add-ons only) ####")
         for s in nomilk:
             line = "Stop %s: %s: NO MILK, add-ons only" % (s.get("stop") or "?", s.get("name", ""))
-            box.append('<p style="%s">%s</p>' % (P, escape(line)))
+            box.append('<p style="%s"><b>Stop %s: %s</b>: NO MILK, add-ons only</p>' % (
+                P, escape(str(s.get("stop") or "?")), escape(s.get("name", ""))))
             t.append(line)
     if not box:
-        box.append('<p style="%sfont-weight:bold;">No skips this week</p>' % P)
+        box.append('<p style="%sfont-size:14pt;font-weight:bold;margin:0;">No skips this week</p>' % FONT)
         t.append("No skips this week")
-    h.append('<table style="%s"><tr><td style="%s">%s</td></tr></table>' % (TABLE, BOX, "".join(box)))
+    border = "3pt" if (skips or nomilk) else "1pt"
+    h.append('<table style="%s"><tr><td style="%scolor:#270307;border:%s solid #270307;padding:8pt 12pt;">%s</td></tr></table>'
+             % (TABLE, FONT, border, "".join(box)))
     t.append("")
 
-    tot = totals_for(stops)
     h.append('<p style="%s">PACKING LIST</p>' % H2)
     t.append("PACKING LIST")
-    rows = ['<tr><th style="%s">Product</th><th style="%s">Total for this route</th></tr>' % (TH, TH)]
-    jars = tot.get(MILK, 0) * 2 + tot.get(EXTRA, 0)
+    rows = ['<tr>%s%s%s%s</tr>' % (cell(HEAD, "", "width:5%;"), cell(HEAD, "ITEM", "width:35%;"),
+                                    cell(HEAD, "QTY", "width:10%;"), cell(HEAD, "UNIT", "width:50%;"))]
+    items = []
     if jars:
         ex = tot.get(EXTRA, 0)
-        val = "%s half-gallon jars (%s gal)%s" % (fmt(jars), fmt(jars / 2), ", including %s extra" % fmt(ex) if ex else "")
-        rows.append('<tr><td style="%sfont-weight:bold;">Milk</td><td style="%sfont-weight:bold;">%s</td></tr>' % (TD, TD, escape(val)))
-        t.append("Milk: " + val)
+        items.append(("Milk", fmt(jars), "half-gallon jars (%s gal%s)" % (fmt(jars / 2), ", including %s extra" % fmt(ex) if ex else ""), "13pt"))
     for p in products:
         if p in (MILK, EXTRA) or not tot.get(p):
             continue
-        rows.append('<tr><td style="%s">%s</td><td style="%s">%s</td></tr>' % (TD, escape(p), TD, fmt(tot[p])))
-        t.append("%s: %s" % (p, fmt(tot[p])))
+        items.append((p, fmt(tot[p]), (day.get("units") or {}).get(p, "") or next(
+            (x.get("unit", "") for x in day["products"] if x["column"] == p), ""), "11pt"))
+    for k, (item, qty, unit, size) in enumerate(items):
+        z = "background-color:#FFF8E8;" if k % 2 else ""
+        rows.append("<tr>%s%s%s%s</tr>" % (cell(ROW + z, BOXCHAR), cell(ROW + z, escape(item), "font-weight:bold;font-size:%s;" % size),
+                                           cell(ROW + z, escape(qty), "font-weight:bold;font-size:%s;" % size), cell(ROW + z, escape(unit))))
+        t.append("[ ] %s: %s %s" % (item, qty, unit))
     h.append('<table style="%s">%s</table>' % (TABLE, "".join(rows)))
     t.append("")
 
     h.append('<p style="%s">STOPS</p>' % H2)
     t.append("STOPS")
-    heads = ["Stop #", "Name", "Address, City, Phone", "Items", "Delivery notes", "Flags"]
-    widths = ["7%", "17%", "24%", "24%", "18%", "10%"]
-    rows = ["<tr>%s</tr>" % "".join('<th style="%swidth:%s;">%s</th>' % (TH, w, x) for x, w in zip(heads, widths))]
-    for s in stops:
-        fill = "background-color:#D9D9D9;" if s["skip"] else ""
+    heads = [("DONE", "7%"), ("STOP", "7%"), ("CUSTOMER", "27%"), ("DELIVER", "21%"), ("NOTES", "25%"), ("FLAGS", "13%")]
+    rows = ["<tr>%s</tr>" % "".join(cell(HEAD + "border-bottom:1.2pt solid #270307;", x, "width:%s;" % w) for x, w in heads)]
+    for k, s in enumerate(stops):
+        z = "background-color:#DBDCC8;" if s["skip"] else ("background-color:#FFF8E8;" if k % 2 else "")
         addr = "%s, %s" % (s.get("address", ""), s.get("city", ""))
-        cells = [
-            '<td style="%s%sfont-size:16pt;font-weight:bold;">%s</td>' % (TD, fill, escape(str(s.get("stop") or "?"))),
-            '<td style="%s%sfont-weight:bold;">%s</td>' % (TD, fill, escape(s.get("name", ""))),
-            '<td style="%s%s">%s<br>%s</td>' % (TD, fill, escape(addr), phones_html(s)),
-            '<td style="%s%s%s">%s</td>' % (TD, fill, "font-weight:bold;" if s["skip"] or s["no_milk"] else "", escape(s["items"])),
-            '<td style="%s%s">%s</td>' % (TD, fill, escape(s.get("delivery_notes", "") or "")),
-            '<td style="%s%sfont-weight:bold;">%s</td>' % (TD, fill, "<br>".join(escape(f) for f in s["flags"])),
-        ]
-        rows.append("<tr>%s</tr>" % "".join(cells))
-        t.append("Stop %s | %s | %s | %s | %s | %s | %s" % (s.get("stop") or "?", s.get("name", ""), addr, phones(s),
-                                                         s["items"], s.get("delivery_notes", "") or "", " ".join(s["flags"])))
+        cust = "<b>%s</b><br>%s, %s<br>%s" % (escape(s.get("name", "")), escape(s.get("address", "")), escape(s.get("city", "")), phones_html(s))
+        if s["skip"]:
+            deliv = "<b>SKIP: NO DELIVERY</b>"
+        else:
+            parts = []
+            jars_s = s["milk"] * 2
+            if s["milk"]:
+                if jars_s.is_integer():
+                    first_line = '<span style="font-size:13pt;font-weight:bold;">%s jar%s</span>' % (fmt(jars_s), "" if jars_s == 1 else "s")
+                else:
+                    first_line = '<span style="font-size:13pt;font-weight:bold;">%s gal</span>' % fmt(s["milk"])
+                if s["extra"]:
+                    first_line += " <b>+ %s extra</b>" % fmt(s["extra"])
+                parts.append(first_line)
+            elif s["extra"]:
+                parts.append("<b>%s extra jar%s</b>" % (fmt(s["extra"]), "" if s["extra"] == 1 else "s"))
+            if s["no_milk"]:
+                parts.append("<b>NO MILK</b>")
+            parts += ["%s x %s" % (fmt(v), escape(p)) for p, v in s["addons"]]
+            parts += ["<b>%s</b>" % escape(o) for o in s["odd"]]
+            deliv = "<br>".join(parts)
+        rows.append("<tr>%s%s%s%s%s%s</tr>" % (
+            cell(ROW + z, BOXCHAR),
+            cell(ROW + z, escape(str(s.get("stop") or "?")), "font-size:15pt;font-weight:bold;text-align:center;"),
+            cell(ROW + z, cust), cell(ROW + z, deliv),
+            cell(ROW + z, escape(s.get("delivery_notes", "") or ""), "font-style:italic;"),
+            cell(ROW + z, "<br>".join(escape(f) for f in s["flags"]), "font-weight:bold;")))
+        t.append("[ ] Stop %s | %s | %s | %s | %s | %s | %s" % (s.get("stop") or "?", s.get("name", ""), addr, phones(s),
+                                                             s["items"], s.get("delivery_notes", "") or "", " ".join(s["flags"])))
     h.append('<table style="%s">%s</table>' % (TABLE, "".join(rows)))
     t.append("")
 
@@ -221,13 +273,16 @@ def section(day, route, stops, products, first):
         lines = real_changes(s)
         attn = (s.get("needs_attention") or "").strip()
         if lines or attn:
-            ch.append("%s: %s" % (s.get("name", ""), "; ".join(lines + ([attn] if attn else []))))
-    h.append('<p style="%s">CHANGES THIS WEEK</p>' % H2)
-    t.append("CHANGES THIS WEEK")
-    for c in ch or ["No changes this week."]:
-        h.append('<p style="%s">%s</p>' % (P, escape(c)))
-        t.append(c)
-    t.append("")
+            ch.append((s, "; ".join(lines), attn))
+    if ch:
+        h.append('<p style="%s">CHANGES THIS WEEK</p>' % H2)
+        t.append("CHANGES THIS WEEK")
+        for s, lines, attn in ch:
+            h.append('<p style="%s"><b>Stop %s · %s:</b> %s%s</p>' % (
+                P, escape(str(s.get("stop") or "?")), escape(s.get("name", "")), escape(lines),
+                ("; " if lines else "") + "<b>%s</b>" % escape(attn) if attn else ""))
+            t.append("Stop %s %s: %s%s" % (s.get("stop") or "?", s.get("name", ""), lines, ("; " if lines else "") + attn if attn else ""))
+        t.append("")
     return h, t
 
 
@@ -247,8 +302,7 @@ def build(day):
         text += t
     pending = day.get("pending") or []
     if pending:
-        html.append('<p style="%s">PENDING (not packed)</p>' % H2)
-        html.append('<p style="%sfont-weight:bold;">Mark hasn\'t decided; don\'t pack unless he says so.</p>' % P)
+        html.append('<p style="%s">PENDING: NOT PACKED (Mark hasn\'t decided; don\'t pack unless he says so)</p>' % H2)
         text += ["PENDING (not packed)", "Mark hasn't decided; don't pack unless he says so."]
         for p in pending:
             line = "%s: %s" % (p.get("customer", ""), p.get("asked_for", ""))

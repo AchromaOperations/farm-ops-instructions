@@ -11,6 +11,7 @@ See instructions/weekly-master-list.md for the input format; tools/sample-master
 """
 import base64
 import json
+import os
 import re
 import sys
 import zlib
@@ -81,11 +82,28 @@ def pdf_string(s):
     return "(" + "".join(out) + ")"
 
 
+def load_logo():
+    """The farm logo as a 1-bit image mask (tools/logo-mask.json). None if it's missing."""
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo-mask.json"), encoding="ascii") as f:
+            j = json.load(f)
+        return int(j["w"]), int(j["h"]), j["a85"].encode("ascii")
+    except (OSError, ValueError, KeyError):
+        return None
+
+
 class Page:
     """Top-down coordinates (y grows downward), converted to PDF space on output."""
 
     def __init__(self):
         self.ops = []
+        self.logo = load_logo()
+
+    def image_logo(self, x, y, size, color):
+        if not self.logo:
+            return False
+        self.ops.append("q %s rg %.2f 0 0 %.2f %.2f %.2f cm /Logo Do Q" % (self._c(color), size, size, x, PAGE_H - y - size))
+        return True
 
     def _c(self, rgb):
         return "%.3f %.3f %.3f" % rgb
@@ -113,13 +131,18 @@ class Page:
         objs = [
             b"<< /Type /Catalog /Pages 2 0 R >>",
             b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
-            ("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 %d %d] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>"
-             % (PAGE_W, PAGE_H)).encode("ascii"),
+            ("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 %d %d] /Resources << /Font << /F1 4 0 R /F2 5 0 R >>%s >> /Contents 6 0 R >>"
+             % (PAGE_W, PAGE_H, " /XObject << /Logo 8 0 R >>" if self.logo else "")).encode("ascii"),
             b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
             b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
             b"<< /Length " + str(len(content)).encode("ascii") + b" /Filter [/ASCII85Decode /FlateDecode] >>\nstream\n" + content + b"\nendstream",
             ("<< /Title %s /Producer (farm-ops master_list_pdf.py) >>" % pdf_string(title)).encode("ascii"),
         ]
+        if self.logo:
+            w, h, data = self.logo
+            objs.append((("<< /Type /XObject /Subtype /Image /Width %d /Height %d /ImageMask true /BitsPerComponent 1 "
+                          "/Length %d /Filter [/ASCII85Decode /FlateDecode] >>\nstream\n" % (w, h, len(data))).encode("ascii")
+                         + data + b"\nendstream"))
         out = bytearray(b"%PDF-1.4\n")
         offsets = []
         for i, body in enumerate(objs, start=1):
@@ -129,7 +152,7 @@ class Page:
         out += b"xref\n0 %d\n0000000000 65535 f \n" % (len(objs) + 1)
         for off in offsets:
             out += b"%010d 00000 n \n" % off
-        out += b"trailer\n<< /Size %d /Root 1 0 R /Info %d 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (len(objs) + 1, len(objs), xref)
+        out += b"trailer\n<< /Size %d /Root 1 0 R /Info 7 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (len(objs) + 1, xref)
         with open(path, "wb") as f:
             f.write(bytes(out))
         return len(out)
@@ -305,11 +328,13 @@ def day_label(m, i):
 
 # ---------- drawing ----------
 
-INK = (0.1, 0.1, 0.1)
-SUB = (0.33, 0.33, 0.33)
-MUTED = (0.45, 0.45, 0.45)
-HAIR = (0.85, 0.85, 0.85)
-SHADE = (0.945, 0.941, 0.925)
+# Colors from restorationfarmsteadky.com (meaning never by color alone)
+INK = (0.153, 0.012, 0.027)    # site text maroon #270307
+SUB = (0.33, 0.27, 0.26)       # dark brown-gray
+MUTED = (0.42, 0.37, 0.36)     # labels
+HAIR = (0.718, 0.725, 0.565)   # site sage #B7B990
+SHADE = (1.0, 0.973, 0.910)    # site cream #FFF8E8
+LOGO = 54
 LEFT, RIGHT = 43, PAGE_W - 43
 TEXT_X = 60
 DASH = "–"
@@ -344,13 +369,14 @@ def draw(m, path):
     blocks = []
 
     def header(pg, y):
-        pg.text(TEXT_X, y + 26, "Master list (updated)" if upd else "Master list", 26, True, INK)
+        tx = LEFT + LOGO + 14 if pg.image_logo(LEFT, y + 2, LOGO, INK) else TEXT_X
+        pg.text(tx, y + 26, "Master list (updated)" if upd else "Master list", 26, True, INK)
         sub = "Delivery week %s  \xb7  %s  \xb7  sheet as of %s" % (m["week"], week_range(m["monday"]), friendly(m["now"]))
         yy = y + 46
-        for l in wrap(sub, RIGHT - TEXT_X, 12):
-            pg.text(TEXT_X, yy, l, 12, False, SUB)
+        for l in wrap(sub, RIGHT - tx, 12):
+            pg.text(tx, yy, l, 12, False, SUB)
             yy += 15
-        return yy + 2
+        return max(yy + 2, y + LOGO + 8)
 
     def tiles(pg, y):
         suffix = " LEFT" if partial else ""
