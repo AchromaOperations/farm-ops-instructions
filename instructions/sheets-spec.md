@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-17, revised 27): System "Problem alerts checked" and "Problem alerts sent": ALERT problems (system issues) are texted to Shane.
 - v4 (2026-10-17, revised 26): rule 11: every message Mark or Laura send in the family group is for the system and gets acted on, answered or clarified (parser A). Queue: a Type Other item whose Question starts "REPLY: " is the system's reply to them.
 - v4 (2026-10-15, revised 25): Delivery Lists holds one PDF per delivery day (a Google Doc only as the fallback).
 - v4 (2026-10-10, revised 24): weekly master list: Config "Weekly master list time" 20:30, header labels "Weekly master list last sent" and "Weekly master list checked", Master Lists folder for its PDFs.
@@ -179,6 +180,8 @@ Parser late alert sent | date-time Shane was last told the parser is late
 Last payment check | date-time invoicing last checked Square for payments
 Missing doc alerts | date + doc names Shane was told about today, e.g. "2026-10-08: owner-digest, invoicing"
 Sunday alert sent | date the "reminder never went out" alert last went out
+Problem alerts checked | date-time the operator last checked the run history for ALERT problems (system issues) to text Shane
+Problem alerts sent | today's date + the ALERT problems Shane was texted today, e.g. "2026-10-17: Customers Phone not written for C012"
 Then a blank row, then the run history (LOG), header row starting with "Run start":
 Run start | Run end | Routine | Trigger | Steps run | Texts sent | Problems
 - If any label above is missing (for example an older setup), add it as a new row above the run history. Adding labels is allowed; never remove one.

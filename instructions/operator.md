@@ -1,7 +1,8 @@
-OPERATOR (version 11)
+OPERATOR (version 12)
 Written for: sheets-spec version 4
 
 Change log
+- v12 (2026-10-17): STEP 2 texts Shane every new ALERT problem (system issues like sheet cells not written correctly), from this run and earlier runs, once each per day.
 - v11 (2026-10-10): weekly-master-list is due once a night at Config "Weekly master list time": Saturdays for NEXT week, Sunday to Thursday for THIS week (it sends only if something changed).
 - v10 (2026-10-10): the Sunday alert is marked in System "Sunday alert sent" so it goes once now that runs are every 30 minutes.
 - v9 (2026-10-10): the Sunday alert goes to the family group and Shane.
@@ -80,6 +81,7 @@ If a step is due but no file instructions/[name].md exists in this repository:
 - If System "Missing doc alerts" does not already list that doc for today's date: text Shane "Operator: [doc] is due but its doc doesn't exist yet." Then update "Missing doc alerts" to today's date plus every doc alerted today.
 
 STEP 2. FINISH
+a0. Problem alerts (skip if Quiet): collect the ALERT problems (routines/farm-ops.md SYSTEM PROBLEMS) from this run so far and from every run history row whose Run start is after System "Problem alerts checked" (blank = the last 24 hours). Leave out any a step already texted Shane about in this run, and any already listed in System "Problem alerts sent" for today. If any are left, text Shane (one-to-one, Config "Admin (Shane) phone") one message: "Farm ops problem: [problem]", or for several "Farm ops problems:" then one per line (at most 10, then "+[n] more in the System tab run history"). Then set "Problem alerts sent" = today's date + every problem alerted today (a few words each), e.g. "2026-10-17: Customers Phone not written for C012; Drive save failed". Set "Problem alerts checked" = now (also when there was nothing to send).
 a. Add one row to the System run history: Run start (from Step 0), Run end = now, Routine = Operator, Trigger = Scheduled (or Manual if this run was started with Run now text), Steps run, Texts sent (total this run, including texts sent by the steps), Problems.
 b. Clear "Operator run in progress since".
 c. End with one line: steps run, texts sent, problems.

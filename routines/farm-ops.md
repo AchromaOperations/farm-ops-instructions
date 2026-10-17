@@ -16,6 +16,11 @@ Open ops/instructions/parser.md and follow it to its end. It sets and clears "Pa
 - If Part 1 ended because the run flag rule says another run is in progress, end the whole run here. Do not do Part 2.
 - If Part 1 stopped part way because of an error, make sure "Parser run in progress since" is cleared (it was set by this same run), add the error to Problems in the run history, and go on to Part 2.
 
+SYSTEM PROBLEMS (both parts)
+- Check your writes: after writing to a sheet tab, read back the cells you just wrote (one read per tab, per message or step). If a cell isn't what you wrote (blank, in the wrong row or column, a number turned into a date, text cut off), fix it once. If it's still wrong, record a Problem.
+- A Problem that means the system didn't work the way the docs intend starts with "ALERT: ", for example: a sheet write that failed or came out wrong; a tab, column, label or cell that isn't the way sheets-spec says (missing, extra, moved, or holding a value the spec doesn't allow) and that you couldn't fix; a connector or tool error; a file or doc that couldn't be made, read or saved; a script error. Normal notes are not alerts: another run in progress, nothing due, a step waiting on a person, quiet hours.
+- Part 1 never texts: it records ALERT problems in its run history row. Part 2 texts every new ALERT problem to Shane (operator.md STEP 2), so he hears about it within the same run.
+
 PART 2. OPERATOR (only after Part 1 has finished)
 If it is between 9:00pm and 7:00am Eastern, skip Part 2 and end the run.
 Otherwise open ops/instructions/operator.md and follow it to its end.
