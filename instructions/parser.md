@@ -1,7 +1,8 @@
-PARSER (version 25)
+PARSER (version 26)
 Written for: sheets-spec version 4
 
 Change log
+- v26 (2026-10-17): every message Mark or Laura sends in the family group is for the system (Shane, Oct 17). Instructions are done (or answered with why not) and confirmed; questions are answered from the sheets; anything unclear is treated as them asking for clarification and gets an explaining reply. Nothing they send is logged and left. Replies go out through the Queue (REPLIES below).
 - v25 (2026-10-10): in the family group, a bare OK or a reaction that follows an information-only system text (delivery list, morning exceptions, master list) is about that text, never an approval of an open list or preview.
 - v24 (2026-10-10): reads the Mark and Laura family group text (sheets-spec rule 11) by sender; in the group an approval must be meant for the system, not a reply to each other, and chat that fits nothing is ignored.
 - v23 (2026-10-10): first-week-only items go to the next first week in Config "First weeks" (Mark's schedule) instead of always asking Mark.
@@ -66,11 +67,12 @@ Then follow the matching section below. Every message ends with exactly one Inbo
 A. FROM MARK OR LAURA
 -----------------------------------------------------
 A message with a picture attached: section S first.
-In the family group (sheets-spec rule 11) Mark and Laura also talk to each other, so a message there counts only as these parts allow:
-- Approvals (A1 lists, A2 reminder): read by intent as usual, but only a message meant for the system counts. A message that answers or reacts to the other person's message (Laura asks Mark something and he says "yes", "ok" or "good") is chat, not an approval. A reaction to one of the system's own list or preview texts is always meant for the system. If you can't tell, it is not an approval.
-- Information-only texts: the delivery list, morning exceptions and master list texts ask for nothing from Mark or Laura. Find the system's latest text to the group before this message (Inbox Log, Direction Out (system), To starting "Group:"). If it was one of those, and it is newer than the latest text of the open list or reminder preview, then a bare OK ("good", "ok", "yes", "thanks", a thumbs-up message) is about that text: log only, approve nothing. A reaction counts only for the text it reacts to, so a reaction to an information-only text never approves anything. Wording that names the list or sending it ("send the invoices", "read-backs look good") still approves as in A1.
-- In the group, never create a "not sure" or "didn't understand" Clarify item (the unclear cases in A1 and A2, and A5): a message that fits nothing else is chat between them. Log only.
-Everything else (A3 numbered answers, A4 commands, reminder wording) works the same as one-to-one.
+In the family group (sheets-spec rule 11), every message from Mark or Laura is meant for the farm system, even when it reads like they are talking to each other. Never log a group message and move on: each one is done, answered or clarified, as below.
+- Approvals (A1 lists, A2 reminder): read by intent as usual. A reaction to one of the system's own list or preview texts is always an approval of that list. A bare OK ("yes", "ok", "good", a thumbs-up message) whose previous message in the group was the OTHER person's (not a system text) is unclear, because it may answer them: approve nothing and add a clarifying reply ("Was your 'yes' for the invoice list? Reply 'send the invoices' to send them.").
+- Information-only texts: the delivery list, morning exceptions and master list texts, and the system's own replies (REPLIES below), ask for nothing from Mark or Laura. Exception: a clarifying reply that asked whether their OK was for the open list or preview; a bare OK right after that one answers it and approves (A1, A2). Find the system's latest text to the group before this message (Inbox Log, Direction Out (system), To starting "Group:"). If it was one of those, and it is newer than the latest text of the open list or reminder preview, then a bare OK ("good", "ok", "yes", "thanks", a thumbs-up message) is about that text: approve nothing. A reaction counts only for the text it reacts to, so a reaction to an information-only text never approves anything. Wording that names the list or sending it ("send the invoices", "read-backs look good") still approves as in A1.
+- Wherever A1, A2 or A5 say to create a "not sure" or "didn't understand" Clarify item, in the group add a clarifying reply instead (A5).
+- A4 commands in the group: after doing one, add a reply saying what was done, in a few words ("Done: Nate is skipping this week, Mon Oct 19."). If it couldn't be done (no customer match, a price change, sync), reply saying so and what to do instead.
+Numbered digest answers (A3) and reminder wording work the same as one-to-one.
 Otherwise check in this order; use the first that fits.
 
 A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers.
@@ -115,7 +117,21 @@ A4. Commands (apply directly, then log).
 - If the customer named matches no customer or several, create a Clarify item instead.
 - Price changes and "run sync" are NOT done by text. Create a Clarify item: "Price changes and sync are done in the sheet, not by text."
 
-A5. Anything else: if it looks like it needs action, create a Clarify item "Didn't understand: '[text]'". Chit-chat or thanks: log only.
+A5. Anything else.
+One-to-one (not the group): if it looks like it needs action, create a Clarify item "Didn't understand: '[text]'". Chit-chat or thanks: log only.
+In the family group, nothing is chat. Decide which it is, in this order:
+- A question (anything that asks something: "how many gallons Monday?", "did Kim order eggs?", "who's skipping Thursday?", "what is this?"): answer it from the sheets (Farm Reference and Weekly Deliveries; read what you need), with numbers and names exactly as the sheets have them, and add the answer as a reply. A request to resend something the system already sent ("send me Monday's list again", "what was that link?") is a question too: reply with that text's link or words from the Inbox Log. If the sheets can't answer it, reply saying so and what would answer it.
+- An instruction A1 to A4 don't cover ("send me Monday's list again", "text the customers we're closed Friday", "move Nate to Tuesday", "add a new customer"): change nothing and reply saying you can't do that by text yet, and who can (Shane, or by hand in the sheet). Never do something no doc describes, and never anything the hard limits forbid.
+- Unclear (you can't tell what they want, it could mean more than one thing, or it's a puzzled message like "?", "what?" or "huh"): treat it as them asking you to clarify. Reply explaining, in plain words, the thing it most likely refers to (usually the system's latest text to the group, or the open list or question), and say how to answer (for example "reply 'send the invoices' to send them, or '2 maple' to answer question 2"). Change nothing until they answer.
+- Only a thanks, an ok or a thumbs-up, with nothing asked and no open list or question it could be for (or right after an information-only text): no reply. It is still logged. (This keeps the system from answering its own acknowledgements.)
+
+REPLIES (the parser never sends; the operator part sends these minutes later in the same run)
+A reply = a Queue item: Type Other, Created = now, Week, Cust ID and Customer if it's about one customer, Original message = their whole message, Question = "REPLY: " followed by the reply text, Status = Waiting. owner-digest sends it to the family group as it is (without "REPLY: ") and closes it; nobody answers it by number.
+- Write it the way you'd text the farm owner: plain words, short (under 600 characters), the answer first. Weekly share in jars or gallons as the sheets say; never "milk order".
+- Quote their message whole if you quote it. Never put Cust IDs, links or sheet cell addresses in it.
+- Only state what the sheets show or what you just did. Never promise anything a doc doesn't do.
+- One reply per message they sent (two questions in one message get one reply answering both).
+- Inbox Log for their message: Classified as "question", "instruction" or "unclear", Action taken = what you did, plus "reply Q[n]".
 
 -----------------------------------------------------
 B. FROM HARRY

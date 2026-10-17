@@ -1,7 +1,8 @@
-OWNER DIGEST (version 8)
+OWNER DIGEST (version 9)
 Written for: sheets-spec version 4
 
 Change log
+- v9 (2026-10-17): Step 0 sends the parser's replies (Queue Type Other, Question starting "REPLY: ") to the family group right away, unnumbered, and closes them; replies are never part of a batch or a follow-up.
 - v8 (2026-10-10): everything goes to the family group (sheets-spec rule 11), Laura's 6-hour copy is gone; a follow-up tops the open questions back up to Batch size.
 - v7 (2026-10-10): quotes go out in full (a Question cut short with "..." is sent with its full Original message instead); texts over 1,500 characters are split.
 - v6 (2026-10-09): list follow-ups resend the list itself as text (sheets-spec rule 10), not a link.
@@ -16,7 +17,8 @@ HOW TO WORK
 A checklist over the Queue tab. No judgment needed: the parser already wrote each item's Question. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Every text goes to the family group (sheets-spec rule 11), never to anyone else.
 
 Definitions
-- Open batch = Queue items of Type Clarify, Sales, Late order or Other with Status "Sent".
+- Reply = a Queue item of Type Other whose Question starts with "REPLY: " (the parser's answer to something Mark or Laura texted). Replies are never in a batch, never numbered and never followed up: Step 0 handles them, and every other definition and step below leaves them out.
+- Open batch = Queue items of Type Clarify, Sales, Late order or Other (not replies) with Status "Sent".
 - Urgent = an item whose customer's delivery is today or tomorrow and whose week-tab row has Delivered blank. (Delivery list items need answers before the list locks.)
 - Invoice pending = a Queue item of Type Invoice or Read-back with Status "Sent" (an open list approval).
 - "Follow-up every" = Config "Follow-up every (minutes)"; missing or blank = 55 (Mark hears again at every hourly run).
@@ -26,6 +28,9 @@ Definitions
 - Driver items are not handled here (delivery-check sends those). Reminder texts are not handled here (send-reminder does).
 - Quotes in full: every quoted message goes out whole. If a Question's quote was cut short (it ends with "..." or "…" inside the quote marks) and the item's Original message has the full text, send the full Original message in its place. Never shorten a quote yourself.
 - Long texts: if a text would be over 1,500 characters, split it between questions into texts of at most 1,500 characters, each starting "(1 of 2)", "(2 of 2)" and so on; the first keeps the opening line.
+
+STEP 0. REPLIES (first, every run, even while a list approval or a batch is open: a reply asks for nothing)
+Replies with Status "Waiting", oldest Created first: text the family group ONE message with each reply's text (the Question without "REPLY: "), separated by a blank line if there are several. Split over 1,500 characters as above. Then on each: Status = Resolved, Sent to = Group, First sent = now, Answer = "sent", Resolved = now.
 
 STEP 1. MOVE STALE INVOICE HOLDS
 Any Clarify item whose Question starts with "Invoice" and that has been Sent for 24 hours with no Answer: create a Sales item with the same customer and question (customer service follow-up), then set the Clarify item's Answer = "moved to Sales Q[n]", Status = Resolved, clear its Digest #.
@@ -39,7 +44,7 @@ b. Open batch: unanswered items = Status Sent and NO Answer. If any of them has 
 c. Half-closed, once a day: if now is at or after Daily follow-up time and any half-closed item has (Last nudged, else First sent) before today: text the family group one message: "Still open (reply with the number and sale / no sale / resolved):" followed by each such item's "[Digest #]. [Question] (answer so far: '[Answer]')", quoting the answer in full. Set Last nudged = now on each.
 
 STEP 3. NEW ITEMS
-Waiting items = Type Clarify, Sales, Late order or Other with Status "Waiting". If there are none, finish.
+Waiting items = Type Clarify, Sales, Late order or Other (not replies) with Status "Waiting". If there are none, finish.
 - If Invoice pending OR an open batch has any unanswered item: send ONLY the urgent Waiting items (if any). Otherwise send the next batch.
 - Next batch = up to Batch size Waiting items: urgent first, then oldest Created first.
 - Number them: the lowest Digest # values not used by any item that isn't Resolved (half-closed items keep their numbers), starting at 1.

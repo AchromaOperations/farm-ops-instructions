@@ -1,6 +1,7 @@
 SHEETS SPEC (version 4)
 
 Change log
+- v4 (2026-10-17, revised 26): rule 11: every message Mark or Laura send in the family group is for the system and gets acted on, answered or clarified (parser A). Queue: a Type Other item whose Question starts "REPLY: " is the system's reply to them.
 - v4 (2026-10-15, revised 25): Delivery Lists holds one PDF per delivery day (a Google Doc only as the fallback).
 - v4 (2026-10-10, revised 24): weekly master list: Config "Weekly master list time" 20:30, header labels "Weekly master list last sent" and "Weekly master list checked", Master Lists folder for its PDFs.
 - v4 (2026-10-10, revised 23): one Farm ops routine (parser part, then operator part) twice an hour replaces the two routines; System "Sunday alert sent".
@@ -65,7 +66,7 @@ GENERAL RULES (apply to every skill)
    - One text if it fits in 1,500 characters. Otherwise split it between numbered lines into texts of at most 1,500 characters, each starting "(1 of 2)", "(2 of 2)" and so on; the first keeps the title line.
    - Nothing else goes in a list text (no digest questions, no other news).
 
-11. Family group text. Everything the system sends to Mark and/or Laura goes as ONE group text to the two of them together (Config "Owner (Mark) phone" and "Backup (Laura) phone"), using Quo's group message, never as separate one-to-one texts. Either of them may answer. No one else is ever added to this group. When the same text also goes to Harry or Shane, they each get their own one-to-one copy. If one of the two Config phones is blank, text the other one-to-one instead (a group needs both). In this group Mark and Laura can also talk to each other, so the parser is stricter there (parser section A).
+11. Family group text. Everything the system sends to Mark and/or Laura goes as ONE group text to the two of them together (Config "Owner (Mark) phone" and "Backup (Laura) phone"), using Quo's group message, never as separate one-to-one texts. Either of them may answer. No one else is ever added to this group. When the same text also goes to Harry or Shane, they each get their own one-to-one copy. If one of the two Config phones is blank, text the other one-to-one instead (a group needs both). Every message Mark or Laura send in this group is treated as meant for the system: it is done, answered or clarified, never just logged (parser section A).
 
 LOCATION
 Google Drive folder: the Ops folder = the Google Drive folder that directly contains the Google Sheet "Farm Reference" (its Config A1 reads "RF-OPS REFERENCE v1"). Find it by searching Drive for that sheet. There must be exactly one.
@@ -156,6 +157,7 @@ TAB: Queue (header in row 1). Everything waiting on a human.
 Q# | Type | Created | Week | Cust ID | Customer | Original message | Question | Status | Digest # | Sent to | First sent | Last nudged | Answer | Answered by | Resolved | Outcome
 - Q#: running number, never reused.
 - Type (dropdown): Clarify, Sales, Invoice, Read-back, Late order, Reminder, Driver, Other.
+  An Other item whose Question starts with "REPLY: " is the system's reply to something Mark or Laura texted in the group (an answer, a confirmation or a clarification). It needs no answer: owner-digest sends it and sets it Resolved.
   Read-back items hold the link to a read-back approval list in Question.
   Driver items are questions for Harry (sent by delivery-check, not the digest). Invoice items hold the link to that day's invoice list doc in Question.
 - Digest # (TRACKER): the number Mark sees in the current digest (1, 2, 3). Cleared when the item is Resolved. Never two items that aren't Resolved with the same Digest #.
