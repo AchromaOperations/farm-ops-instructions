@@ -1,18 +1,6 @@
 INVOICING (version 8)
 Written for: sheets-spec version 4
 
-Change log
-- v8 (2026-10-10): the invoice list goes to the family group (sheets-spec rule 11).
-- v7 (2026-10-10): Extra Milk is priced by share: full share (1 gal or more) at the Products price, half share at Config "Extra milk price, half share".
-- v6 (2026-10-09): the invoice list goes to Mark as text (sheets-spec rule 10), not a doc link.
-- v5 (2026-10-09): the invoice list waits only on sheets-spec rule 9 (a reminder still waiting for wording no longer holds it), and yields to a reminder preview that is about to go out.
-- v4 (2026-10-08): weekly share wording.
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v3 (2026-10-08): waits for any open approval (sheets-spec rule 9); read-back lists go first.
-- v2 (2026-10-08 fix): NEXT week per sheets-spec WEEK NAMES.
-- v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
-- v1 (2026-10-07): first version.
-
 HOW TO WORK
 A checklist with four parts. Do every part whose condition is true, in order. No judgment: amounts come from the week tab and prices from the Products tab. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
 

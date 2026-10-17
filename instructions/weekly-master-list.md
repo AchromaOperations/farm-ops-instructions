@@ -1,8 +1,5 @@
-WEEKLY MASTER LIST (version 1)
+WEEKLY MASTER LIST (version 2)
 Written for: sheets-spec version 4
-
-Change log
-- v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 HOW TO WORK
 A checklist. A script does all the counting and draws the page. Your job is to copy cells into its input file exactly, run it, save the PDF and text the link. Never add up, round, fix or reword anything yourself, and never change the numbers or text the script gives you.
@@ -15,6 +12,7 @@ Which week:
 STEP 1. CHECK
 - If that week tab's "Weekly master list checked" is today's date (yyyy-mm-dd), finish. Tonight's check is already done.
 - Get the time now: `TZ=America/New_York date '+%Y-%m-%d %H:%M'`. This is "read time". Use it below, not the time the run started.
+- Quick check, Sunday to Thursday only, when the tab's "Weekly master list last sent" is filled: read only the Day and Changes columns of the customer table. Look for a Changes entry with a time later than "Weekly master list last sent" that doesn't end "(standing order sync)", on a row whose delivery day this week is after today. If there is none, nothing changed: set "Weekly master list checked" = today's date, add "weekly-master-list: done, nothing sent (no changes)" to Steps run, and finish without reading or writing anything else. If there is one (or you aren't sure), go on to Step 2. (Saturday, and a week with no list sent yet, always go on.)
 
 STEP 2. READ
 - That week tab: the header-block values "Week" and "Weekly master list last sent", and the whole customer table (the "Cust ID" header row and every row below it).

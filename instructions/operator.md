@@ -1,37 +1,20 @@
-OPERATOR (version 12)
+OPERATOR (version 13)
 Written for: sheets-spec version 4
-
-Change log
-- v12 (2026-10-17): STEP 2 texts Shane every new ALERT problem (system issues like sheet cells not written correctly), from this run and earlier runs, once each per day.
-- v11 (2026-10-10): weekly-master-list is due once a night at Config "Weekly master list time": Saturdays for NEXT week, Sunday to Thursday for THIS week (it sends only if something changed).
-- v10 (2026-10-10): the Sunday alert is marked in System "Sunday alert sent" so it goes once now that runs are every 30 minutes.
-- v9 (2026-10-10): the Sunday alert goes to the family group and Shane.
-- v8 (2026-10-10): confirm-orders is due for read-backs on any later built week too.
-- v7 (2026-10-10): Step 0 b2 builds week tabs a few weeks ahead (Config "Weeks built ahead") and adds rows for new Active customers; 15 months of prebuilt tabs are no longer needed.
-- v6 (2026-10-09): owner-digest is due every hourly run while Mark has an unanswered item (Config "Follow-up every (minutes)"), and once a morning for half-closed Sales items.
-- v5 (2026-10-09): Step 0c2 adds missing header labels and columns on THIS and NEXT week's tabs every run.
-- v4 (2026-10-08): Eastern time from TZ; catch-up delivery list only from THIS week's tab (never before Week 1); Sunday alert if the reminder never went out.
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v3 (2026-10-08): confirm-orders step.
-- v2 (2026-10-07): shared run lock with the parser; morning exceptions; approvals never both open; missing week tab alert; held no-email invoices.
-- v1 (2026-10-07): first version.
 
 HOW TO WORK
 This is a checklist, not a judgment task. Every check below is a yes/no answer from values in the sheets. Do not deliberate, summarize, or read anything not listed. Do not read customer tables, the Inbox Log, or any other skill doc unless its check below says it is due. Do not read text messages; the Parser routine does that.
 
 READ ONLY THESE
-- sheets-spec: the version line (it must say version 4; if not, record a Problem, text Shane once, end) and the System tab section (run flag and week tab rules).
+- sheets-spec: the version line (it must say version 4; if not, record a Problem, text Shane once, end) and the System tab section (week tab rules).
 - Farm Reference: Config tab, System tab, Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b2 (build ahead), when something needs building.
 - Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as defined in sheets-spec WEEK NAMES (read that section too).
 
 STEP 0. START
 a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.)
-b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section) exactly, using "Operator run in progress since" as your own flag. If the rule says end: write a run history row with the reason in Problems, and end WITHOUT clearing any flag (the flag belongs to the other run).
-b2. Build ahead (it sends nothing): for THIS week (or NEXT week if there is no THIS week yet) and each of the following Config "Weeks built ahead" weeks (missing or blank = 4), if its tab is missing or unfinished, build or finish it as sheets-spec BUILDING A WEEK TAB says. Also add a row for any Active customer missing from those unlocked tabs. At most 2 tab builds per run (the next run continues). Note what you built in run history. Read Customers and Products only when something needs building or adding.
+b. Build ahead (it sends nothing): for THIS week (or NEXT week if there is no THIS week yet) and each of the following Config "Weeks built ahead" weeks (missing or blank = 4), if its tab is missing or unfinished, build or finish it as sheets-spec BUILDING A WEEK TAB says. Also add a row for any Active customer missing from those unlocked tabs. At most 2 tab builds per run (the next run continues). Note what you built in run history. Read Customers and Products only when something needs building or adding.
 c. Week tabs: find LAST, THIS and NEXT week's tabs (sheets-spec WEEK NAMES). If one is missing in the way the "Week tabs" rule describes, follow the "Week tabs" rule in sheets-spec, and skip every check below that needs the missing tab.
 c2. Labels: on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
 d. Quiet = now is at or after "Quiet hours start" or before "Quiet hours end". If Quiet, go to STEP 2. (Nothing is sent or started during quiet hours.)
-e. Parser late: if "Last parse finished" is blank or older than "Parser late after" minutes, AND "Parser late alert sent" is blank or more than 24 hours ago: text Shane "Operator: the parser hasn't finished since [Last parse finished]." Set "Parser late alert sent" = now. Continue.
 
 STEP 1. DUE CHECKS (in this order; run every one that is due)
 For each due step: open the file instructions/[name].md in this repository (for example instructions/send-reminder.md) and follow it. It reads the sheets itself. When it finishes, add "[doc]: done" or "[doc]: failed, [short reason]" to Steps run, then go on to the next check. A failure in one step never stops the others.
@@ -82,6 +65,5 @@ If a step is due but no file instructions/[name].md exists in this repository:
 
 STEP 2. FINISH
 a0. Problem alerts (skip if Quiet): collect the ALERT problems (routines/farm-ops.md SYSTEM PROBLEMS) from this run so far and from every run history row whose Run start is after System "Problem alerts checked" (blank = the last 24 hours). Leave out any a step already texted Shane about in this run, and any already listed in System "Problem alerts sent" for today. If any are left, text Shane (one-to-one, Config "Admin (Shane) phone") one message: "Farm ops problem: [problem]", or for several "Farm ops problems:" then one per line (at most 10, then "+[n] more in the System tab run history"). Then set "Problem alerts sent" = today's date + every problem alerted today (a few words each), e.g. "2026-10-17: Customers Phone not written for C012; Drive save failed". Set "Problem alerts checked" = now (also when there was nothing to send).
-a. Add one row to the System run history: Run start (from Step 0), Run end = now, Routine = Operator, Trigger = Scheduled (or Manual if this run was started with Run now text), Steps run, Texts sent (total this run, including texts sent by the steps), Problems.
-b. Clear "Operator run in progress since".
-c. End with one line: steps run, texts sent, problems.
+a. Add one row to the System run history: Run start (from Step 0), Run end = now, Routine = Operator, Trigger = Scheduled (or Manual if this run was started with Run now text), Steps run (start with "parser: nothing new" if Part 1 found no new texts), Texts sent (total this run, including texts sent by the steps), Problems.
+b. End with one line: steps run, texts sent, problems.

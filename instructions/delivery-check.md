@@ -1,11 +1,6 @@
 DELIVERY CHECK (version 2)
 Written for: sheets-spec version 4
 
-Change log
-- v2 (2026-10-10): Mark's alert goes to the family group (sheets-spec rule 11).
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v1 (2026-10-07): first version.
-
 HOW TO WORK
 A checklist. No judgment: the parser reads Harry's replies; this step only asks. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Only text Harry and the family group (Mark and Laura, sheets-spec rule 11).
 

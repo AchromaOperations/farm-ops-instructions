@@ -1,40 +1,5 @@
 SHEETS SPEC (version 4)
 
-Change log
-- v4 (2026-10-17, revised 27): System "Problem alerts checked" and "Problem alerts sent": ALERT problems (system issues) are texted to Shane.
-- v4 (2026-10-17, revised 26): rule 11: every message Mark or Laura send in the family group is for the system and gets acted on, answered or clarified (parser A). Queue: a Type Other item whose Question starts "REPLY: " is the system's reply to them.
-- v4 (2026-10-15, revised 25): Delivery Lists holds one PDF per delivery day (a Google Doc only as the fallback).
-- v4 (2026-10-10, revised 24): weekly master list: Config "Weekly master list time" 20:30, header labels "Weekly master list last sent" and "Weekly master list checked", Master Lists folder for its PDFs.
-- v4 (2026-10-10, revised 23): one Farm ops routine (parser part, then operator part) twice an hour replaces the two routines; System "Sunday alert sent".
-- v4 (2026-10-10, revised 22): rule 11: texts for Mark and Laura go to one family group text; Laura after is retired; Nudge after now only paces Shane on the reminder.
-- v4 (2026-10-10, revised 21): Config "First weeks" lists which delivery weeks carry first-week-only products.
-- v4 (2026-10-10, revised 20): week tabs are built a few weeks ahead (Config "Weeks built ahead", default 4; BUILDING A WEEK TAB) instead of 15 months; Day, Route and Stop # are refreshed from Customers before each delivery list.
-- v4 (2026-10-10, revised 19): Extra Milk has two rates: Products price for full shares (1 gal or more), Config "Extra milk price, half share" for half shares.
-- v4 (2026-10-10, revised 18): Extra Milk, a paid add-on of extra half-gallon jars for one week, separate from the never-invoiced share; off until its Products row is Active.
-- v4 (2026-10-10, revised 17): approvals are read by intent, not exact words.
-- v4 (2026-10-09, revised 16): share cream (in place of a jar) is handled off the sheet: not invoiced, not counted.
-- v4 (2026-10-09, revised 15): milk goes out in half-gallon jars only.
-- v4 (2026-10-09, revised 14): "(standing order sync)" Changes entries are not changes (lists, read-back risk and sync conflicts ignore them).
-- v4 (2026-10-09, revised 13): cream is a paid add-on; add-ons can be standing orders.
-- v4 (2026-10-09, revised 12): rule 10: approval lists go to Mark as the list in the text, not a doc link.
-- v4 (2026-10-09, revised 11): Config "Follow-up every (minutes)" (Mark followed up every hourly run) and "Daily follow-up time"; "Nudge after" now only paces Laura and Shane on the reminder; header label "Reminder others last asked"; a Digest # stays taken until Resolved.
-- v4 (2026-10-08, revised 10): reminder preview goes to Mark, Laura, Harry and Shane; "Reminder approvals" records who approved; two different approvers needed.
-- v4 (2026-10-08, revised 9): Products "Weeks" column (All, First week only).
-- v4 (2026-10-08, revised 8): Quo send tools return no message ID; system texts are logged with ID "pending" and the parser fills it in by matching.
-- v4 (2026-10-08, revised 7): Customers "Notes" may start with "NO TEXTS" (customer opted out of texts: never text them).
-- v4 (2026-10-08, revised 6): list subfolders are created on first use; no instruction docs or Archive in Drive.
-- v4 (2026-10-08, revised 5): the Ops folder is found by the Farm Reference sheet it contains, not by name.
-- v4 (2026-10-08, revised 4): TERMS: milk is the customer's weekly share, never an order; only add-ons are orders.
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v4 (2026-10-08, revised 3): manual review of read-backs (Config "Read-back review", Queue type Read-back, Read-back Lists folder, rule 9 one approval at a time).
-- v4 (2026-10-08, revised 2): order read-backs (Products "Text name"; week columns "Confirm needed" and "Confirmation sent").
-- v4 (2026-10-08, revised): WEEK NAMES defined by dates (fixes Fri/Sat before week 1).
-- v4 (2026-10-07, revised after review): routines never run at the same time; approvals never both open; morning exceptions; missing week tab alerts.
-- v4 (2026-10-07): every system text logged with its Quo ID; Queue gets Digest # and Driver type; reminder wording can be revised (check failed, final text, test sent fields); Mark-approved late additions; Invoice Lists folder.
-- v3 (2026-10-07): System tab tracks two routines (Parser, Operator) with separate run flags and Last parse finished; Config adds Parser late, report times, missing-doc alerts.
-- v2 (2026-10-07): cell kinds replace "never overwrite"; one date-time format; file lookup rule; Phone 2 matching; cursor overlap + message ID dedupe; stale run flag; lock time is the real cutoff; structured Not delivered; dropdowns; year-crossing tab names.
-- v1 (2026-10-07): first draft.
-
 This describes the two workbooks every skill reads and writes. Every skill doc says which sheets-spec version it was written for. If that doesn't match the version above, or a skill and this spec disagree, stop and report it instead of guessing.
 
 =====================================================
@@ -141,7 +106,7 @@ Settings and starting values:
 - Laura after (hours): 6   (no longer used: Laura is in the family group, rule 11)
 - Bulk send batch size: 40
 - Stale run after (minutes): 50
-- Parser late after (minutes): 90
+- Parser late after (minutes): no longer used (the parser and operator parts run in the same run)
 - Weekly master list time: 20:30   (the first run at or after this time sends the master list: normally the 8:40pm run, so it arrives about 8:45pm. Runs after 9pm skip the operator part, so keep it before 20:40. "(not set yet)" = off.)
 - Finance update time: (not set yet)
 - Cursor overlap (minutes): 60
@@ -173,10 +138,11 @@ Time | Direction | From | To | Who | Classified as | Action taken | Written to |
 
 TAB: System (labels in column A, values in column B; all TRACKER cells)
 Message cursor | date-time of the newest message the parser has finished
-Parser run in progress since | date-time the parser part of a run started; blank when not running
-Operator run in progress since | date-time the operator part of a run started; blank when not running
-Last parse finished | date-time the parser part last finished
-Parser late alert sent | date-time Shane was last told the parser is late
+Run in progress since | date-time the current Farm ops run started; blank when no run is going (routines/farm-ops.md RUN FLAG)
+Parser run in progress since | no longer used (leave blank; replaced by "Run in progress since")
+Operator run in progress since | no longer used (leave blank)
+Last parse finished | no longer updated
+Parser late alert sent | no longer used
 Last payment check | date-time invoicing last checked Square for payments
 Missing doc alerts | date + doc names Shane was told about today, e.g. "2026-10-08: owner-digest, invoicing"
 Sunday alert sent | date the "reminder never went out" alert last went out
@@ -186,10 +152,7 @@ Then a blank row, then the run history (LOG), header row starting with "Run star
 Run start | Run end | Routine | Trigger | Steps run | Texts sent | Problems
 - If any label above is missing (for example an older setup), add it as a new row above the run history. Adding labels is allowed; never remove one.
 - Reading texts: start from (Message cursor minus Cursor overlap), and skip any message whose ID is already in the Inbox Log (only search Inbox Log rows from the last 2 days; older IDs can't be in the window). The overlap catches texts that arrive late or share a minute.
-- Run flags: one Farm ops routine runs twice an hour, parser part then operator part (routines/farm-ops.md). The parser and operator parts never run at the same time, even when two runs overlap. At start, each part:
-  1. Checks BOTH flags. A flag older than "Stale run after" minutes is a crashed run: clear it and add a Problems note.
-  2. If the other routine's flag is filled: wait 2 minutes and check again, up to 5 times. If it's still filled, end this run (note "skipped: other routine running"). If its OWN flag is filled, end immediately.
-  3. Set its own flag to now, wait 30 seconds, and check the other flag once more. If the other flag is now filled with an EARLIER time than its own, clear its own flag and go back to step 2. (Tie: the Parser goes first.)
+- Run flag: one Farm ops run at a time. routines/farm-ops.md RUN FLAG sets System "Run in progress since" at the start of a run and clears it at the end; a run that finds it set (and less than Config "Stale run after" minutes old) ends at once and changes nothing. The parser and operator parts run one after the other inside the same run, so they never overlap.
 - Week tabs: the operator builds missing tabs first (BUILDING A WEEK TAB). If NEXT week's tab still can't be found, or THIS week's tab can't be found on or after Sun Oct 11 2026, add "Week tab missing: [name]" to "Missing doc alerts" handling (text Shane once per day) and skip every step that needs that tab.
 
 =====================================================

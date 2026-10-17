@@ -1,18 +1,6 @@
 SEND REMINDER (version 9)
 Written for: sheets-spec version 4
 
-Change log
-- v9 (2026-10-10): Mark and Laura get every reminder text as one family group text (sheets-spec rule 11), followed up hourly; Shane stays one-to-one every Nudge after hours; Laura's separate wording ask is gone.
-- v8 (2026-10-09): Mark is followed up at every hourly run while the wording or his YES is missing; Laura and Shane stay at every Nudge after hours (new label "Reminder others last asked"); Laura is first asked Nudge after hours after the request.
-- v7 (2026-10-08): preview goes to Mark, Laura, Harry and Shane; the parser needs two different approvals (never mention this in any text).
-- v6 (2026-10-08): one text per phone number (shared numbers); NO TEXTS customers skipped; late approval moves the reply-by time.
-- v5 (2026-10-08): cutoff line no longer says "your order" (milk is a weekly share).
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v4 (2026-10-08): Laura is asked for the wording after Nudge after hours (3), not 1 hour.
-- v3 (2026-10-08): waits for any open list approval (sheets-spec rule 9).
-- v2 (2026-10-07): preview waits while an invoice list is waiting on Mark (approvals never both open).
-- v1 (2026-10-07): first version.
-
 HOW TO WORK
 A checklist. Every stage is decided by cells in the header block of NEXT week's tab (sheets-spec WEEK NAMES; on Fri Oct 9 2026 that is Week 1). Do exactly ONE stage per run: the first one whose condition is true, then finish. The only judgment is the wording check in Stage C.
 

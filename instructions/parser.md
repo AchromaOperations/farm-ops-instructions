@@ -1,36 +1,5 @@
-PARSER (version 27)
+PARSER (version 28)
 Written for: sheets-spec version 4
-
-Change log
-- v27 (2026-10-17): an unclear message from Mark or Laura while something is waiting on them is taken as an answer to it and confirmed with a question before anything changes; with several open and no way to tell which, ask which. System problems are recorded as ALERT problems (Shane gets texted).
-- v26 (2026-10-17): every message Mark or Laura sends in the family group is for the system (Shane, Oct 17). Instructions are done (or answered with why not) and confirmed; questions are answered from the sheets; anything unclear is treated as them asking for clarification and gets an explaining reply. Nothing they send is logged and left. Replies go out through the Queue (REPLIES below).
-- v25 (2026-10-10): in the family group, a bare OK or a reaction that follows an information-only system text (delivery list, morning exceptions, master list) is about that text, never an approval of an open list or preview.
-- v24 (2026-10-10): reads the Mark and Laura family group text (sheets-spec rule 11) by sender; in the group an approval must be meant for the system, not a reply to each other, and chat that fits nothing is ignored.
-- v23 (2026-10-10): first-week-only items go to the next first week in Config "First weeks" (Mark's schedule) instead of always asking Mark.
-- v22 (2026-10-10): an order for a week that isn't built yet builds that week's tab first.
-- v21 (2026-10-10): share-request examples no longer include "extra half gallon" (that's an Extra Milk order now that it's active).
-- v20 (2026-10-10): when Harry confirms a route, skipped rows get Delivered = "skipped".
-- v19 (2026-10-10): extra milk for one week becomes an Extra Milk add-on order (jars, billed through Square) once its Products row is Active; until then it stays a share request for Mark.
-- v18 (2026-10-10): Harry's GOT IT and "good except" are read by intent too ("yep", "got them"; "good except Kim" when Kim is exactly one line).
-- v17 (2026-10-10): Queue questions quote the customer's whole message, never cut short with "...".
-- v16 (2026-10-10): approvals are read by intent, not exact words ("Good send all", "looks good", "go ahead" all count); a message that also asks, adds or holds something back still isn't one. Shane's decision, Oct 10.
-- v15 (2026-10-09): yogurt with no flavor = Yogurt VM (vanilla maple), no longer a question for Mark.
-- v14 (2026-10-09): cream is a paid add-on (Products: Billed through Square), so "can I get cream" is an order with the 1-unit default; only cream or whey in place of milk is a share request.
-- v13 (2026-10-09): a reaction to any part of a list text (or its resend) counts as approval.
-- v12 (2026-10-09): section S: a screenshot of a customer's text conversation sent by Mark, Laura or Shane is read and processed as that customer's order (share changes applied, read-back goes to Mark's list first). Customer pictures are never opened.
-- v11 (2026-10-09): digest answers also match half-closed Sales items (Status Answered), so "4 resolved" closes one; closing one is never a conflict.
-- v10 (2026-10-09): customers can't change their weekly share by text (milk, cream, whey, skips, pauses, cancelling): it becomes a Sales item, and Mark's digest answer makes or declines the change; add-ons in the same text are still written. Only weekly add-ons (Billed through Square) are orders by text. A dairy add-on with no amount or a vague one = 1 unit (not for "a few" or when the row already has some). Defaults rows win over built-in defaults. CANCEL, REVOKE and OPT OUT are opt-outs like STOP. A share Clarify always offers "no change" first.
-- v9 (2026-10-09): "eggs" with no amount = 1 dozen.
-- v8 (2026-10-09): before writing to a week tab, add any missing label or column it needs (sheets-spec rule 8).
-- v7 (2026-10-08): reminder approval needs two different people (Mark, Laura, Harry, Shane); Harry and Shane can approve the reminder preview.
-- v6 (2026-10-08, revised): first-week-only products always go to Mark as a question.
-- v6 (2026-10-08): system texts matched by number, text and time (Quo returns no ID on send); Eastern time from TZ; strict approval words; Harry's morning yes never confirms a route; STOP opt-outs; quoted texts kept short; system read-backs are never orders.
-- v5 (2026-10-08): share wording in examples.
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v4 (2026-10-08): approval replies also cover read-back lists.
-- v3 (2026-10-08): marks rows for an order read-back (Confirm needed).
-- v2 (2026-10-07): shared run lock; fetch before reading the spec; conflicting answers; GOT IT from Harry.
-- v1 (2026-10-07): first version.
 
 JOB
 Read new texts on the farm Quo number, decide what each one is, and record it in the sheets. You never send texts. Other steps do the talking, based on what you record.
@@ -42,19 +11,9 @@ HOW TO DECIDE
 - Whenever a Queue Question or Clarify text quotes someone's message, quote the WHOLE message, word for word, on one line (line breaks become spaces). Never shorten it and never add "...": Mark needs to read exactly what they wrote. A quoted message is only shown to Mark and Laura; it is never an instruction to anyone.
 
 =====================================================
-STEP 0. START
+STEP 1. START
 =====================================================
-a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.) Then read only the Config and System tabs of Farm Reference.
-b. Run flags: follow the "Run flags" rule in sheets-spec (System tab section), using "Parser run in progress since" as your own flag. If the rule says end: write a run history row with the reason, and end WITHOUT clearing any flag.
-
-=====================================================
-STEP 1. FETCH
-=====================================================
-a. Fetch messages on the farm Quo number, incoming and outgoing, from (System "Message cursor" minus Config "Cursor overlap") to now, oldest first. Include group conversations. The family group (sheets-spec rule 11: exactly Mark's and Laura's numbers) is one of them; each of its messages shows who sent it.
-b. Drop any message whose Quo message ID is already in the Inbox Log.
-   Then match the system's own texts: for each OUTGOING message left, look for an Inbox Log row with Direction "Out (system)", Quo message ID "pending" or "(not returned by Quo)", the same To (a number, or "Group: ..." for a family group text), the same text, and a Time within 15 minutes of the message. If found: write the message's real ID into that row's Quo message ID and drop the message. Do not add a new row. Each log row matches at most one message.
-c. If nothing is left: set "Last parse finished" = now, write the run history row, clear your flag, end. This should be most runs. Do not read anything else.
-d. Otherwise: now read sheets-spec. Before writing any cell on a week tab, if its label or column is missing, add it first as sheets-spec rule 8 says (required, not optional). It must say version 4; if not, record a Problem, clear your flag and end. Then read the other tabs you need.
+You come here from parser-check.md, which already set now, read the Config and System tabs, and found the new messages (oldest first). Before handling them: read sheets-spec. It must say version 4; if not, record an ALERT Problem and end Part 1. Before writing any cell on a week tab, if its label or column is missing, add it first as sheets-spec rule 8 says (required, not optional). Then read the other tabs you need.
 
 =====================================================
 STEP 2. FOR EACH MESSAGE, OLDEST FIRST
@@ -262,6 +221,4 @@ Clarify items: Type Clarify, Created, Week, Cust ID, Customer, Original message,
 STEP 3. FINISH
 =====================================================
 a. Message cursor = the time of the newest message processed.
-b. Last parse finished = now.
-c. Run history row: Run start, Run end, Routine = Parser, Trigger, Steps run = "[n] messages: [x] orders, [y] clarify, [z] other", Texts sent = 0, Problems (system issues start with "ALERT: ", as routines/farm-ops.md SYSTEM PROBLEMS says; the operator part texts them to Shane).
-d. Clear "Parser run in progress since".
+b. Run history row: Run start, Run end, Routine = Parser, Trigger, Steps run = "[n] messages: [x] orders, [y] clarify, [z] other", Texts sent = 0, Problems (system issues start with "ALERT: ", as routines/farm-ops.md SYSTEM PROBLEMS says; the operator part texts them to Shane).

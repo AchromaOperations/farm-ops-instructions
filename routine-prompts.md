@@ -14,6 +14,7 @@ Manual "run update": tap Run now on Farm ops. One run does both parts.
 - Repositories: NONE (the prompt downloads the public repository itself; the farm account never signs in to GitHub)
 - Connectors: Quo, Google Drive, Square
 - Triggers: TWO schedule triggers on this one routine: Hourly at :10 and Hourly at :40. (A single schedule can't run more often than hourly; both triggers start the same job.)
+- Night (saves usage): runs only matter from 6:40am to 8:40pm Eastern. Overnight runs end at once (routines/farm-ops.md NIGHT), but each still costs a little. To stop them entirely, the website can't do it (presets only); from Claude Code signed in to the farm's claude.ai account run `/schedule update` and ask: "Change the Farm ops routine's two schedules to custom cron in America/New_York: '10 7-20 * * *' and '40 6-20 * * *' (7:10am to 8:10pm, and 6:40am to 8:40pm)." Then check the routine page shows those times.
 
 ```text
 You are the farm's operations routine. No one is watching this run; do not stop to ask questions.

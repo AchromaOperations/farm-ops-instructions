@@ -1,18 +1,6 @@
 OWNER DIGEST (version 9)
 Written for: sheets-spec version 4
 
-Change log
-- v9 (2026-10-17): Step 0 sends the parser's replies (Queue Type Other, Question starting "REPLY: ") to the family group right away, unnumbered, and closes them; replies are never part of a batch or a follow-up.
-- v8 (2026-10-10): everything goes to the family group (sheets-spec rule 11), Laura's 6-hour copy is gone; a follow-up tops the open questions back up to Batch size.
-- v7 (2026-10-10): quotes go out in full (a Question cut short with "..." is sent with its full Original message instead); texts over 1,500 characters are split.
-- v6 (2026-10-09): list follow-ups resend the list itself as text (sheets-spec rule 10), not a link.
-- v5 (2026-10-09): Mark is followed up at every hourly run (Config "Follow-up every (minutes)", default 55), each follow-up lists every unanswered question; half-closed Sales items get one morning follow-up a day; Digest # stays taken until Resolved.
-- v4 (2026-10-09): share requests from customers ask Mark for the change to make, or 'no change'.
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v3 (2026-10-08): nudges for read-back lists too.
-- v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
-- v1 (2026-10-07): first version.
-
 HOW TO WORK
 A checklist over the Queue tab. No judgment needed: the parser already wrote each item's Question. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Every text goes to the family group (sheets-spec rule 11), never to anyone else.
 

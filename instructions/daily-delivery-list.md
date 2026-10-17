@@ -1,22 +1,6 @@
 DAILY DELIVERY LIST (version 13)
 Written for: sheets-spec version 4
 
-Change log
-- v13 (2026-10-15): the list is now the approved PDF design (logo header in the website's colors, tiles, skip box, packing list and stops with tick boxes), made by tools/delivery_list_pdf.py and saved to Delivery Lists as a PDF. The Google Doc (tools/delivery_list_html.py, restyled to match) is only the fallback when the PDF can't be saved. Shane: the Doc that went out Oct 15 was the wrong design.
-- v12 (2026-10-15): the doc's layout is fixed: tools/delivery_list_html.py writes the whole list as HTML and the doc is created from it (HTML converted to a Google Doc), so every day looks the same. Never lay the doc out by hand; plain text only as a reported fallback. (Thursday Oct 15's list came out as plain text.)
-- v11 (2026-10-13): every stop shows the customer's phone number next to the address (Phone, plus Phone 2 if filled).
-- v10 (2026-10-10): Mark and Laura get the list texts as one family group text; Harry still gets his own.
-- v9 (2026-10-10): Day, Route and Stop # are refreshed from Customers on unlocked rows before the list is built; a blank Stop # is flagged "!".
-- v8 (2026-10-10): skipped stops stay on the route in their place, flagged SKIP, and are listed in a box at the top (with no-milk stops); the text says how many are skipping; a skip added after lock reads "SKIP, no delivery today".
-- v7 (2026-10-10): Extra Milk jars are packed with the share jars and shown as "+ N extra" at the stop.
-- v6 (2026-10-09): milk is counted in half-gallon jars on the packing list and each stop (Mark: half-gallon jars only).
-- v5 (2026-10-09): "(standing order sync)" Changes entries don't flag a stop as CHANGED or put it on the change list.
-- v4 (2026-10-09): a customer's weekly share request still open at lock is flagged on the row, never guessed.
-- v3 (2026-10-08): share wording on the list and lock text.
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v2 (2026-10-07): empty days count as no delivery (no list, no Harry texts); test customers left out; MORNING EXCEPTIONS part for items added after the list went out.
-- v1 (2026-10-07): first version.
-
 HOW TO WORK
 A checklist. It locks one delivery day's orders, makes that day's delivery list as a PDF in Drive, and texts the link. The only judgment is the marked guess in Step 2. The list's layout and counts come from a script (Step 4); you never lay it out yourself.
 

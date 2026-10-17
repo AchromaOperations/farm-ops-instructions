@@ -1,14 +1,6 @@
 FARM SETUP (version 5)
 Written for: sheets-spec version 4
 
-Change log
-- v5 (2026-10-10): builds week tabs only Config "Weeks built ahead" weeks ahead; the operator builds the rest as they come.
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v4 (2026-10-07): written for sheets-spec v4 (also creates Delivery Lists and Invoice Lists folders).
-- v3 (2026-10-07): System tab labels per sheets-spec v3.
-- v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
-- v1 (2026-10-07): first draft.
-
 Purpose: build the Farm Reference and Weekly Deliveries workbooks described in the doc "sheets-spec", starting from the farm's existing customer sheet. Shane is in the chat with you. Confirm with Shane at every CHECKPOINT and wait for the answer before continuing.
 
 Read "sheets-spec" (same folder) first. It is the source of truth for every tab, column and rule. Check that its version matches "Written for" above; if not, stop and tell Shane.

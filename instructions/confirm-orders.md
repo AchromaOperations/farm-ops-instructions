@@ -1,19 +1,6 @@
 CONFIRM ORDERS (version 10)
 Written for: sheets-spec version 4
 
-Change log
-- v10 (2026-10-10): the read-back list goes to the family group (sheets-spec rule 11).
-- v9 (2026-10-10): read-backs also cover orders placed on later weeks (for example a first-week item), with the date.
-- v8 (2026-10-10): read-backs word Extra Milk in gallons right after the share.
-- v7 (2026-10-09): "(standing order sync)" entries don't make a read-back risky.
-- v6 (2026-10-09): the read-back list goes to Mark as text (sheets-spec rule 10), not a doc link.
-- v5 (2026-10-09): read-backs also wait while the customer's weekly share request is open with Mark.
-- v4 (2026-10-09): the read-back list waits only on sheets-spec rule 9; a reminder still waiting for wording no longer holds it.
-- v3 (2026-10-08): read-backs call milk the customer's weekly share; add-ons follow after "plus".
-- (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
-- v2 (2026-10-08): manual review (Config "Read-back review": ALL, RISKY ONLY, OFF).
-- v1 (2026-10-08): first version.
-
 HOW TO WORK
 A checklist. The parser already decided who needs a read-back; this step only writes the friendly text and sends it. Customer-facing: follow the routine's Mode rule (not LIVE = send to the test phones instead). Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
 
