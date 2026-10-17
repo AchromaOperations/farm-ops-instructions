@@ -1,5 +1,7 @@
 SHEETS SPEC (version 4)
 
+WHERE RULES LIVE: this file has the sheets' layout and the general rules. A few rules live in exactly one other file, so they're never copied and can't drift apart: week-names.md (THIS/NEXT/LAST week, tab names, missing week tabs) and routines/farm-ops.md (the run flag, SYSTEM PROBLEMS, hard limits). Put a new rule in the one file that owns its topic, never in two places.
+
 This describes the two workbooks every skill reads and writes. Every skill doc says which sheets-spec version it was written for. If that doesn't match the version above, or a skill and this spec disagree, stop and report it instead of guessing.
 
 =====================================================
@@ -146,6 +148,7 @@ Parser late alert sent | no longer used
 Last payment check | date-time invoicing last checked Square for payments
 Missing doc alerts | date + doc names Shane was told about today, e.g. "2026-10-08: owner-digest, invoicing"
 Sunday alert sent | date the "reminder never went out" alert last went out
+Daily checks done | "[yyyy-mm-dd] [repo version]" of the operator's last build-ahead and label check (operator Step 0 b, c2)
 Problem alerts checked | date-time the operator last checked the run history for ALERT problems (system issues) to text Shane
 Problem alerts sent | today's date + the ALERT problems Shane was texted today, e.g. "2026-10-17: Customers Phone not written for C012"
 Then a blank row, then the run history (LOG), header row starting with "Run start":
@@ -153,7 +156,7 @@ Run start | Run end | Routine | Trigger | Steps run | Texts sent | Problems
 - If any label above is missing (for example an older setup), add it as a new row above the run history. Adding labels is allowed; never remove one.
 - Reading texts: start from (Message cursor minus Cursor overlap), and skip any message whose ID is already in the Inbox Log (only search Inbox Log rows from the last 2 days; older IDs can't be in the window). The overlap catches texts that arrive late or share a minute.
 - Run flag: one Farm ops run at a time. routines/farm-ops.md RUN FLAG sets System "Run in progress since" at the start of a run and clears it at the end; a run that finds it set (and less than Config "Stale run after" minutes old) ends at once and changes nothing. The parser and operator parts run one after the other inside the same run, so they never overlap.
-- Week tabs: the operator builds missing tabs first (BUILDING A WEEK TAB). If NEXT week's tab still can't be found, or THIS week's tab can't be found on or after Sun Oct 11 2026, add "Week tab missing: [name]" to "Missing doc alerts" handling (text Shane once per day) and skip every step that needs that tab.
+- Week tabs: when a week tab is missing, follow MISSING WEEK TABS in week-names.md.
 
 =====================================================
 WORKBOOK 2: Weekly Deliveries
@@ -161,18 +164,10 @@ WORKBOOK 2: Weekly Deliveries
 One tab per delivery week, Sunday to Saturday. Week 1 = Sunday Oct 11 2026.
 Tabs are built a few weeks ahead, not months: the operator keeps THIS week through Config "Weeks built ahead" weeks later built (BUILDING A WEEK TAB, below). Shane may delete old or far-future tabs by hand; routines never delete tabs.
 
-WEEK NAMES (every skill uses these)
-- THIS week = the tab whose Sunday-to-Saturday dates include today. Before Week 1 starts (before Sun Oct 11 2026) there is no THIS week; that is normal, not missing.
-- NEXT week = the tab whose Sunday is the first Sunday after today. (On Fri Oct 9 2026, NEXT week is Week 1.)
-- LAST week = the tab whose Saturday is the last Saturday before today (none before Week 1).
-- Whenever a skill says "this week's row" and there is no THIS week, use NEXT week's row.
-Tab names:
-- Same month: "Delivery week 1 Oct 11-17 2026"
-- Two months: "Delivery week 3 Oct 25-31 2026", "Delivery week 4 Nov 1-7 2026", "Delivery week 8 Nov 29-Dec 5 2026"
-- Two years: "Delivery week 12 Dec 27 2026-Jan 2 2027"
+WEEK NAMES: THIS, NEXT and LAST week, and the tab names, are in week-names.md (moved there so the operator can read them on every run without this whole file).
 
 BUILDING A WEEK TAB (the operator's build-ahead, or the parser when an order names a week that isn't built yet)
-1. Name it by the tab name rules above. Week number = weeks since Sun Oct 11 2026, plus 1. Put the tab after the previous week's tab.
+1. Name it by the tab name rules in week-names.md. Week number = weeks since Sun Oct 11 2026, plus 1. Put the tab after the previous week's tab.
 2. Header block: every label in HEADER BLOCK, in order. Values: Week, Dates, and Asked-for order cutoff (the Saturday before the week, at Config "Asked-for order cutoff" time). Everything else blank.
 3. Day table: the DAY TABLE header, then Monday to Friday rows, all blank.
 4. Customer table, after one blank row: the CUSTOMER TABLE header, with one column per Products row whose Active is Yes, in Products order, between Stop # and Changes. Then one row per Customers row with Status Active (never Test), sorted by Day, Route, Stop #: Cust ID, Name, Day, Route and Stop # copied from Customers, and each product cell = that customer's standing order (blank if none). Every other cell blank. Starting amounts are not changes: no Changes entries.

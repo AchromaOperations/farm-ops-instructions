@@ -2,7 +2,7 @@ SEND REMINDER (version 9)
 Written for: sheets-spec version 4
 
 HOW TO WORK
-A checklist. Every stage is decided by cells in the header block of NEXT week's tab (sheets-spec WEEK NAMES; on Fri Oct 9 2026 that is Week 1). Do exactly ONE stage per run: the first one whose condition is true, then finish. The only judgment is the wording check in Stage C.
+A checklist. Every stage is decided by cells in the header block of NEXT week's tab (week-names.md; on Fri Oct 9 2026 that is Week 1). Do exactly ONE stage per run: the first one whose condition is true, then finish. The only judgment is the wording check in Stage C.
 
 Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Times in texts are friendly ("Sat Oct 10, 6pm").
 "Follow-up every" = Config "Follow-up every (minutes)"; missing or blank = 55 (the family group hears again at every hourly run).

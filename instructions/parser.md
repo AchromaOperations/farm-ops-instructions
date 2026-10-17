@@ -1,4 +1,4 @@
-PARSER (version 28)
+PARSER (version 29)
 Written for: sheets-spec version 4
 
 JOB
@@ -44,7 +44,7 @@ A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status 
 - Then set the Queue item to Resolved with the answer.
 - Anything else while the list is Sent: if it clearly isn't about the list, go on to A2. If unclear, create a Clarify item "Not sure if this was about the [invoices / read-backs]: '[text]'".
 
-A2. Reminder. Look at NEXT week's tab header (sheets-spec WEEK NAMES).
+A2. Reminder. Look at NEXT week's tab header (week-names.md).
 - If "Reminder requested" is filled and "Reminder approved" is blank:
   - An approval (as in A1: any wording whose only point is to OK it, or a reaction to the preview) AND "Reminder preview sent" is filled AND the preview is newer than "Reminder wording updated" = REMINDER APPROVAL (below) for Mark or Laura.
   - A message that reads like a message to customers (an announcement or reminder to order) = it is the wording. If "Reminder wording received" is blank, fill it. Set "Reminder wording" to the text and "Reminder wording updated" = now.
@@ -205,7 +205,7 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
    - Otherwise: write it to the next listed first week's row instead (build that tab first if it isn't built). The read-back gives that date.
    - It fails instead if the customer says they want it only this week, if no first week is listed after the target week, or if "First weeks" is missing. Question: "[name] asked for [item] (week of [dates]). It's only made in first weeks (next: [week of date, or none scheduled]). Hold it, or add it to a week?" with "Hold it" first. (The rest of the same message can still be written if it passes.)
 4. Standing conflict: if the item has a standing order and the text could mean "in addition" or "instead" (e.g. "milk this week please"), it fails. Words like "extra", "another", "more" = in addition. "Just", "only", "change to", "instead" = instead.
-5. Target row (test customers, Cust ID starting with "T": if they have no row on the week tab, add one at the bottom of the customer table first):
+5. Target row (test customers, Cust ID starting with "T": if they have no row on the week tab, add one at the bottom of the customer table first. An Active customer with no row on an unlocked week tab, for example one added to Customers today: add their row first, as sheets-spec BUILDING A WEEK TAB step 5 says):
    - This week's row for the customer, if its Locked is blank (no THIS week yet: NEXT week's row).
    - If Locked is filled and Delivered is filled (this week's delivery already happened): next week's row.
    - If Locked is filled and Delivered is blank (list already out, not yet delivered): do not write. Create a Late order item: "[customer] ordered '[text]' after the list went out. Add it or next week?"

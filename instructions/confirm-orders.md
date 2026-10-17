@@ -5,7 +5,7 @@ HOW TO WORK
 A checklist. The parser already decided who needs a read-back; this step only writes the friendly text and sends it. Customer-facing: follow the routine's Mode rule (not LIVE = send to the test phones instead). Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
 
 STEP 1. WHO
-Rows = customer rows in THIS week and every later built week (sheets-spec WEEK NAMES) where "Confirm needed" is filled and later than "Confirmation sent" (or "Confirmation sent" is blank). Test customers (Cust ID starting with "T") get read-backs too, so the flow can be tested.
+Rows = customer rows in THIS week and every later built week (week-names.md) where "Confirm needed" is filled and later than "Confirmation sent" (or "Confirmation sent" is blank). Test customers (Cust ID starting with "T") get read-backs too, so the flow can be tested.
 Skip a row for now (it will be picked up later) if that customer has a Queue item of Type Clarify or Late order that is not Resolved, or a Sales item whose Question contains "asked to change their weekly share" that is not Resolved: they get one read-back once everything is settled.
 If the same customer has rows in both weeks, send one text per row (one per delivery).
 

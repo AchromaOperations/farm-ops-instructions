@@ -32,7 +32,7 @@ PART B. ASK FOR APPROVAL (one approval open at a time)
 Only if ALL of these are true:
 - no approval is open (sheets-spec rule 9), AND
 - no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), AND
-- NEXT week's reminder preview is not about to go out (sheets-spec WEEK NAMES): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
+- NEXT week's reminder preview is not about to go out (week-names.md): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
 Then take the oldest Invoice item with Status Waiting:
 - Text the family group the list as sheets-spec rules 10 and 11 say. Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links). Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])".
 - Status = Sent, Sent to = Group, First sent = now.

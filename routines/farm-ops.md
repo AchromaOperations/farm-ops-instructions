@@ -24,7 +24,10 @@ Open ops/instructions/parser-check.md and follow it. Most runs end Part 1 there.
 If Part 1 stops part way because of an error: record the error as an ALERT Problem (in Part 1's run history row if it wrote one, otherwise in Part 2's) and go on to Part 2.
 
 SYSTEM PROBLEMS (both parts)
-- Check your writes: after writing to a sheet tab, read back the cells you just wrote (one read per tab, per message or step). If a cell isn't what you wrote (blank, in the wrong row or column, a number turned into a date, text cut off), fix it once. If it's still wrong, record a Problem.
+- Check your writes.
+  - Right away: a STAMP cell (sheets-spec rule 2: Locked, Delivery list sent, Reminder sent, Invoice sent and the other "done" marks) and any cell that records a text went out (Confirmation sent, Last nudged, First sent): read it back right after writing, before the next send. These stop texts from going twice.
+  - Everything else: keep a list of what you wrote. At the end of each part, read back each tab you wrote to once (just those rows). Part 1 finishes its check before Part 2 starts.
+  - If a cell isn't what you wrote (blank, in the wrong row or column, a number turned into a date, text cut off), fix it once. If it's still wrong, record an ALERT Problem.
 - A Problem that means the system didn't work the way the docs intend starts with "ALERT: ", for example: a sheet write that failed or came out wrong; a tab, column, label or cell that isn't the way sheets-spec says (missing, extra, moved, or holding a value the spec doesn't allow) and that you couldn't fix; a connector or tool error; a file or doc that couldn't be made, read or saved; a script error. Normal notes are not alerts: another run in progress, nothing due, a step waiting on a person, quiet hours.
 - Part 1 never texts: it records ALERT problems in its run history row. Part 2 texts every new ALERT problem to Shane (operator.md STEP 2), so he hears about it within the same run.
 

@@ -56,7 +56,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## operator.md (OPERATOR (version 13))
+## operator.md (OPERATOR (version 14))
+- v14 (2026-10-17): reads week-names.md and only sheets-spec's first line each run; build-ahead and label checks run once a day and after any push (System "Daily checks done"), or when a tab is missing.
 - v13 (2026-10-17): no run flag of its own (routines/farm-ops.md RUN FLAG) and no "parser late" check (both parts run in the same run); run history notes "parser: nothing new".
 - v12 (2026-10-17): STEP 2 texts Shane every new ALERT problem (system issues like sheet cells not written correctly), from this run and earlier runs, once each per day.
 - v11 (2026-10-10): weekly-master-list is due once a night at Config "Weekly master list time": Saturdays for NEXT week, Sunday to Thursday for THIS week (it sends only if something changed).
@@ -84,7 +85,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 28))
+## parser.md (PARSER (version 29))
+- v29 (2026-10-17): an Active customer with no row on an unlocked week tab gets their row added before an order is written (build-ahead now runs once a day).
 - v28 (2026-10-17): Step 0 and Step 1 (start, fetch, dedupe) moved to parser-check.md, so quiet runs never open this file; the run flags and "Last parse finished" are gone (one run flag in routines/farm-ops.md).
 - v27 (2026-10-17): an unclear message from Mark or Laura while something is waiting on them is taken as an answer to it and confirmed with a question before anything changes; with several open and no way to tell which, ask which. System problems are recorded as ALERT problems (Shane gets texted).
 - v26 (2026-10-17): every message Mark or Laura sends in the family group is for the system (Shane, Oct 17). Instructions are done (or answered with why not) and confirmed; questions are answered from the sheets; anything unclear is treated as them asking for clarification and gets an explaining reply. Nothing they send is logged and left. Replies go out through the Queue (REPLIES below).
@@ -129,6 +131,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-07): first version.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-10-17, revised 29): WEEK NAMES and MISSING WEEK TABS moved (not copied) to week-names.md; WHERE RULES LIVE note; System "Daily checks done". send-reminder, parser, confirm-orders, invoicing and operator now point to week-names.md.
 - v4 (2026-10-17, revised 28): one run flag, System "Run in progress since"; the parser and operator flags, "Last parse finished", "Parser late alert sent" and Config "Parser late after" are no longer used. Change logs moved to CHANGELOG.md.
 - v4 (2026-10-17, revised 27): System "Problem alerts checked" and "Problem alerts sent": ALERT problems (system issues) are texted to Shane.
 - v4 (2026-10-17, revised 26): rule 11: every message Mark or Laura send in the family group is for the system and gets acted on, answered or clarified (parser A). Queue: a Type Other item whose Question starts "REPLY: " is the system's reply to them.
@@ -167,11 +170,15 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 ## parser-check.md (PARSER CHECK (version 1))
 - v1 (2026-10-17): new. The start of every run (fetch, dedupe, match the system's own texts); parser.md is only opened when there are new messages.
 
+## week-names.md (WEEK NAMES (version 1))
+- v1 (2026-10-17): new. THIS/NEXT/LAST week, tab names and missing week tabs, moved here from sheets-spec so the operator reads a small file each run.
+
 ## weekly-master-list.md (WEEKLY MASTER LIST (version 2))
 - v2 (2026-10-17): Sunday to Thursday, a quick look at the Changes column first; no new changes = done without building the input file.
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops.md
+- 2026-10-17: write checks: stamps and "sent" cells read back right away; everything else checked once per tab at the end of each part.
 - 2026-10-17: NIGHT rule (runs between 9pm and 6:30am end at once); one RUN FLAG for the whole run; Part 1 starts with parser-check.md. Runs are meant for 6:40am to 8:40pm.
 - 2026-10-17: SYSTEM PROBLEMS: read back sheet writes; ALERT problems texted to Shane.
 - 2026-10-10: one Farm ops routine, parser part then operator part, twice an hour.

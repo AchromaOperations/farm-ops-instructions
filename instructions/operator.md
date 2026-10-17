@@ -1,19 +1,21 @@
-OPERATOR (version 13)
+OPERATOR (version 14)
 Written for: sheets-spec version 4
 
 HOW TO WORK
 This is a checklist, not a judgment task. Every check below is a yes/no answer from values in the sheets. Do not deliberate, summarize, or read anything not listed. Do not read customer tables, the Inbox Log, or any other skill doc unless its check below says it is due. Do not read text messages; the Parser routine does that.
 
 READ ONLY THESE
-- sheets-spec: the version line (it must say version 4; if not, record a Problem, text Shane once, end) and the System tab section (week tab rules).
-- Farm Reference: Config tab, System tab, Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b2 (build ahead), when something needs building.
-- Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as defined in sheets-spec WEEK NAMES (read that section too).
+- week-names.md (THIS, NEXT and LAST week, tab names, missing week tabs). Read it every run.
+- sheets-spec: only its first line, for the version: run `head -1 ops/instructions/sheets-spec.md`. It must say version 4; if not, record an ALERT Problem, text Shane once, end. Open the rest of sheets-spec only when Step 0's daily checks run or a due step's doc needs it.
+- Farm Reference: Config tab, System tab, Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b (build ahead), when something needs building.
+- Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as week-names.md defines them.
 
 STEP 0. START
 a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output as now for every time you write or compare. (The computer clock is UTC; never use plain `date`.)
+Daily checks (b and c2): do them only if System "Daily checks done" isn't "[today's date] [repo version]" (get the version with `git -C ops rev-parse --short HEAD`), or this run built a week tab. Otherwise skip b and c2. After doing them, set "Daily checks done" = "[today's date] [repo version]". So they run in the first operator run of each day, and again on the first run after any push.
 b. Build ahead (it sends nothing): for THIS week (or NEXT week if there is no THIS week yet) and each of the following Config "Weeks built ahead" weeks (missing or blank = 4), if its tab is missing or unfinished, build or finish it as sheets-spec BUILDING A WEEK TAB says. Also add a row for any Active customer missing from those unlocked tabs. At most 2 tab builds per run (the next run continues). Note what you built in run history. Read Customers and Products only when something needs building or adding.
-c. Week tabs: find LAST, THIS and NEXT week's tabs (sheets-spec WEEK NAMES). If one is missing in the way the "Week tabs" rule describes, follow the "Week tabs" rule in sheets-spec, and skip every check below that needs the missing tab.
-c2. Labels: on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
+c. Week tabs: find LAST, THIS and NEXT week's tabs (week-names.md). If one is missing, follow MISSING WEEK TABS in week-names.md (if it says to build a tab, run b now even if the daily checks were done), and skip every check below that needs the missing tab.
+c2. Labels (daily checks; read sheets-spec HEADER BLOCK and CUSTOMER TABLE for this): on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
 d. Quiet = now is at or after "Quiet hours start" or before "Quiet hours end". If Quiet, go to STEP 2. (Nothing is sent or started during quiet hours.)
 
 STEP 1. DUE CHECKS (in this order; run every one that is due)
