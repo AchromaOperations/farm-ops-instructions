@@ -1,8 +1,8 @@
-INVOICING (version 9)
+INVOICING (version 10)
 Written for: sheets-spec version 4
 
 HOW TO WORK
-A checklist with four parts. Do every part whose condition is true, in order. No judgment: amounts come from the week tab and prices from the Products tab. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
+A checklist with five parts. Do every part whose condition is true, in order. No judgment: amounts come from the week tab and prices from the Products tab. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending").
 
 Only products whose Products "Billed through" is Square are invoiced. The weekly share (Milk (gal), paid as the monthly herdshare through Squarespace) never is.
 
@@ -34,7 +34,7 @@ Only if ALL of these are true:
 - no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), AND
 - NEXT week's reminder preview is not about to go out (week-names.md): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
 Then take the oldest Invoice item with Status Waiting:
-- Text the family group the list as sheets-spec rules 10 and 11 say. Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links), with " (no charge: [items])" as in the list doc. Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])".
+- Text the family group the list as sheets-spec rules 10 and 11 say. Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links), with " (no charge: [items])" as in the list doc. Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])". Then "Approved invoices are emailed by Square and each customer gets a text with their payment link."
 - Status = Sent, Sent to = Group, First sent = now.
 (Nudges and Laura are handled by owner-digest.)
 
@@ -45,6 +45,16 @@ For each customer row in LAST or THIS week with "Invoice approved" filled and "I
 - If Square fails: stop Part C, add a Problem, continue to Part D.
 Then for each day row with "Invoices drafted" filled and "Invoices sent" blank: if its Invoice Queue item is Resolved, fill "Invoices approved" = the time it was resolved (if blank). If also every customer row of that day with a real Invoice link has "Invoice sent" filled or a "held" or "TEST" note in Needs attention, fill "Invoices sent" = now.
 
+PART C2. TEXT THE PAYMENT LINK (Shane's rule from 2026-10-18)
+For each customer row in LAST or THIS week with "Invoice sent" filled on or after 2026-10-18 00:00 and "Pay link texted" blank (if the tab has no "Pay link texted" column, add it at the end of the customer table's header row first, sheets-spec rule 8):
+- Only between 8:00am and 9:00pm Eastern and while Config Mode is LIVE. Outside those hours, leave it blank: a later run sends it.
+- No phone on the Customers tab: fill "Pay link texted" = "skipped: no phone". Customers "Notes" contains "NO TEXTS": fill "skipped: opted out". Next.
+- Link = that invoice's public payment page from Square (the invoice's public URL, which exists once it is published). Never the Square dashboard link in "Invoice link". If Square gives no public URL, add an ALERT Problem and leave it blank so a later run tries again; once that invoice was sent more than 24 hours ago, fill "skipped: no payment link from Square" instead, so it stops retrying.
+- Duplicate guard: if the farm number already sent that customer a text containing this link (Quo sent messages since "Invoice sent"), just fill "Pay link texted" with that time.
+- Text the customer's Phone exactly: "Hi from Restoration Farmstead! Your invoice for [Weekday]'s delivery ([Mon D]) is $[total] for [items]. You can pay here: [link] Thank you!"
+  Items = the invoice's lines as in read-backs (Products "Text name", e.g. "2 vanilla maple yogurts and a dozen eggs"; Extra Milk as "an extra half gallon" / "an extra gallon"). Total with cents ($14.00). Never mention the weekly share.
+- Right after sending, fill "Pay link texted" = now and read it back (routines/farm-ops.md: a cell that records a text went out). Log the text in the Inbox Log (sheets-spec rule 7).
+
 PART D. PAYMENTS (at most once a day)
 If System "Last payment check" is blank or at least 24 hours ago:
 - For each customer row in the last 8 week tabs with "Invoice sent" filled and "Paid" blank: ask Square for that invoice's status. Paid = fill "Paid" with the payment date.
@@ -52,4 +62,4 @@ If System "Last payment check" is blank or at least 24 hours ago:
 - Set "Last payment check" = now.
 
 FINISH
-Report to the operator: invoices drafted, lists sent for approval, invoices sent, payments recorded, overdue flagged.
+Report to the operator: invoices drafted, lists sent for approval, invoices sent, payment links texted, payments recorded, overdue flagged.

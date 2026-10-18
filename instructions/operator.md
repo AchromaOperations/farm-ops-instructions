@@ -1,4 +1,4 @@
-OPERATOR (version 14)
+OPERATOR (version 15)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -38,6 +38,7 @@ For each due step: open the file instructions/[name].md in this repository (for 
    - a Queue item of Type Invoice has Status "Waiting";
    - a customer row in LAST or THIS week has "Needs attention" containing "no email" and "Invoice link" blank (read only those two columns);
    - a customer row in LAST or THIS week has "Invoice approved" filled and "Invoice sent" blank (read only those two columns);
+   - now is 8:00am to 9:00pm and a customer row in LAST or THIS week has "Invoice sent" filled on or after 2026-10-18 and "Pay link texted" blank or missing (read only those two columns);
    - System "Last payment check" is blank or at least 24 hours ago (invoicing then checks for unpaid invoices itself).
 
 4. send-reminder
