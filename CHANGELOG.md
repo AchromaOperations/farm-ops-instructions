@@ -44,7 +44,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
 - v1 (2026-10-07): first draft.
 
-## invoicing.md (INVOICING (version 8))
+## invoicing.md (INVOICING (version 9))
+- v9 (2026-10-18): no-charge items are subtracted from invoices and shown on the approval list; an all-free row gets no invoice.
 - v8 (2026-10-10): the invoice list goes to the family group (sheets-spec rule 11).
 - v7 (2026-10-10): Extra Milk is priced by share: full share (1 gal or more) at the Products price, half share at Config "Extra milk price, half share".
 - v6 (2026-10-09): the invoice list goes to Mark as text (sheets-spec rule 10), not a doc link.
@@ -56,7 +57,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## manual-edits.md (MANUAL EDITS (version 1))
+## manual-edits.md (MANUAL EDITS (version 2))
+- v2 (2026-10-18): free items go in the "No charge" column (added if the tab lacks it), not as text in Needs attention or Changes.
 - v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
 
 ## operator.md (OPERATOR (version 14))
@@ -88,7 +90,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 29))
+## parser.md (PARSER (version 30))
+- v30 (2026-10-18): A4 "no charge" command from Mark or Laura (free, comp, on the house, sample).
 - v29 (2026-10-17): an Active customer with no row on an unlocked week tab gets their row added before an order is written (build-ahead now runs once a day).
 - v28 (2026-10-17): Step 0 and Step 1 (start, fetch, dedupe) moved to parser-check.md, so quiet runs never open this file; the run flags and "Last parse finished" are gone (one run flag in routines/farm-ops.md).
 - v27 (2026-10-17): an unclear message from Mark or Laura while something is waiting on them is taken as an answer to it and confirmed with a question before anything changes; with several open and no way to tell which, ask which. System problems are recorded as ALERT problems (Shane gets texted).
@@ -134,6 +137,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-07): first version.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-10-18, revised 30): week-tab column "No charge" (LOG): free items, still in the quantity cell; billing subtracts them. Only Mark, Laura or Shane can make something free.
 - v4 (2026-10-17, revised 29): WEEK NAMES and MISSING WEEK TABS moved (not copied) to week-names.md; WHERE RULES LIVE note; System "Daily checks done". send-reminder, parser, confirm-orders, invoicing and operator now point to week-names.md.
 - v4 (2026-10-17, revised 28): one run flag, System "Run in progress since"; the parser and operator flags, "Last parse finished", "Parser late alert sent" and Config "Parser late after" are no longer used. Change logs moved to CHANGELOG.md.
 - v4 (2026-10-17, revised 27): System "Problem alerts checked" and "Problem alerts sent": ALERT problems (system issues) are texted to Shane.

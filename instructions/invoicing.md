@@ -1,4 +1,4 @@
-INVOICING (version 8)
+INVOICING (version 9)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -10,7 +10,7 @@ PART A. DRAFT
 For each day row in LAST or THIS week with "Route confirmed" filled and "Invoices drafted" blank:
 1. If any Queue item of Type Driver for that day is not Resolved, skip this day (Harry's answers may still change what was delivered).
 2. For each customer row of that day with "Delivered" filled and "Invoice link" blank (skip Cust IDs starting with "T"):
-   - Lines = each Square-billed product with quantity above 0, minus any amount for that product in "Not delivered". Drop lines that reach 0.
+   - Lines = each Square-billed product with quantity above 0, minus any amount for that product in "Not delivered" and any in "No charge" (a tab without a "No charge" column has none). Drop lines that reach 0 or less. Remember the no-charge items for the list (step 3).
    - No lines: fill "Invoice link" = "none". Next customer.
    - Any line whose product has a blank Price: do not draft this customer. Create a Clarify item "Invoice for [name] held: no price set for [product]." Put "Invoice held: no price for [product]" in Needs attention. Next customer.
    - No email on the Customers tab: do not draft. Put "Invoice held: no email" in Needs attention (if not already there) and create a Clarify item "No email for [name], so their invoice ($[total]) is held. Text me their email." Next customer.
@@ -20,7 +20,7 @@ For each day row in LAST or THIS week with "Route confirmed" filled and "Invoice
    - Fill "Invoice link" with the Square invoice link.
 3. Make (or, if it already exists, rebuild) the Google Doc "Invoices [Ddd Mon D YYYY]" in Invoice Lists. Large plain text, no colors:
    "Invoices for [Day, date]. Reply 'good' to send all, or 'good except [numbers]'."
-   Then one numbered line per drafted customer: "[#]. [Name] ([Cust ID]): [items with amounts] = $[total]  [link]"
+   Then one numbered line per drafted customer: "[#]. [Name] ([Cust ID]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. A customer whose items were all no charge has no invoice ("Invoice link" = "none"); list them at the end as "No charge: [name] ([items])".
    Then: "Total: $[sum] for [n] invoices." Then any held customers: "Held: [name], [reason]".
 4. Fill "Invoices drafted" = now on the day row. Create a Queue item: Type Invoice, Week, Question = the doc link, Original message = "[Day] invoices: [n], $[sum]", Status = Waiting.
    (If there were no drafted invoices at all, fill "Invoices approved" and "Invoices sent" with "none" instead, and skip the Queue item.)
@@ -34,7 +34,7 @@ Only if ALL of these are true:
 - no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), AND
 - NEXT week's reminder preview is not about to go out (week-names.md): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
 Then take the oldest Invoice item with Status Waiting:
-- Text the family group the list as sheets-spec rules 10 and 11 say. Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links). Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])".
+- Text the family group the list as sheets-spec rules 10 and 11 say. Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links), with " (no charge: [items])" as in the list doc. Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])".
 - Status = Sent, Sent to = Group, First sent = now.
 (Nudges and Laura are handled by owner-digest.)
 

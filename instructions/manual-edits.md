@@ -1,4 +1,4 @@
-MANUAL EDITS (version 1)
+MANUAL EDITS (version 2)
 Written for: sheets-spec version 4
 
 WHO THIS IS FOR
@@ -24,12 +24,13 @@ BEFORE CHANGING AN ORDER
 MAKING A CHANGE
 - Follow ORDER WRITING (which row and week, product names and built-in defaults, Extra Milk in jars on that week's row only, never Milk (gal) or Customers for a one-week change, first-week-only products) and A4 for commands (skips, standing order changes, customer info). If a rule there says to ask Mark, ask the person you're talking to instead.
 - Quantity cells hold the new total for the week. Append to Changes: "[yyyy-mm-dd hh:mm] [Column name] [old]>[new] ([who] (chat))", for example "2026-10-18 09:40 Eggs 0>1 (Shane (chat))".
+- No charge (free items: "no charge", "free", "comp", "on the house", "sample"): write the item as an order if it isn't on the row yet, then append "[Column name] x[n] ([who] (chat))" to that row's "No charge" column (sheets-spec). If the tab has no "No charge" column, add it at the end of the header row (sheets-spec rule 8). Don't write "NO CHARGE" anywhere else; invoicing reads only that column.
 - Don't set "Confirm needed" (no read-back text to the customer) unless the person asks for the customer to get one.
 - After writing, read the cells back. If one didn't land right, fix it once; if it's still wrong, tell the person.
 
 NEVER
 - Delete rows, tabs or files. Rename, move or remove headers or labels.
-- Change a filled STAMP cell, or edit or remove anything in a LOG cell (only append to Changes).
+- Change a filled STAMP cell, or edit or remove anything in a LOG cell (only append, to Changes and No charge).
 - Edit the System, Queue or Inbox Log tabs: the routine owns them.
 - Change prices, or run a sync.
 - Send a text or message, unless the person asks for that exact message to that exact person.

@@ -1,4 +1,4 @@
-PARSER (version 29)
+PARSER (version 30)
 Written for: sheets-spec version 4
 
 JOB
@@ -74,6 +74,7 @@ A4. Commands (apply directly, then log).
 - Change a standing order ("Bert's weekly share is 1 gal now") = update the standing-order cell on Customers, then update the same product on every future week row for that customer whose Locked is blank, with a Changes entry "standing order change".
 - Change customer info (phone, address, delivery notes, email) = update Customers. Phone numbers in +1XXXXXXXXXX form.
 - Mark a Queue item resolved ("sales 5 resolved", "no sale on 2") = set Status Resolved (and Outcome for Sales).
+- No charge ("add 1 maple yogurt for Kim, no charge", "Kim's eggs are free this week", "comp", "on the house", "sample", "don't charge her for it"): if the item isn't on the row yet, write it with ORDER WRITING first (source "Mark" or "Laura"). Then append "[Column name] x[n] ([Mark or Laura])" to that row's "No charge" (sheets-spec). Never more than the row's quantity of that product; never Milk (gal) (the share is never invoiced anyway). A customer asking for something free is never a no-charge command: it goes to Mark as usual.
 - If the customer named matches no customer or several, create a Clarify item instead.
 - Price changes and "run sync" are NOT done by text. Create a Clarify item: "Price changes and sync are done in the sheet, not by text."
 
