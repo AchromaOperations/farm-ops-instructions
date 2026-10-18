@@ -56,6 +56,9 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
+## manual-edits.md (MANUAL EDITS (version 1))
+- v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
+
 ## operator.md (OPERATOR (version 14))
 - v14 (2026-10-17): reads week-names.md and only sheets-spec's first line each run; build-ahead and label checks run once a day and after any push (System "Daily checks done"), or when a tab is missing.
 - v13 (2026-10-17): no run flag of its own (routines/farm-ops.md RUN FLAG) and no "parser late" check (both parts run in the same run); run history notes "parser: nothing new".

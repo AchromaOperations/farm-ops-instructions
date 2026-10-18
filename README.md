@@ -9,6 +9,7 @@ system: weekly reminder texts, order intake, delivery lists, route checks and in
 - `routine-prompts.md`: the short loader text in each routine's Instructions box on claude.ai
   (it keeps a few fixed limits, like the 150-text cap and no Square refunds, that no push can remove).
 - `human-prompts/`: prompts Shane pastes into a normal chat (setup, manual sync). Routines never use them.
+- `instructions/manual-edits.md`: rules for any normal chat on the farm account that changes the sheets by hand. The account's profile preferences tell every chat to fetch it first. Routines never use it.
 
 All data (customers, orders, week tabs, invoices) lives in Google Sheets and Drive, not here.
 
