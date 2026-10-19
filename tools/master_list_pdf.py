@@ -6,7 +6,7 @@ Usage: python3 -I master_list_pdf.py master.json master.pdf
 Standard library only (nothing to install). The routine copies week-tab cells
 into master.json; this script does all the counting, decides whether tonight's
 list goes out, draws the page and prints one line of JSON describing it.
-The PDF is plain 7-bit text, so it can be uploaded as text or as base64.
+It also writes [master.pdf].b64, the PDF as one line of base64, ready for Google Drive create_file's base64Content (instructions/save-pdf.md).
 See instructions/weekly-master-list.md for the input format; tools/sample-master-list.json is an example.
 """
 import base64
@@ -87,7 +87,7 @@ def load_logo():
     try:
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo-mask.json"), encoding="ascii") as f:
             j = json.load(f)
-        return int(j["w"]), int(j["h"]), j["a85"].encode("ascii")
+        return int(j["w"]), int(j["h"]), base64.a85decode(j["a85"].encode("ascii").rstrip(b"~>").rstrip())
     except (OSError, ValueError, KeyError):
         return None
 
@@ -126,8 +126,7 @@ class Page:
                         % ("F2" if bold else "F1", size, self._c(color), x, PAGE_H - y, pdf_string(s)))
 
     def save(self, path, title):
-        # Flate-compressed, then ASCII85: small, and the whole file stays plain 7-bit text.
-        content = base64.a85encode(zlib.compress("\n".join(self.ops).encode("ascii"), 9), wrapcol=76) + b"~>"
+        content = zlib.compress("\n".join(self.ops).encode("ascii"), 9)
         objs = [
             b"<< /Type /Catalog /Pages 2 0 R >>",
             b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
@@ -135,15 +134,15 @@ class Page:
              % (PAGE_W, PAGE_H, " /XObject << /Logo 8 0 R >>" if self.logo else "")).encode("ascii"),
             b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
             b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
-            b"<< /Length " + str(len(content)).encode("ascii") + b" /Filter [/ASCII85Decode /FlateDecode] >>\nstream\n" + content + b"\nendstream",
+            b"<< /Length " + str(len(content)).encode("ascii") + b" /Filter /FlateDecode >>\nstream\n" + content + b"\nendstream",
             ("<< /Title %s /Producer (farm-ops master_list_pdf.py) >>" % pdf_string(title)).encode("ascii"),
         ]
         if self.logo:
             w, h, data = self.logo
             objs.append((("<< /Type /XObject /Subtype /Image /Width %d /Height %d /ImageMask true /BitsPerComponent 1 "
-                          "/Length %d /Filter [/ASCII85Decode /FlateDecode] >>\nstream\n" % (w, h, len(data))).encode("ascii")
+                          "/Length %d /Filter /FlateDecode >>\nstream\n" % (w, h, len(data))).encode("ascii")
                          + data + b"\nendstream"))
-        out = bytearray(b"%PDF-1.4\n")
+        out = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
         offsets = []
         for i, body in enumerate(objs, start=1):
             offsets.append(len(out))
@@ -155,6 +154,8 @@ class Page:
         out += b"trailer\n<< /Size %d /Root 1 0 R /Info 7 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (len(objs) + 1, xref)
         with open(path, "wb") as f:
             f.write(bytes(out))
+        with open(path + ".b64", "w", encoding="ascii") as f:
+            f.write(base64.b64encode(bytes(out)).decode("ascii"))
         return len(out)
 
 
@@ -700,7 +701,7 @@ def main():
         return 1
     ahead = [i for i in range(5) if not m["done"][i]]
     print(json.dumps({
-        "pdf": sys.argv[2], "bytes": size_bytes, "pages": 1,
+        "pdf": sys.argv[2], "base64_file": sys.argv[2] + ".b64", "bytes": size_bytes, "pages": 1,
         "send": m["send"], "reason": m["reason"], "kind": m["kind"], "week": m["week"],
         "rows_read": m["rows_read"], "changes": m["n_changes"], "changes_shown": shown,
         "deliveries": {SHORT[i]: m["deliveries"][i] for i in range(5)},

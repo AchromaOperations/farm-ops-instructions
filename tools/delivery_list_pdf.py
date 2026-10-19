@@ -6,7 +6,8 @@ Usage: python3 -I delivery_list_pdf.py day.json list.pdf
 
 Standard library only (nothing to install). The routine copies the day's rows into
 day.json; this script does all the counting, flags and layout, so every list looks
-the same. The PDF is plain 7-bit text, so it can be uploaded as text or as base64.
+the same. It also writes [list.pdf].b64, the PDF as one line of base64, ready for Google Drive
+create_file's base64Content (instructions/save-pdf.md).
 Prints one line of JSON: counts, flags, page count, file name and the text message.
 
 Input: the same form as tools/sample-delivery-day.json, plus optional
@@ -44,7 +45,7 @@ def load_logo():
     try:
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo-mask.json"), encoding="ascii") as f:
             j = json.load(f)
-        return int(j["w"]), int(j["h"]), j["a85"].encode("ascii")
+        return int(j["w"]), int(j["h"]), base64.a85decode(j["a85"].encode("ascii").rstrip(b"~>").rstrip())
     except (OSError, ValueError, KeyError):
         return None
 
@@ -189,7 +190,7 @@ class Doc:
         if self.logo:
             w, h, data = self.logo
             objs[7] = (("<< /Type /XObject /Subtype /Image /Width %d /Height %d /ImageMask true /BitsPerComponent 1 "
-                        "/Length %d /Filter [/ASCII85Decode /FlateDecode] >>\nstream\n" % (w, h, len(data))).encode("ascii")
+                        "/Length %d /Filter /FlateDecode >>\nstream\n" % (w, h, len(data))).encode("ascii")
                        + data + b"\nendstream")
             xobj = " /XObject << /Logo 7 0 R >>"
             nxt = 8
@@ -202,7 +203,7 @@ class Doc:
             ops.append("BT /F1 8.0 Tf %s rg 1 0 0 1 %.2f %.2f Tm %s Tj ET"
                        % (self.c(MUTED), RIGHT - width(pn, 8), 28.8, pdf_string(pn)))
             raw = "\n".join(ops).encode("ascii")
-            content = base64.a85encode(zlib.compress(raw, 9), wrapcol=76) + b"~>"
+            content = zlib.compress(raw, 9)
             page_id, content_id = nxt, nxt + 1
             nxt += 2
             annot_ids = []
@@ -216,10 +217,10 @@ class Doc:
                              "/F2 4 0 R /F3 5 0 R >>%s >> /Contents %d 0 R%s >>"
                              % (PAGE_W, PAGE_H, xobj, content_id, ann)).encode("ascii")
             objs[content_id] = (b"<< /Length " + str(len(content)).encode("ascii")
-                                + b" /Filter [/ASCII85Decode /FlateDecode] >>\nstream\n" + content + b"\nendstream")
+                                + b" /Filter /FlateDecode >>\nstream\n" + content + b"\nendstream")
             kids.append(page_id)
         objs[2] = ("<< /Type /Pages /Kids [%s] /Count %d >>" % (" ".join("%d 0 R" % p for p in kids), n)).encode("ascii")
-        out = bytearray(b"%PDF-1.4\n")
+        out = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
         offsets = {}
         for i in range(1, nxt):
             offsets[i] = len(out)
@@ -231,6 +232,8 @@ class Doc:
         out += b"trailer\n<< /Size %d /Root 1 0 R /Info 6 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (nxt, xref)
         with open(path, "wb") as f:
             f.write(bytes(out))
+        with open(path + ".b64", "w", encoding="ascii") as f:
+            f.write(base64.b64encode(bytes(out)).decode("ascii"))
         return len(out), n
 
 
@@ -575,7 +578,7 @@ def build(day, path):
                "Shares and orders for %s are now locked." % (day["day"], deliver, ", ".join(named) if named else "1 route",
                                                               skipping, guesses, day["day"]))
     check = [day["day"].upper()] + [d.page_names[k] for k in sorted(d.page_names)]
-    return {"pdf": path, "bytes": size_bytes, "pages": pages, "rows_read": len(day["rows"]), "check_words": check,
+    return {"pdf": path, "base64_file": path + ".b64", "base64_chars": len(open(path + ".b64").read()), "bytes": size_bytes, "pages": pages, "rows_read": len(day["rows"]), "check_words": check,
             "stops_to_deliver": deliver, "skipping": skipping, "guesses": guesses, "routes": routes,
             "milk_jars": tot.get(MILK, 0) * 2 + tot.get(EXTRA, 0),
             "flags": {s.get("name", ""): s["flags"] for s in stops if s["flags"]},

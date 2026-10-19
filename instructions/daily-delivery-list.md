@@ -1,4 +1,4 @@
-DAILY DELIVERY LIST (version 13)
+DAILY DELIVERY LIST (version 14)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -31,8 +31,8 @@ STEP 4. MAKE THE LIST (the script makes it; never lay it out yourself)
    - "pending": one {"customer": [Customer], "asked_for": [what they asked for]} per open Late order Queue item for this day.
    Count the Day rows and check "rows" has the same number before running.
 2. Run `python3 -I ops/tools/delivery_list_pdf.py dl/day.json dl/list.pdf`. It prints one line of JSON. If it prints "error" or "rows_read" isn't your count, fix day.json and run it again; if it still fails, add a Problem and go to 5 (fallback).
-3. Save dl/list.pdf into Delivery Lists as a PDF file (type application/pdf) named the script's "file_name". It must stay a PDF: never convert it to a Google Doc. The file is plain text on purpose: if the Drive tool takes the file's contents as text, give it the file's text exactly; if it wants base64, run `base64 -i dl/list.pdf` and give it that output exactly. Never retype, shorten or rearrange either.
-4. Check the saved file: if Drive shows its size, it must equal the script's "bytes". If your Drive tool can read the file back, its text must contain every one of the script's "check_words". If a check fails, the file was damaged on the way: leave it (never delete), add a Problem "delivery list PDF damaged: [which check]", and go to 5.
+3. Save dl/list.pdf into the Delivery Lists folder exactly as instructions/save-pdf.md says (Google Drive create_file with contentMimeType application/pdf, disableConversionToGoogleType true, and the script's "base64_file" as base64Content). Its checks decide whether it worked.
+4. If save-pdf.md says it failed, go to 5.
 5. Fallback, only if the PDF couldn't be made or saved: run `python3 -I ops/tools/delivery_list_html.py dl/day.json dl/list.html` and create the Google Doc "Delivery list [Ddd Mon D YYYY]" in Delivery Lists from dl/list.html (give the file's contents exactly, source type text/html, so Drive converts it into a Google Doc). If even that fails, make the doc from dl/list.txt's text exactly. Either way add a Problem and, unless it's quiet hours, text Shane (one-to-one) once: "Delivery list for [Day] went out as a Doc, not the PDF: [reason]". Never lay it out yourself.
 
 WHAT THE SCRIPT MAKES (for reference; the script decides, so never change its output to match this)

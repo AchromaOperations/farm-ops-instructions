@@ -15,7 +15,9 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-08): manual review (Config "Read-back review": ALL, RISKY ONLY, OFF).
 - v1 (2026-10-08): first version.
 
-## daily-delivery-list.md (DAILY DELIVERY LIST (version 13))
+## daily-delivery-list.md (DAILY DELIVERY LIST (version 14))
+- v14 (2026-10-19): the PDF is saved with instructions/save-pdf.md (one fixed create_file call with conversion turned off), replacing the open-ended "text or base64" step that let runs vary.
+- 2026-10-19 (tools): delivery_list_pdf.py and master_list_pdf.py write plain compressed PDFs (no ASCII85) plus a one-line .b64 copy for the upload.
 - 2026-10-19 (tools/delivery_list_pdf.py): shorter link entries in the PDF (about 3 KB less on a 30-stop day); same look and links.
 - v13 (2026-10-15): the list is now the approved PDF design (logo header in the website's colors, tiles, skip box, packing list and stops with tick boxes), made by tools/delivery_list_pdf.py and saved to Delivery Lists as a PDF. The Google Doc (tools/delivery_list_html.py, restyled to match) is only the fallback when the PDF can't be saved. Shane: the Doc that went out Oct 15 was the wrong design.
 - v12 (2026-10-15): the doc's layout is fixed: tools/delivery_list_html.py writes the whole list as HTML and the doc is created from it (HTML converted to a Google Doc), so every day looks the same. Never lay the doc out by hand; plain text only as a reported fallback. (Thursday Oct 15's list came out as plain text.)
@@ -142,6 +144,9 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): preview waits while an invoice list is waiting on Mark (approvals never both open).
 - v1 (2026-10-07): first version.
 
+## save-pdf.md (SAVE PDF (version 1))
+- v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.
+
 ## sheets-spec.md (SHEETS SPEC (version 4))
 - v4 (2026-10-19, revised 32): rule 12: log rows are added with appendCells (after the last filled row), never append_values (it lands after the first block, which caused 64 duplicate Inbox Log rows and scattered run history); logs are read by whole column, never "the last rows". Run history moves to its own "Run History" tab; the System tab is read as A1:B20 only.
 - v4 (2026-10-18, revised 31): week-tab STAMP column "Pay link texted" (invoices sent from 2026-10-18 on).
@@ -189,7 +194,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 ## week-names.md (WEEK NAMES (version 1))
 - v1 (2026-10-17): new. THIS/NEXT/LAST week, tab names and missing week tabs, moved here from sheets-spec so the operator reads a small file each run.
 
-## weekly-master-list.md (WEEKLY MASTER LIST (version 2))
+## weekly-master-list.md (WEEKLY MASTER LIST (version 3))
+- v3 (2026-10-19): the PDF is saved with instructions/save-pdf.md.
 - v2 (2026-10-17): Sunday to Thursday, a quick look at the Changes column first; no new changes = done without building the input file.
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 

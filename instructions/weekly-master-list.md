@@ -1,4 +1,4 @@
-WEEKLY MASTER LIST (version 2)
+WEEKLY MASTER LIST (version 3)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -49,9 +49,7 @@ It prints one line of JSON.
 
 STEP 5. SAVE THE PDF
 - In the Ops folder, find the subfolder "Master Lists" (sheets-spec LOCATION; made on first use). If you had to create it, add a Problem: "Made the Master Lists folder: Shane, set its sharing to anyone with the link can view."
-- Save ml/master.pdf into it as a PDF file (type application/pdf), named the script's "file_name". It must stay a PDF: never convert it to a Google Doc. Never replace, rename or delete an older master list.
-- The file is plain text on purpose. If the Drive tool takes the file's contents as text, give it the file's text exactly. If it wants base64, run `base64 -i ml/master.pdf` and give it that output exactly. Never retype or shorten either.
-- If your Drive tool can set sharing, set the file to "anyone with the link can view".
+- Save ml/master.pdf into it exactly as instructions/save-pdf.md says (Google Drive create_file with contentMimeType application/pdf, disableConversionToGoogleType true, and the script's "base64_file" as base64Content), named the script's "file_name". Never replace, rename or delete an older master list. If save-pdf.md says it failed, there's no link: Step 6 sends the fallback text.
 - Get the file's link.
 
 STEP 6. SEND
