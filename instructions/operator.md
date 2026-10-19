@@ -1,4 +1,4 @@
-OPERATOR (version 15)
+OPERATOR (version 16)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -7,7 +7,7 @@ This is a checklist, not a judgment task. Every check below is a yes/no answer f
 READ ONLY THESE
 - week-names.md (THIS, NEXT and LAST week, tab names, missing week tabs). Read it every run.
 - sheets-spec: only its first line, for the version: run `head -1 ops/instructions/sheets-spec.md`. It must say version 4; if not, record an ALERT Problem, text Shane once, end. Open the rest of sheets-spec only when Step 0's daily checks run or a due step's doc needs it.
-- Farm Reference: Config tab, System tab, Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b (build ahead), when something needs building.
+- Farm Reference: Config tab, System tab (A1:B20 only), Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b (build ahead), when something needs building.
 - Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as week-names.md defines them.
 
 STEP 0. START
@@ -67,6 +67,6 @@ If a step is due but no file instructions/[name].md exists in this repository:
 - If System "Missing doc alerts" does not already list that doc for today's date: text Shane "Operator: [doc] is due but its doc doesn't exist yet." Then update "Missing doc alerts" to today's date plus every doc alerted today.
 
 STEP 2. FINISH
-a0. Problem alerts (skip if Quiet): collect the ALERT problems (routines/farm-ops.md SYSTEM PROBLEMS) from this run so far and from every run history row whose Run start is after System "Problem alerts checked" (blank = the last 24 hours). Leave out any a step already texted Shane about in this run, and any already listed in System "Problem alerts sent" for today. If any are left, text Shane (one-to-one, Config "Admin (Shane) phone") one message: "Farm ops problem: [problem]", or for several "Farm ops problems:" then one per line (at most 10, then "+[n] more in the System tab run history"). Then set "Problem alerts sent" = today's date + every problem alerted today (a few words each), e.g. "2026-10-17: Customers Phone not written for C012; Drive save failed". Set "Problem alerts checked" = now (also when there was nothing to send).
-a. Add one row to the System run history: Run start (from Step 0), Run end = now, Routine = Operator, Trigger = Scheduled (or Manual if this run was started with Run now text), Steps run (start with "parser: nothing new" if Part 1 found no new texts), Texts sent (total this run, including texts sent by the steps), Problems.
+a0. Problem alerts (skip if Quiet): collect the ALERT problems (routines/farm-ops.md SYSTEM PROBLEMS) from this run so far and from every Run History row whose Run start is after System "Problem alerts checked" (blank = the last 24 hours). Leave out any a step already texted Shane about in this run, and any already listed in System "Problem alerts sent" for today. If any are left, text Shane (one-to-one, Config "Admin (Shane) phone") one message: "Farm ops problem: [problem]", or for several "Farm ops problems:" then one per line (at most 10, then "+[n] more in the Run History tab"). Then set "Problem alerts sent" = today's date + every problem alerted today (a few words each), e.g. "2026-10-17: Customers Phone not written for C012; Drive save failed". Set "Problem alerts checked" = now (also when there was nothing to send).
+a. Add one row to the Run History tab (sheets-spec rule 12; create the tab if it's missing): Run start (from Step 0), Run end = now, Routine = Operator, Trigger = Scheduled (or Manual if this run was started with Run now text), Steps run (start with "parser: nothing new" if Part 1 found no new texts), Texts sent (total this run, including texts sent by the steps), Problems.
 b. End with one line: steps run, texts sent, problems.

@@ -1,4 +1,4 @@
-MANUAL EDITS (version 2)
+MANUAL EDITS (version 3)
 Written for: sheets-spec version 4
 
 WHO THIS IS FOR
@@ -31,7 +31,7 @@ MAKING A CHANGE
 NEVER
 - Delete rows, tabs or files. Rename, move or remove headers or labels.
 - Change a filled STAMP cell, or edit or remove anything in a LOG cell (only append, to Changes and No charge).
-- Edit the System, Queue or Inbox Log tabs: the routine owns them.
+- Edit the System, Queue, Inbox Log or Run History tabs: the routine owns them.
 - Change prices, or run a sync.
 - Send a text or message, unless the person asks for that exact message to that exact person.
 

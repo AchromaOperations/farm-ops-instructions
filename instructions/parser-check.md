@@ -1,4 +1,4 @@
-PARSER CHECK (version 1)
+PARSER CHECK (version 2)
 Written for: sheets-spec version 4
 
 JOB
@@ -10,8 +10,8 @@ b. Use the Config and System values the RUN FLAG step already read (routines/far
 
 STEP 1. FETCH
 a. Fetch messages on the farm Quo number, incoming and outgoing, from (System "Message cursor" minus Config "Cursor overlap") to now, oldest first. Include group conversations. The family group (exactly Mark's and Laura's numbers, Config "Owner (Mark) phone" and "Backup (Laura) phone") is one of them; each of its messages shows who sent it.
-b. Drop any message whose Quo message ID is already in the Inbox Log (only search Inbox Log rows from the last 2 days; older IDs can't be in the window).
-   Then match the system's own texts: for each OUTGOING message left, look for an Inbox Log row with Direction "Out (system)", Quo message ID "pending" or "(not returned by Quo)", the same To (a number, or "Group: ..." for a family group text), the same text, and a Time within 15 minutes of the message. If found: write the message's real ID into that row's Quo message ID and drop the message. Do not add a new row. Each log row matches at most one message.
+b. Read the Inbox Log's whole Quo message ID column (that one column, every row: the log is not in time order, so never just the last rows; sheets-spec rule 12). Drop any message whose ID is already there.
+   Then match the system's own texts: for each OUTGOING message left, look among the Inbox Log rows whose Quo message ID is "pending" or "(not returned by Quo)" (find them in that column) for one with Direction "Out (system)", the same To (a number, or "Group: ..." for a family group text), the same text, and a Time within 15 minutes of the message. If found: write the message's real ID into that row's Quo message ID and drop the message. Do not add a new row. Each log row matches at most one message.
 
 STEP 2. DECIDE
 - Nothing left: Part 1 is done. Write nothing else (no run history row; Part 2's row notes "parser: nothing new"). Do not read anything else.

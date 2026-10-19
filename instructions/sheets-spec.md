@@ -13,7 +13,7 @@ GENERAL RULES (apply to every skill)
    - STAMP: marks a step as done (for example Reminder sent, Locked, Delivered, Invoice sent). Write once. Never change or clear a filled stamp. Blank = not done, filled = done. If a filled stamp looks wrong, write it in that row's "Needs attention" cell and add a Queue item for Mark.
    - QUANTITY: product amounts on week tabs. May change until that row's Locked stamp is filled. Every change is also appended to that row's "Changes" cell. After Locked, never change.
    - TRACKER: values that are meant to move (last asked times, ask counts, Queue Status, Message cursor, run flags, System tab values). Overwrite as needed.
-   - LOG: Changes cells, Inbox Log, run history, Queue rows. Only add. Never edit or remove what's already there (except a Queue row's TRACKER cells: Status, Last nudged, Answer, Answered by, Resolved, Outcome).
+   - LOG: Changes cells, Inbox Log, Run History, Queue rows. Only add. Never edit or remove what's already there (except a Queue row's TRACKER cells: Status, Last nudged, Answer, Answered by, Resolved, Outcome).
 
 3. Date-times: always written as yyyy-mm-dd hh:mm in 24-hour Eastern time, for example 2026-10-12 16:40. This sorts and compares correctly. Friendly formats ("Mon Oct 12, 4:40pm") are only for text messages to people.
 
@@ -35,6 +35,9 @@ GENERAL RULES (apply to every skill)
    - Nothing else goes in a list text (no digest questions, no other news).
 
 11. Family group text. Everything the system sends to Mark and/or Laura goes as ONE group text to the two of them together (Config "Owner (Mark) phone" and "Backup (Laura) phone"), using Quo's group message, never as separate one-to-one texts. Either of them may answer. No one else is ever added to this group. When the same text also goes to Harry or Shane, they each get their own one-to-one copy. If one of the two Config phones is blank, text the other one-to-one instead (a group needs both). Every message Mark or Laura send in this group is treated as meant for the system: it is done, answered or clarified, never just logged (parser section A).
+
+12. Adding rows to a log tab (Inbox Log, Queue, Run History): use the Sheets tool's appendCells request (update_spreadsheet with appendCells and that tab's sheetId). It adds after the last row with data anywhere in the tab. Never use append_values for these tabs (it adds after the FIRST block of data, which can be in the middle of the tab), never insert rows, never write into a blank row, and never add blank rows. If a new row lands anywhere but directly under the last filled row, record an ALERT Problem.
+   Reading a log tab: entries are not always in time order. Read only the columns you need, but read them for every row (for example the whole Quo message ID column); never assume the last rows are the newest.
 
 LOCATION
 Google Drive folder: the Ops folder = the Google Drive folder that directly contains the Google Sheet "Farm Reference" (its Config A1 reads "RF-OPS REFERENCE v1"). Find it by searching Drive for that sheet. There must be exactly one.
@@ -138,7 +141,7 @@ Time | Direction | From | To | Who | Classified as | Action taken | Written to |
 - Who: a Cust ID, Mark, Laura, Harry, Shane, or Unknown.
 - The Quo message ID is the dedupe key: a message whose ID is already in this log is never processed again.
 
-TAB: System (labels in column A, values in column B; all TRACKER cells)
+TAB: System (labels in column A, values in column B; all TRACKER cells). Read only System!A1:B20, where the labels are.
 Message cursor | date-time of the newest message the parser has finished
 Run in progress since | date-time the current Farm ops run started; blank when no run is going (routines/farm-ops.md RUN FLAG)
 Parser run in progress since | no longer used (leave blank; replaced by "Run in progress since")
@@ -149,12 +152,15 @@ Last payment check | date-time invoicing last checked Square for payments
 Missing doc alerts | date + doc names Shane was told about today, e.g. "2026-10-08: owner-digest, invoicing"
 Sunday alert sent | date the "reminder never went out" alert last went out
 Daily checks done | "[yyyy-mm-dd] [repo version]" of the operator's last build-ahead and label check (operator Step 0 b, c2)
-Problem alerts checked | date-time the operator last checked the run history for ALERT problems (system issues) to text Shane
+Problem alerts checked | date-time the operator last checked the Run History for ALERT problems (system issues) to text Shane
 Problem alerts sent | today's date + the ALERT problems Shane was texted today, e.g. "2026-10-17: Customers Phone not written for C012"
-Then a blank row, then the run history (LOG), header row starting with "Run start":
+- Rows below the labels are the OLD run history (up to 2026-10-19). Never read or add to them.
+- If any label above is missing, write it in the first empty row of A1:A20; if none is empty, record an ALERT Problem. Adding labels is allowed; never remove one.
+
+TAB: Run History (header in row 1; LOG). One row per part of each run:
 Run start | Run end | Routine | Trigger | Steps run | Texts sent | Problems
-- If any label above is missing (for example an older setup), add it as a new row above the run history. Adding labels is allowed; never remove one.
-- Reading texts: start from (Message cursor minus Cursor overlap), and skip any message whose ID is already in the Inbox Log (only search Inbox Log rows from the last 2 days; older IDs can't be in the window). The overlap catches texts that arrive late or share a minute.
+- If the tab doesn't exist, create it with that header row. Add rows only as rule 12 says.
+- Reading texts: start from (Message cursor minus Cursor overlap), and skip any message whose ID is already in the Inbox Log (read the whole Quo message ID column, rule 12; the log is not in time order, so never just the last rows; older IDs can't be in the window). The overlap catches texts that arrive late or share a minute.
 - Run flag: one Farm ops run at a time. routines/farm-ops.md RUN FLAG sets System "Run in progress since" at the start of a run and clears it at the end; a run that finds it set (and less than Config "Stale run after" minutes old) ends at once and changes nothing. The parser and operator parts run one after the other inside the same run, so they never overlap.
 - Week tabs: when a week tab is missing, follow MISSING WEEK TABS in week-names.md.
 

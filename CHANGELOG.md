@@ -16,6 +16,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-08): first version.
 
 ## daily-delivery-list.md (DAILY DELIVERY LIST (version 13))
+- 2026-10-19 (tools/delivery_list_pdf.py): shorter link entries in the PDF (about 3 KB less on a 30-stop day); same look and links.
 - v13 (2026-10-15): the list is now the approved PDF design (logo header in the website's colors, tiles, skip box, packing list and stops with tick boxes), made by tools/delivery_list_pdf.py and saved to Delivery Lists as a PDF. The Google Doc (tools/delivery_list_html.py, restyled to match) is only the fallback when the PDF can't be saved. Shane: the Doc that went out Oct 15 was the wrong design.
 - v12 (2026-10-15): the doc's layout is fixed: tools/delivery_list_html.py writes the whole list as HTML and the doc is created from it (HTML converted to a Google Doc), so every day looks the same. Never lay the doc out by hand; plain text only as a reported fallback. (Thursday Oct 15's list came out as plain text.)
 - v11 (2026-10-13): every stop shows the customer's phone number next to the address (Phone, plus Phone 2 if filled).
@@ -58,11 +59,13 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## manual-edits.md (MANUAL EDITS (version 2))
+## manual-edits.md (MANUAL EDITS (version 3))
+- v3 (2026-10-19): Run History tab is routine-owned too.
 - v2 (2026-10-18): free items go in the "No charge" column (added if the tab lacks it), not as text in Needs attention or Changes.
 - v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
 
-## operator.md (OPERATOR (version 15))
+## operator.md (OPERATOR (version 16))
+- v16 (2026-10-19): reads System A1:B20 only; run history and ALERT checks use the Run History tab.
 - v15 (2026-10-18): invoicing is due while a sent invoice (from 2026-10-18 on) still owes its payment-link text, 8am-9pm.
 - v14 (2026-10-17): reads week-names.md and only sheets-spec's first line each run; build-ahead and label checks run once a day and after any push (System "Daily checks done"), or when a tab is missing.
 - v13 (2026-10-17): no run flag of its own (routines/farm-ops.md RUN FLAG) and no "parser late" check (both parts run in the same run); run history notes "parser: nothing new".
@@ -92,7 +95,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 30))
+## parser.md (PARSER (version 31))
+- v31 (2026-10-19): run history row goes to the Run History tab.
 - v30 (2026-10-18): A4 "no charge" command from Mark or Laura (free, comp, on the house, sample).
 - v29 (2026-10-17): an Active customer with no row on an unlocked week tab gets their row added before an order is written (build-ahead now runs once a day).
 - v28 (2026-10-17): Step 0 and Step 1 (start, fetch, dedupe) moved to parser-check.md, so quiet runs never open this file; the run flags and "Last parse finished" are gone (one run flag in routines/farm-ops.md).
@@ -139,6 +143,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-07): first version.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-10-19, revised 32): rule 12: log rows are added with appendCells (after the last filled row), never append_values (it lands after the first block, which caused 64 duplicate Inbox Log rows and scattered run history); logs are read by whole column, never "the last rows". Run history moves to its own "Run History" tab; the System tab is read as A1:B20 only.
 - v4 (2026-10-18, revised 31): week-tab STAMP column "Pay link texted" (invoices sent from 2026-10-18 on).
 - v4 (2026-10-18, revised 30): week-tab column "No charge" (LOG): free items, still in the quantity cell; billing subtracts them. Only Mark, Laura or Shane can make something free.
 - v4 (2026-10-17, revised 29): WEEK NAMES and MISSING WEEK TABS moved (not copied) to week-names.md; WHERE RULES LIVE note; System "Daily checks done". send-reminder, parser, confirm-orders, invoicing and operator now point to week-names.md.
@@ -177,7 +182,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): cell kinds replace "never overwrite"; one date-time format; file lookup rule; Phone 2 matching; cursor overlap + message ID dedupe; stale run flag; lock time is the real cutoff; structured Not delivered; dropdowns; year-crossing tab names.
 - v1 (2026-10-07): first draft.
 
-## parser-check.md (PARSER CHECK (version 1))
+## parser-check.md (PARSER CHECK (version 2))
+- v2 (2026-10-19): dedupe reads the Inbox Log's whole Quo message ID column (the log isn't in time order).
 - v1 (2026-10-17): new. The start of every run (fetch, dedupe, match the system's own texts); parser.md is only opened when there are new messages.
 
 ## week-names.md (WEEK NAMES (version 1))
@@ -188,6 +194,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops.md
+- 2026-10-19: reads System A1:B20 only; log rows via appendCells (sheets-spec rule 12); Run History tab.
 - 2026-10-18: hard limit 9 allows reading Square payment links (for the invoice text).
 - 2026-10-17: write checks: stamps and "sent" cells read back right away; everything else checked once per tab at the end of each part.
 - 2026-10-17: NIGHT rule (runs between 9pm and 6:30am end at once); one RUN FLAG for the whole run; Part 1 starts with parser-check.md. Runs are meant for 6:40am to 8:40pm.

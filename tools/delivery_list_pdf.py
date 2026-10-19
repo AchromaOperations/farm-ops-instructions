@@ -207,8 +207,8 @@ class Doc:
             nxt += 2
             annot_ids = []
             for (x1, y1, x2, y2, url) in annots:
-                objs[nxt] = ("<< /Type /Annot /Subtype /Link /Rect [%.2f %.2f %.2f %.2f] /Border [0 0 0] "
-                             "/A << /S /URI /URI %s >> >>" % (x1, y1, x2, y2, pdf_string(url))).encode("ascii")
+                objs[nxt] = ("<</Subtype/Link/Rect[%.0f %.0f %.0f %.0f]/Border[0 0 0]/A<</S/URI/URI%s>>>>"
+                             % (x1, y1, x2, y2, pdf_string(url))).encode("ascii")
                 annot_ids.append(nxt)
                 nxt += 1
             ann = (" /Annots [%s]" % " ".join("%d 0 R" % a for a in annot_ids)) if annot_ids else ""
@@ -441,7 +441,7 @@ def stops_header(d):
 
 def stop_cells(s):
     cw = [STOP_X[k + 1] - STOP_X[k] - 12 for k in range(6)]
-    maps = "https://www.google.com/maps/search/?api=1&query=" + quote_plus("%s, %s KY" % (s.get("address", ""), s.get("city", "")))
+    maps = "https://maps.google.com/?q=" + quote_plus("%s, %s KY" % (s.get("address", ""), s.get("city", "")), safe=",")
     cust = wrap_runs([(s.get("name", ""), "b", 9.5, INK, None)], cw[2])
     cust += wrap_runs([(s.get("address", ""), "r", 9.5, ACCENT, maps), (", " + s.get("city", ""), "r", 9.5, INK, None)], cw[2])
     nums = [phone_text(n) for n in (s.get("phone"), s.get("phone2")) if (n or "").strip()]

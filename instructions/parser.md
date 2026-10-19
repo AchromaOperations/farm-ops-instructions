@@ -1,4 +1,4 @@
-PARSER (version 30)
+PARSER (version 31)
 Written for: sheets-spec version 4
 
 JOB
@@ -222,4 +222,4 @@ Clarify items: Type Clarify, Created, Week, Cust ID, Customer, Original message,
 STEP 3. FINISH
 =====================================================
 a. Message cursor = the time of the newest message processed.
-b. Run history row: Run start, Run end, Routine = Parser, Trigger, Steps run = "[n] messages: [x] orders, [y] clarify, [z] other", Texts sent = 0, Problems (system issues start with "ALERT: ", as routines/farm-ops.md SYSTEM PROBLEMS says; the operator part texts them to Shane).
+b. Run History row (Run History tab, added as sheets-spec rule 12 says): Run start, Run end, Routine = Parser, Trigger, Steps run = "[n] messages: [x] orders, [y] clarify, [z] other", Texts sent = 0, Problems (system issues start with "ALERT: ", as routines/farm-ops.md SYSTEM PROBLEMS says; the operator part texts them to Shane).
