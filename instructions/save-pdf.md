@@ -1,7 +1,7 @@
-SAVE PDF (version 1)
+SAVE PDF (version 2)
 Written for: sheets-spec version 4
 
-The one way to put a PDF that a tools/ script made into a Google Drive folder. daily-delivery-list and weekly-master-list both use it. Do it exactly this way every time; never improvise another way.
+The one way to put a PDF that a tools/ script made into a Google Drive folder. daily-delivery-list and weekly-master-list both use it. Do it exactly this way every time; never improvise another way. This file is only for PDFs: list Google Docs (invoice and read-back lists, the delivery list's fallback Doc) are made with textContent as save-doc.md says, never with base64.
 
 Why this way: Google Drive converts an uploaded PDF into a Google Doc unless conversion is turned off. That is what left empty "Master list" Docs in Drive on Oct 17 and 18. With conversion off, the file stays a real PDF, as Friday's delivery list did on Oct 15.
 
@@ -12,7 +12,7 @@ Google Drive create_file (mcp__Google-Drive__create_file), with exactly these pa
 - contentMimeType: "application/pdf"
 - disableConversionToGoogleType: true
 - base64Content: the whole contents of the script's "base64_file" (one line of base64). Read it with `cat [base64_file]` and pass it exactly, every character, however long (10,000 to 40,000 characters is normal). Never shorten, retype, rewrap or summarize it, and never decide it is too long.
-Never use textContent, the deprecated "content" or "mimeType" parameters, or a Google type (application/vnd.google-apps...). Never make a second file if one call fails: check first (below).
+For a PDF, never use textContent, the deprecated "content" or "mimeType" parameters, or a Google type (application/vnd.google-apps...). Never make a second file if one call fails: check first (below).
 
 CHECK
 - The reply must show the new file's ID and a MIME type of application/pdf. If it shows a Google Doc type, or no file was made: record an ALERT Problem "PDF save failed: [what the reply said]", leave anything that was made (never delete), and use the calling doc's fallback.

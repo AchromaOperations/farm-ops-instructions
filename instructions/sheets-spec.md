@@ -10,7 +10,7 @@ GENERAL RULES (apply to every skill)
 1. Find things by label, not by cell address. Humans may insert rows or columns. Find a header row by its column names, and a header-block value by its label in column A.
 
 2. Every cell is one of four kinds. Each kind has its own write rule.
-   - STAMP: marks a step as done (for example Reminder sent, Locked, Delivered, Invoice sent). Write once. Never change or clear a filled stamp. Blank = not done, filled = done. If a filled stamp looks wrong, write it in that row's "Needs attention" cell and add a Queue item for Mark.
+   - STAMP: marks a step as done (for example Reminder sent, Locked, Delivered, Invoice sent). Write once. Never change or clear a filled stamp. Blank = not done, filled = done. If a filled stamp looks wrong, write it in that row's "Needs attention" cell and add a Queue item for Mark. Whether that also holds a day's invoicing (DAY TABLE "Invoice hold") is decided only by routines/farm-ops.md SYSTEM PROBLEMS.
    - QUANTITY: product amounts on week tabs. May change until that row's Locked stamp is filled. Every change is also appended to that row's "Changes" cell. After Locked, never change.
    - TRACKER: values that are meant to move (last asked times, ask counts, Queue Status, Message cursor, run flags, System tab values). Overwrite as needed.
    - LOG: Changes cells, Inbox Log, Run History, Queue rows. Only add. Never edit or remove what's already there (except a Queue row's TRACKER cells: Status, Last nudged, Answer, Answered by, Resolved, Outcome).
@@ -45,6 +45,7 @@ Skill instructions are NOT in Drive: they live only in the GitHub repository eac
 - Delivery Lists (subfolder): one PDF per delivery day, made by daily-delivery-list, named like "Delivery list Mon Oct 12 2026.pdf" (a Google Doc "Delivery list Mon Oct 12 2026" only when the PDF couldn't be saved).
 - Read-back Lists (subfolder): approval lists of customer read-backs, made by confirm-orders, named like "Read-backs 2026-10-10 14:40".
 - Invoice Lists (subfolder): one Google Doc per delivery day, made by invoicing, named like "Invoices Mon Oct 12 2026".
+- List Docs (read-back, invoice, and the delivery list's fallback Doc) are made only as instructions/save-doc.md says. PDFs are saved only as instructions/save-pdf.md says.
 - Master Lists (subfolder): one PDF file per master list sent, made by weekly-master-list, named like "Master list week 1 2026-10-10 20.41 full.pdf". PDF files, never converted to Docs.
 - These four subfolders are made on first use: before writing a doc into one, look for exactly one subfolder with that name directly in the Ops folder; if there is none, create it there. If there are two or more, stop that step and add a Problem.
 - Farm Reference (Google Sheet)
@@ -129,10 +130,11 @@ Q# | Type | Created | Week | Cust ID | Customer | Original message | Question | 
 - Q#: running number, never reused.
 - Type (dropdown): Clarify, Sales, Invoice, Read-back, Late order, Reminder, Driver, Other.
   An Other item whose Question starts with "REPLY: " is the system's reply to something Mark or Laura texted in the group (an answer, a confirmation or a clarification). It needs no answer: owner-digest sends it and sets it Resolved.
-  Read-back items hold the link to a read-back approval list in Question.
-  Driver items are questions for Harry (sent by delivery-check, not the digest). Invoice items hold the link to that day's invoice list doc in Question.
+  Read-back items hold the link to a read-back approval list in Question. Invoice items hold the link to that day's invoice list doc in Question. If the list Doc couldn't be made (save-doc.md), the Question holds the list text itself instead of a link; every step that reads "the list doc" then reads that text.
+  Driver items are questions for Harry (sent by delivery-check, not the digest). Each one's Question starts with the delivery day it is about, written "[Ddd Mon D]: " (for example "Thu Oct 22: What wasn't delivered, and to whom?"). That date is the item's day. An older item without it: its day is the date of its Created.
+  A Clarify item whose Question starts "Canceled invoice:" is a question about an invoice canceled in Square (invoicing Part D). When Mark or Laura answers it, the parser sets it Answered (not Resolved), and invoicing Part D2 applies the answer and resolves it.
 - Digest # (TRACKER): the number Mark sees in the current digest (1, 2, 3). Cleared when the item is Resolved. Never two items that aren't Resolved with the same Digest #.
-- Status (dropdown): Waiting, Sent, Answered, Resolved.   (Waiting = not yet sent to anyone. Answered = a Sales item Mark or Laura answered without sale / no sale / resolved; owner-digest follows these up once a day.) Sent to: "Group" for the family group (rule 11), or a name.
+- Status (dropdown): Waiting, Sent, Answered, Resolved.   (Waiting = not yet sent to anyone. Answered = a Sales item Mark or Laura answered without sale / no sale / resolved, which owner-digest follows up once a day; or a "Canceled invoice:" Clarify item waiting for invoicing Part D2.) Sent to: "Group" for the family group (rule 11), or a name.
 - Outcome (dropdown, Sales only): Sale, No sale, Resolved.
 
 TAB: Inbox Log (header in row 1). One row per text the parser handled, in and out.
@@ -204,9 +206,10 @@ Weekly master list checked |   (TRACKER: yyyy-mm-dd of the last night weekly-mas
 Finance update sent |
 
 DAY TABLE (directly below, header row starts with "Day")
-Day | Delivery list sent | Exceptions sent | Harry last asked | Harry ask count | Mark alerted | Route confirmed | Invoices drafted | Invoices approved | Invoices sent
+Day | Delivery list sent | Exceptions sent | Harry last asked | Harry ask count | Mark alerted | Route confirmed | Invoices drafted | Invoices approved | Invoices sent | Invoice hold
 - A day whose cells say "No delivery" had nothing ordered (for example a holiday); every step skips it.
 - Exceptions sent (TRACKER): when the latest morning-of exceptions text went out (see daily-delivery-list).
+- Invoice hold (TRACKER, with the limits below): filled = that day's invoicing is on hold. Invoicing drafts, lists, sends and texts nothing for that day until it is blank again (invoicing HELD DAYS). A run fills it, or adds to it after " ; ", as "[yyyy-mm-dd hh:mm] [reason]" only when routines/farm-ops.md SYSTEM PROBLEMS says to (a write to that day's delivery or invoice cells came out wrong and couldn't be fixed). Only Shane clears it: by hand, or by asking a chat (manual-edits.md). A routine never clears or shortens it. A hold written anywhere else (Run History, Problems, Needs attention, a run's notes) holds nothing. On tabs built before this column existed, it is added at the end of the day table's header row (rule 8).
 One row each: Monday, Tuesday, Wednesday, Thursday, Friday.
 
 CUSTOMER TABLE (below the day table after one blank row, header row starts with "Cust ID")
@@ -218,6 +221,7 @@ Cust ID | Name | Day | Route | Stop # | one column per product (same names as Pr
 - Product cells (QUANTITY): this week's amount. Starts as the standing order.
 - Changes (LOG): one entry per change, separated by " ; ", e.g. "2026-10-09 09:14 Yogurt Plain 0>2 (text)". An entry ending "(standing order sync)" only copies the customer's standing order onto that week; it is not a change anyone asked for. Delivery lists, read-back risk checks and sync conflict checks ignore it.
 - Not delivered (LOG): product Column name + amount + reason, separated by " ; ", e.g. "Yogurt Plain x2 ran out". Billing subtracts these.
+- Invoice link: the Square invoice's link, or "none" (nothing to invoice). Written once by invoicing. The only time it changes: Mark or Laura names the replacement for an invoice canceled in Square (invoicing Part D2).
 - Pay link texted (STAMP): when the customer was texted their invoice's payment link (invoicing Part C2), or "skipped: [reason]" (no phone, opted out). Only invoices whose "Invoice sent" is 2026-10-18 or later get the text (Shane's rule from that date). Added at the end of the header row on tabs that don't have it (rule 8).
 - No charge (LOG): items given free this week: product Column name + amount + who said so, separated by " ; ", e.g. "Yogurt VM x1 (Mark)". The amount is ALSO in that product's quantity cell, because it is packed and delivered like any item. Billing subtracts it, the same way as Not delivered. Only Mark, Laura or Shane can make an item no charge (a parser command, or a chat following manual-edits.md); a customer's own text never can. On tabs built before this column existed, it is added at the end of the header row (rule 8).
 - Locked (STAMP): filled when that day's delivery list goes out. THIS is the real order cutoff. Before Locked, any order for this week counts, even after the asked-for cutoff. After Locked, the row never changes, with one exception: a Late order that Mark answers "add it" (squeeze in) may change a quantity; the Changes entry must say "after lock, approved by Mark" and Needs attention must say "added after list went out". Otherwise new orders become a Late order Queue item for Mark.

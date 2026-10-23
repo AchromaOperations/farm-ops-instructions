@@ -1,4 +1,4 @@
-OWNER DIGEST (version 9)
+OWNER DIGEST (version 10)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -24,7 +24,7 @@ STEP 1. MOVE STALE INVOICE HOLDS
 Any Clarify item whose Question starts with "Invoice" and that has been Sent for 24 hours with no Answer: create a Sales item with the same customer and question (customer service follow-up), then set the Clarify item's Answer = "moved to Sales Q[n]", Status = Resolved, clear its Digest #.
 
 STEP 2. NUDGES (for items already sent)
-a. Invoice pending: if (Last nudged, else First sent) is at least Follow-up every minutes ago, text the family group the whole list again from its list doc, as sheets-spec rule 10 says, with the title starting "Still need your OK: " (for example "Still need your OK: 3 customer read-backs"). Set Last nudged = now.
+a. Invoice pending: if (Last nudged, else First sent) is at least Follow-up every minutes ago, text the family group the whole list again from its list doc (or from its Question, when that holds the list text instead of a link), as sheets-spec rule 10 says, with the title starting "Still need your OK: " (for example "Still need your OK: 3 customer read-backs"). Set Last nudged = now.
 b. Open batch: unanswered items = Status Sent and NO Answer. If any of them has (Last nudged, else First sent) at least Follow-up every minutes ago, send one follow-up:
    - Top up first: if fewer than Batch size items are unanswered, add Waiting items (urgent first, then oldest Created) until there are Batch size, or none are left. While Invoice pending, add only urgent ones. Number them as Step 3 does, and set each added item's Status = Sent, Digest #, Sent to = Group, First sent = now.
    - Text the family group one message: "Still waiting on these (reply with the number and your answer):" then every unanswered item's "[Digest #]. [Question]", the added ones last with "(new)" after each, with the same urgent and Sales notes as Step 3, then "([n] more waiting after these)" if Waiting items remain.

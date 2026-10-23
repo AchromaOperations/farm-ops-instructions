@@ -1,4 +1,4 @@
-CONFIRM ORDERS (version 10)
+CONFIRM ORDERS (version 11)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -37,10 +37,11 @@ Send the text to the customer's Phone (Customers tab). No phone: skip it and put
 STEP 5. APPROVAL LIST
 Rows needing approval, EXCEPT rows already waiting on a list ("Read-back drafted" is later than "Confirm needed", and "Read-back approved" is blank or earlier than "Read-back drafted"). If there are none, skip to the last line of this step.
 1. Set each row's "Read-back draft" = the text from Step 2, and "Read-back drafted" = now.
-2. Make a Google Doc in Read-back Lists named "Read-backs [yyyy-mm-dd hh:mm]". Large plain text:
+2. The list text:
    "Read-backs waiting for your OK. Reply 'good' to send all, or 'good except [numbers]'."
    Then one numbered line per row: "[#]. [Name] ([Cust ID], [week]): [exact text]"
-3. Create a Queue item: Type Read-back, Question = the doc link, Original message = "[n] read-backs", Status = Waiting.
+   Make a Google Doc in Read-back Lists named "Read-backs [yyyy-mm-dd hh:mm]" from it (large plain text), exactly as instructions/save-doc.md says. If save-doc.md says it failed, go on anyway with the list text in place of the link.
+3. Create a Queue item: Type Read-back, Question = the doc link (or, if the Doc failed, the whole list text), Original message = "[n] read-backs", Status = Waiting.
 4. Send it only if no approval is open (sheets-spec rule 9; a reminder still waiting for wording does NOT count): text the family group the list as sheets-spec rules 10 and 11 say. Title: "[n] customer read-backs need your OK". Lines: "[#]. [Name]: [exact text]". Then Status = Sent, Sent to = Group, First sent = now.
    Otherwise leave it Waiting; a later run sends it. (Nudges and Laura are handled by owner-digest.)
 Last line: if a Read-back Queue item is still Waiting (made by an earlier run), send the oldest one the same way, under the same conditions as item 4.

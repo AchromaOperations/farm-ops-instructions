@@ -1,4 +1,4 @@
-MANUAL EDITS (version 3)
+MANUAL EDITS (version 4)
 Written for: sheets-spec version 4
 
 WHO THIS IS FOR
@@ -32,6 +32,7 @@ NEVER
 - Delete rows, tabs or files. Rename, move or remove headers or labels.
 - Change a filled STAMP cell, or edit or remove anything in a LOG cell (only append, to Changes and No charge).
 - Edit the System, Queue, Inbox Log or Run History tabs: the routine owns them.
+- Touch a day's "Invoice hold" (week tab day table) unless Shane himself asks. When he asks to hold a day: fill it as "[yyyy-mm-dd hh:mm] [reason] (Shane (chat))", or add that after " ; " if it's already filled. When he asks to lift it: clear the cell.
 - Change prices, or run a sync.
 - Send a text or message, unless the person asks for that exact message to that exact person.
 

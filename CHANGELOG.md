@@ -2,7 +2,8 @@
 
 History of every file in instructions/ and routines/. Each file keeps only its version line, so a routine run doesn't read old history. Newest entries first. Git has the full changes.
 
-## confirm-orders.md (CONFIRM ORDERS (version 10))
+## confirm-orders.md (CONFIRM ORDERS (version 11))
+- v11 (2026-10-23): the read-back list Doc is made as save-doc.md says; if it fails, the list text goes in the Queue item and the approval still goes out.
 - v10 (2026-10-10): the read-back list goes to the family group (sheets-spec rule 11).
 - v9 (2026-10-10): read-backs also cover orders placed on later weeks (for example a first-week item), with the date.
 - v8 (2026-10-10): read-backs word Extra Milk in gallons right after the share.
@@ -15,7 +16,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-08): manual review (Config "Read-back review": ALL, RISKY ONLY, OFF).
 - v1 (2026-10-08): first version.
 
-## daily-delivery-list.md (DAILY DELIVERY LIST (version 14))
+## daily-delivery-list.md (DAILY DELIVERY LIST (version 15))
+- v15 (2026-10-23): the fallback Doc is made as save-doc.md says; the morning "Got today's added items?" Driver item starts with its date and is created as already Sent (the morning text asked Harry), so his morning GOT IT counts; lists are never edited after they're made.
 - v14 (2026-10-19): the PDF is saved with instructions/save-pdf.md (one fixed create_file call with conversion turned off), replacing the open-ended "text or base64" step that let runs vary.
 - 2026-10-19 (tools): delivery_list_pdf.py and master_list_pdf.py write plain compressed PDFs (no ASCII85) plus a one-line .b64 copy for the upload.
 - 2026-10-19 (tools/delivery_list_pdf.py): shorter link entries in the PDF (about 3 KB less on a 30-stop day); same look and links.
@@ -34,7 +36,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): empty days count as no delivery (no list, no Harry texts); test customers left out; MORNING EXCEPTIONS part for items added after the list went out.
 - v1 (2026-10-07): first version.
 
-## delivery-check.md (DELIVERY CHECK (version 2))
+## delivery-check.md (DELIVERY CHECK (version 3))
+- v3 (2026-10-23): Driver questions carry their day; a "Got today's added items?" item closes itself when its day ends, and any other unsent one 2+ days old is never sent (ALERT to Shane). On Oct 22 an Oct 14 question reached Harry and his "Yes" was misread.
 - v2 (2026-10-10): Mark's alert goes to the family group (sheets-spec rule 11).
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v1 (2026-10-07): first version.
@@ -47,7 +50,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
 - v1 (2026-10-07): first draft.
 
-## invoicing.md (INVOICING (version 10))
+## invoicing.md (INVOICING (version 11))
+- v11 (2026-10-23): HELD DAYS: a day row's "Invoice hold" stops drafting, lists, sending and pay-link texts for that day until Shane clears it (a hold only in run notes holds nothing). The list Doc is made as save-doc.md says; if it fails, invoicing goes on with the list text in the Queue item. The list includes drafts an earlier run made before stopping. Part D asks Mark about an invoice canceled in Square; Part D2 applies his answer (new Invoice link, or Paid "none"). From the Oct 22-23 Thursday invoices and Cayli's 000049/000050.
 - v10 (2026-10-18): Part C2 texts each customer their invoice's payment link once it's published in Square (8am-9pm, LIVE, not NO TEXTS, duplicate guard); the approval list says so.
 - v9 (2026-10-18): no-charge items are subtracted from invoices and shown on the approval list; an all-free row gets no invoice.
 - v8 (2026-10-10): the invoice list goes to the family group (sheets-spec rule 11).
@@ -61,12 +65,14 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## manual-edits.md (MANUAL EDITS (version 3))
+## manual-edits.md (MANUAL EDITS (version 4))
+- v4 (2026-10-23): a chat sets or clears a day's "Invoice hold" only when Shane asks.
 - v3 (2026-10-19): Run History tab is routine-owned too.
 - v2 (2026-10-18): free items go in the "No charge" column (added if the tab lacks it), not as text in Needs attention or Changes.
 - v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
 
-## operator.md (OPERATOR (version 16))
+## operator.md (OPERATOR (version 17))
+- v17 (2026-10-23): a held day doesn't make invoicing due; an Answered Clarify item (a canceled-invoice answer) does; the daily label check also covers the day table header.
 - v16 (2026-10-19): reads System A1:B20 only; run history and ALERT checks use the Run History tab.
 - v15 (2026-10-18): invoicing is due while a sent invoice (from 2026-10-18 on) still owes its payment-link text, 8am-9pm.
 - v14 (2026-10-17): reads week-names.md and only sheets-spec's first line each run; build-ahead and label checks run once a day and after any push (System "Daily checks done"), or when a tab is missing.
@@ -85,7 +91,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): shared run lock with the parser; morning exceptions; approvals never both open; missing week tab alert; held no-email invoices.
 - v1 (2026-10-07): first version.
 
-## owner-digest.md (OWNER DIGEST (version 9))
+## owner-digest.md (OWNER DIGEST (version 10))
+- v10 (2026-10-23): a list nudge reads the list from the Queue item when there is no Doc.
 - v9 (2026-10-17): Step 0 sends the parser's replies (Queue Type Other, Question starting "REPLY: ") to the family group right away, unnumbered, and closes them; replies are never part of a batch or a follow-up.
 - v8 (2026-10-10): everything goes to the family group (sheets-spec rule 11), Laura's 6-hour copy is gone; a follow-up tops the open questions back up to Batch size.
 - v7 (2026-10-10): quotes go out in full (a Question cut short with "..." is sent with its full Original message instead); texts over 1,500 characters are split.
@@ -97,7 +104,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 31))
+## parser.md (PARSER (version 32))
+- v32 (2026-10-23): Harry's reply: words that fit only one question go there (GOT IT to the added-items question, delivery reports to the route); a bare yes/ok answers the question texted most recently, and if two were texted within 20 minutes he's asked which. What a reply meant is decided once. Driver items start with their day. A canceled-invoice answer is left Answered for invoicing. A list stored in the Queue item is read like the Doc.
 - v31 (2026-10-19): run history row goes to the Run History tab.
 - v30 (2026-10-18): A4 "no charge" command from Mark or Laura (free, comp, on the house, sample).
 - v29 (2026-10-17): an Active customer with no row on an unlocked week tab gets their row added before an order is written (build-ahead now runs once a day).
@@ -144,10 +152,15 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): preview waits while an invoice list is waiting on Mark (approvals never both open).
 - v1 (2026-10-07): first version.
 
-## save-pdf.md (SAVE PDF (version 1))
+## save-doc.md (SAVE LIST DOC (version 1))
+- v1 (2026-10-23): new. The one way to make a list Google Doc: create_file with text/plain (or text/html for the delivery list fallback) and textContent, conversion on; never base64. If it fails, the work goes on without the Doc. Docs can't be edited, so a second one gets "(2)".
+
+## save-pdf.md (SAVE PDF (version 2))
+- v2 (2026-10-23): says it is for PDFs only; list Docs use save-doc.md (the "never textContent" rule had confused an invoice Doc on Oct 23).
 - v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-10-23, revised 33): day-table column "Invoice hold" (only Shane clears it); Driver item Questions start with their day; "Canceled invoice:" Clarify items wait Answered for invoicing; Invoice link changes only for a canceled invoice's replacement; Queue list items may hold the list text when the Doc failed; list Docs use save-doc.md.
 - v4 (2026-10-19, revised 32): rule 12: log rows are added with appendCells (after the last filled row), never append_values (it lands after the first block, which caused 64 duplicate Inbox Log rows and scattered run history); logs are read by whole column, never "the last rows". Run history moves to its own "Run History" tab; the System tab is read as A1:B20 only.
 - v4 (2026-10-18, revised 31): week-tab STAMP column "Pay link texted" (invoices sent from 2026-10-18 on).
 - v4 (2026-10-18, revised 30): week-tab column "No charge" (LOG): free items, still in the quantity cell; billing subtracts them. Only Mark, Laura or Shane can make something free.
@@ -200,6 +213,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops.md
+- 2026-10-23: SYSTEM PROBLEMS: the only way to hold a day's invoicing is that day's "Invoice hold" cell, and only when a write came out wrong and couldn't be fixed; never because an old reply would now be read differently.
 - 2026-10-19: reads System A1:B20 only; log rows via appendCells (sheets-spec rule 12); Run History tab.
 - 2026-10-18: hard limit 9 allows reading Square payment links (for the invoice text).
 - 2026-10-17: write checks: stamps and "sent" cells read back right away; everything else checked once per tab at the end of each part.

@@ -1,4 +1,4 @@
-DELIVERY CHECK (version 2)
+DELIVERY CHECK (version 3)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -8,7 +8,10 @@ Open days = day rows in LAST or THIS week with "Delivery list sent" filled, "Rou
 Last hour = the hour before Config "Quiet hours start" (20:00 when quiet hours start at 21:00).
 
 STEP 1. HARRY'S OPEN QUESTIONS (Driver items)
-For each Queue item of Type Driver:
+A Driver item's day is the date its Question starts with ("Thu Oct 22: ..."), or for an older item without one, the date of its Created (sheets-spec Queue). Never text Harry a question about a day long past: he can't tell it from today's. (On Oct 22 an Oct 14 question reached him and his "Yes" was misread.)
+For each Queue item of Type Driver that is not Resolved, check these in order and use the first that fits:
+- Expired: a "Got today's added items?" item whose day is before today. Don't text it. Set Answer = "expired: the day ended", Answered by = "system", Status = Resolved, Resolved = now. (Its changes were already texted that morning.)
+- Too old to send: any other item with Status Waiting whose day is 2 or more days before today. Don't text it. Record an ALERT Problem "Driver question Q[n] for [day] was never sent: [Question]". Leave it Waiting, so that day's invoicing keeps waiting until Shane settles it.
 - Status Waiting: text Harry its Question. Status = Sent, Sent to = Harry, First sent = now.
 - Status Sent, no Answer, and (Last nudged, else First sent) at least 55 minutes ago: text Harry "Still need this: [Question]". Last nudged = now.
 

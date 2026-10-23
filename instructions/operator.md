@@ -1,4 +1,4 @@
-OPERATOR (version 16)
+OPERATOR (version 17)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -15,7 +15,7 @@ a. Now: run `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'` and use that output 
 Daily checks (b and c2): do them only if System "Daily checks done" isn't "[today's date] [repo version]" (get the version with `git -C ops rev-parse --short HEAD`), or this run built a week tab. Otherwise skip b and c2. After doing them, set "Daily checks done" = "[today's date] [repo version]". So they run in the first operator run of each day, and again on the first run after any push.
 b. Build ahead (it sends nothing): for THIS week (or NEXT week if there is no THIS week yet) and each of the following Config "Weeks built ahead" weeks (missing or blank = 4), if its tab is missing or unfinished, build or finish it as sheets-spec BUILDING A WEEK TAB says. Also add a row for any Active customer missing from those unlocked tabs. At most 2 tab builds per run (the next run continues). Note what you built in run history. Read Customers and Products only when something needs building or adding.
 c. Week tabs: find LAST, THIS and NEXT week's tabs (week-names.md). If one is missing, follow MISSING WEEK TABS in week-names.md (if it says to build a tab, run b now even if the daily checks were done), and skip every check below that needs the missing tab.
-c2. Labels (daily checks; read sheets-spec HEADER BLOCK and CUSTOMER TABLE for this): on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
+c2. Labels (daily checks; read sheets-spec HEADER BLOCK, DAY TABLE and CUSTOMER TABLE for this): on THIS and NEXT week's tabs, compare the header block to sheets-spec HEADER BLOCK, the day table header to DAY TABLE, and the customer table header to the week-tab customer columns. Add every missing label or column now, as sheets-spec rule 8 says (header label: a new row in the spec's order, value blank; column: at the end of the header row). This is required, not optional. Never change, move or remove existing labels, columns or values. Note what you added in run history.
 d. Quiet = now is at or after "Quiet hours start" or before "Quiet hours end". If Quiet, go to STEP 2. (Nothing is sent or started during quiet hours.)
 
 STEP 1. DUE CHECKS (in this order; run every one that is due)
@@ -34,7 +34,8 @@ For each due step: open the file instructions/[name].md in this repository (for 
 
 3. invoicing
    Due if ANY of these:
-   - a day row in LAST or THIS week has "Route confirmed" filled and "Invoices drafted" blank;
+   - a day row in LAST or THIS week has "Route confirmed" filled, "Invoices drafted" blank and "Invoice hold" blank (or missing);
+   - a Queue item of Type Clarify has Status "Answered" (a canceled-invoice answer for invoicing Part D2);
    - a Queue item of Type Invoice has Status "Waiting";
    - a customer row in LAST or THIS week has "Needs attention" containing "no email" and "Invoice link" blank (read only those two columns);
    - a customer row in LAST or THIS week has "Invoice approved" filled and "Invoice sent" blank (read only those two columns);

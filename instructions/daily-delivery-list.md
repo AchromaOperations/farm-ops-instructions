@@ -1,4 +1,4 @@
-DAILY DELIVERY LIST (version 14)
+DAILY DELIVERY LIST (version 15)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -33,7 +33,7 @@ STEP 4. MAKE THE LIST (the script makes it; never lay it out yourself)
 2. Run `python3 -I ops/tools/delivery_list_pdf.py dl/day.json dl/list.pdf`. It prints one line of JSON. If it prints "error" or "rows_read" isn't your count, fix day.json and run it again; if it still fails, add a Problem and go to 5 (fallback).
 3. Save dl/list.pdf into the Delivery Lists folder exactly as instructions/save-pdf.md says (Google Drive create_file with contentMimeType application/pdf, disableConversionToGoogleType true, and the script's "base64_file" as base64Content). Its checks decide whether it worked.
 4. If save-pdf.md says it failed, go to 5.
-5. Fallback, only if the PDF couldn't be made or saved: run `python3 -I ops/tools/delivery_list_html.py dl/day.json dl/list.html` and create the Google Doc "Delivery list [Ddd Mon D YYYY]" in Delivery Lists from dl/list.html (give the file's contents exactly, source type text/html, so Drive converts it into a Google Doc). If even that fails, make the doc from dl/list.txt's text exactly. Either way add a Problem and, unless it's quiet hours, text Shane (one-to-one) once: "Delivery list for [Day] went out as a Doc, not the PDF: [reason]". Never lay it out yourself.
+5. Fallback, only if the PDF couldn't be made or saved: run `python3 -I ops/tools/delivery_list_html.py dl/day.json dl/list.html` and create the Google Doc "Delivery list [Ddd Mon D YYYY]" in Delivery Lists exactly as instructions/save-doc.md says, from dl/list.html (contentMimeType text/html, the file's contents exactly, so Drive converts it into a Google Doc). If even that fails, make the doc the same way from dl/list.txt's text exactly (contentMimeType text/plain). Either way add a Problem and, unless it's quiet hours, text Shane (one-to-one) once: "Delivery list for [Day] went out as a Doc, not the PDF: [reason]". Never lay it out yourself.
 
 WHAT THE SCRIPT MAKES (for reference; the script decides, so never change its output to match this)
 The approved design, one section per route (Route column; if blank, one section for the day), each starting on a new page:
@@ -63,6 +63,6 @@ Changes approved after the list went out (Mark said "add it" to a Late order) mu
    "Changes to today's ([Day]) delivery list:
    - [Name], stop [#]: [what changed, e.g. +2 Yogurt VM; if their whole order is now 0: SKIP, no delivery today]
    Harry, reply GOT IT when you have these."
-3. If the day's list is a Google Doc (the fallback), append the same lines to it under a heading "ADDED AFTER LIST WENT OUT". A PDF can't be changed: skip this step (the text is the record).
-4. Create a Queue item: Type Driver, Week, Question = "Got today's added items? ([names]) Reply GOT IT", Status = Waiting. (delivery-check sends and re-asks it; the parser records Harry's answer.)
+3. The day's list can't be changed after it's made (a PDF, or a Doc: save-doc.md), so the text is the record. Don't touch the list.
+4. Create a Queue item: Type Driver, Week, Question = "[Ddd Mon D]: Got today's added items? ([names]) Reply GOT IT" (today's date first, for example "Thu Oct 22: Got today's added items? (Jessi Slade: SKIP) Reply GOT IT"), Status = Sent, Sent to = Harry, First sent = now (step 2's text already asked him). (delivery-check re-asks it and closes it when the day ends; the parser records Harry's answer.)
 5. Set today's "Exceptions sent" = now. Log each text in the Inbox Log.

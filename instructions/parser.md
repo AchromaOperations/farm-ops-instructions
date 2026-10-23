@@ -1,4 +1,4 @@
-PARSER (version 31)
+PARSER (version 32)
 Written for: sheets-spec version 4
 
 JOB
@@ -35,7 +35,7 @@ In the family group (sheets-spec rule 11), every message from Mark or Laura is m
 Numbered digest answers (A3) and reminder wording work the same as one-to-one.
 Otherwise check in this order; use the first that fits.
 
-A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers.
+A1. List approval. Fits if a Queue item of Type Invoice or Read-back has Status Sent (sheets-spec rule 9 means at most one is open). Open its list doc to see the numbers (if its Question holds the list text instead of a link, the numbers are in that text).
 - Approval = a message whose only point is to OK the open list, in any wording ("good", "yes", "ok", "approved", "send", "Good send all", "looks good", "yes please", "go ahead", "send them", a thumbs-up), or a thumbs-up or "Liked" reaction to any of that list's texts (any part of it, or a follow-up that resent it). Approve every item on that list. NOT approval: a message that also asks something, adds information or holds something back ("good, did Kim pay?", "send me the list again", "looks good but wait on Kim"); "thanks" on its own; anything you are unsure about.
 - An approval that holds some lines back ("good except 14", "send all but 3 and 7", "good except Kim") = approve all except those. A name counts as a line only if it matches exactly one line on that list. If any held-back line can't be matched to exactly one number, or anything else is added, create a Clarify item and approve nothing.
 - If a digest question (Clarify, Sales, Late order or Other) also has Status Sent, a bare OK ("good", "yes", "ok", a thumbs-up message) could be for either: create a Clarify item "Not sure if '[text]' was for the [invoices / read-backs] or a question. Reply 'good' again for the list, or answer the question with its number." and approve nothing. Clear: wording that names the list or sending it ("send all", "send the invoices", "read-backs look good"), or a reaction to one of the list's own texts. Those approve the list.
@@ -55,6 +55,7 @@ A3. Digest answers. Fits if the message refers to numbers that match open Queue 
 For each number answered: fill Answer, Answered by, Status = Answered, then apply by Type:
 - Clarify about a held invoice (Question starts with "Invoice"): an OK in any wording ("send", "good", "ok", "send it", "it's fine") = fill that customer's "Invoice approved" (date-time + who). Anything else = write "Invoice held: [answer]. Fix it in Square, then fill Invoice sent by hand." in that row's Needs attention. Then Resolved.
 - Clarify about a held read-back (Question starts with "Read-back"): an OK in any wording ("send", "good", "it's fine", "send it") = fill that row's "Read-back approved". Otherwise treat the answer as a correction to that customer's order: apply it with ORDER WRITING (source "Mark" or "Laura") and set "Confirm needed" = now, so a corrected read-back goes on the next list. Then Resolved.
+- Clarify about a canceled invoice (Question starts with "Canceled invoice:"): only record the answer. Status stays Answered (not Resolved) and clear Digest #. Invoicing Part D2 applies it in Square and resolves it.
 - Clarify (all others): make the change the answer describes (see ORDER WRITING). Then Status = Resolved, clear Digest #. If Mark states a general rule ("when she says the usual she means 1 gal"), also ADD a Defaults row.
 - Late order: "next week"/"roll" = write it to the customer's next week row. "add it"/"squeeze in"/"yes" = write it to this week's row using the Late order exception in sheets-spec. Then Resolved.
 - Sales that is a share request (Question contains "asked to change their weekly share"):
@@ -103,16 +104,32 @@ A reply = a Queue item: Type Other, Created = now, Week, Cust ID and Customer if
 B. FROM HARRY
 -----------------------------------------------------
 "Open day" = among day rows (LAST or THIS week) with "Delivery list sent" filled, "Route confirmed" blank, AND (the day is before today, OR the day is today and now is at or after Config "Route check start"): the one Harry was asked about most recently ("Harry last asked"). If none has been asked yet, the earliest one. If Harry names a day ("Monday's done"), use that day.
-Check the first bullet before the others:
-- While a Driver item asking "Got today's added items?" has Status Sent: any acknowledgement in any wording ("GOT IT", "got them", "yep", "ok", a thumbs-up) answers only that item: Answer, Status Resolved. It never confirms a route.
-- Reminder: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval (as in A1) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
-- If there is no open day, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
+Every Driver item you create starts its Question with its day, "[Ddd Mon D]: " (sheets-spec Queue), for example "Thu Oct 22: What wasn't delivered, and to whom?". Its day is the open day, or the day of the question it follows up.
+Reminder first: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval (as in A1) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
+
+WHICH QUESTION HE IS ANSWERING (decide this first, before applying anything)
+Harry's open questions, each with the time it was last texted to him (only times before his message count):
+- the route question, if there is an open day and its "Harry last asked" is filled (time = "Harry last asked");
+- each Driver item with Status Sent (time = Last nudged, else First sent).
+1. A message that can only mean one thing goes where it fits, whatever was texted last:
+   - "GOT IT", "got them", "got the changes": the "Got today's added items?" item (if several are open, the one texted most recently; if none is open, log only).
+   - A delivery report: "all delivered", "route done", "done", a "No" about the deliveries, a named miss ("Kim didn't get her yogurt"), "not enough [product]", or names or items answering a Driver item that asked what wasn't delivered or who didn't get something. It answers the route question, or that Driver item (the day he names, else the open day). Never a "Got today's added items?" item.
+   - A bare number ("1", "2"): a "Which was your" item (below).
+2. Only a bare "yes", "ok", "yep" or a thumbs-up can fit more than one question. It answers the open question texted to him most recently, leaving out "Which was your" items. Exception: if another open question (also not a "Which was your" item) was texted to him less than 20 minutes before that one, you can't tell which he meant. Change nothing. If no "Which was your" item is open, create a Driver item: "[Ddd Mon D of the most recent question's day]: Which was your '[his message]' for? Reply 1 or 2. 1 = [the most recent question, as texted], 2 = [the other, as texted]" (more than two: number them all), Status = Waiting (delivery-check texts it). If one is already open, create a Clarify item for Mark instead: "Harry said '[text]'. Not sure which question it answers: [the questions]." Log the message as "unclear".
+3. Anything else, or no open questions: the bullets below ("No route waiting", "Anything else").
+What a reply meant is decided once, here, when it is handled. A later run never re-reads an old reply and decides it meant something else.
+Then apply it:
+- To a "Got today's added items?" item: Answer = his message, Status = Resolved. Nothing else: it never confirms a route.
+- To a "Which was your" item: if he picked a number, apply his earlier message (quoted in it) to the question with that number, as if he had just sent it in answer to that question. Then set this item's Answer = his reply, Status = Resolved. If he didn't pick a number, treat his message as a new one (rules 1 and 2) and leave the item open.
+- To the route question or another Driver item: the bullets below.
+- No route waiting: if there is no open day and no open Driver item, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
 - Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all" (on a skipped row, every product 0, write "skipped" instead of the time).
-- "No" to "everything delivered?" = create a Driver item for the open day: "What wasn't delivered, and to whom?"
-- A named miss ("Kim didn't get her yogurt, we ran out") = add to that customer's "Not delivered" (product Column name + amount + reason, e.g. "Yogurt Plain x2 ran out"). If the amount isn't said, use the full amount on the row. If the customer or product can't be matched, create a Driver item asking which.
-- "Not enough [product]" without names = create a Driver item for the open day: "Who didn't get [product]?" Invoicing waits while any Driver item for that day is open.
+- "No" to "everything delivered?" = create a Driver item for the open day: "[Ddd Mon D]: What wasn't delivered, and to whom?"
+- A named miss ("Kim didn't get her yogurt, we ran out") = add to that customer's "Not delivered" (product Column name + amount + reason, e.g. "Yogurt Plain x2 ran out"). If the amount isn't said, use the full amount on the row. If the customer or product can't be matched, create a Driver item asking which ("[Ddd Mon D]: ...").
+- "Not enough [product]" without names = create a Driver item for the open day: "[Ddd Mon D]: Who didn't get [product]?" Invoicing waits while any Driver item for that day is open.
 - An answer to an open Driver item (Status Sent) = apply it as above, then that Driver item is Resolved.
 - Anything else: Clarify item for Mark "Harry said: '[text]'".
+- Never hold a day's invoicing because you'd now read an old reply differently. Only a write that came out wrong (routines/farm-ops.md SYSTEM PROBLEMS) can hold a day, and only the way that section says.
 
 -----------------------------------------------------
 C. FROM A CUSTOMER (exactly one match)
