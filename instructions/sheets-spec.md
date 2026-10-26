@@ -37,6 +37,7 @@ GENERAL RULES (apply to every skill)
 11. Family group text. Everything the system sends to Mark and/or Laura goes as ONE group text to the two of them together (Config "Owner (Mark) phone" and "Backup (Laura) phone"), using Quo's group message, never as separate one-to-one texts. Either of them may answer. No one else is ever added to this group. When the same text also goes to Harry or Shane, they each get their own one-to-one copy. If one of the two Config phones is blank, text the other one-to-one instead (a group needs both). Every message Mark or Laura send in this group is treated as meant for the system: it is done, answered or clarified, never just logged (parser section A).
 
 12. Adding rows to a log tab (Inbox Log, Queue, Run History): use the Sheets tool's appendCells request (update_spreadsheet with appendCells and that tab's sheetId). It adds after the last row with data anywhere in the tab. Never use append_values for these tabs (it adds after the FIRST block of data, which can be in the middle of the tab), never insert rows, never write into a blank row, and never add blank rows. If a new row lands anywhere but directly under the last filled row, record an ALERT Problem.
+   appendCells places values by position, not by name: read the tab's header row first and build the new row with one value per header column, in the header's order (a blank "" for each column you don't fill). The same goes for writing any cell of a log row: find its column by the header label, never by counting from a list in this spec. (On Oct 26 Queue rows were built with Digest # after Status, which shifted every later value one column right.)
    Reading a log tab: entries are not always in time order. Read only the columns you need, but read them for every row (for example the whole Quo message ID column); never assume the last rows are the newest.
 
 LOCATION
@@ -126,7 +127,8 @@ Phrase | Means | Applies to | Added by | Date | Source message
 - The AI may ADD rows here (from Mark's answers). It never edits or deletes rows. Humans may edit anything.
 
 TAB: Queue (header in row 1). Everything waiting on a human.
-Q# | Type | Created | Week | Cust ID | Customer | Original message | Question | Status | Digest # | Sent to | First sent | Last nudged | Answer | Answered by | Resolved | Outcome
+Q# | Type | Created | Week | Cust ID | Customer | Original message | Question | Status | Sent to | First sent | Last nudged | Answer | Answered by | Resolved | Outcome | Digest #
+(This is the sheet's real column order: Digest # is the LAST column, after Outcome.)
 - Q#: running number, never reused.
 - Type (dropdown): Clarify, Sales, Invoice, Read-back, Late order, Reminder, Driver, Other.
   An Other item whose Question starts with "REPLY: " is the system's reply to something Mark or Laura texted in the group (an answer, a confirmation or a clarification). It needs no answer: owner-digest sends it and sets it Resolved.

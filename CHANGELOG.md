@@ -160,6 +160,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-10-26, revised 34): Queue columns listed in the sheet's real order (Digest # last); rule 12: build appended log rows from the tab's header row, and find log columns by label. Oct 26 Queue rows Q93-Q98 had shifted one column right (fixed by hand).
 - v4 (2026-10-23, revised 33): day-table column "Invoice hold" (only Shane clears it); Driver item Questions start with their day; "Canceled invoice:" Clarify items wait Answered for invoicing; Invoice link changes only for a canceled invoice's replacement; Queue list items may hold the list text when the Doc failed; list Docs use save-doc.md.
 - v4 (2026-10-19, revised 32): rule 12: log rows are added with appendCells (after the last filled row), never append_values (it lands after the first block, which caused 64 duplicate Inbox Log rows and scattered run history); logs are read by whole column, never "the last rows". Run history moves to its own "Run History" tab; the System tab is read as A1:B20 only.
 - v4 (2026-10-18, revised 31): week-tab STAMP column "Pay link texted" (invoices sent from 2026-10-18 on).
