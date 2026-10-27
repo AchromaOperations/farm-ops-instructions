@@ -42,7 +42,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v1 (2026-10-07): first version.
 
-## farm-setup.md (FARM SETUP (version 5))
+## farm-setup.md (FARM SETUP (version 6))
+- v6 (2026-10-27): marked as the original build doc (sheets-spec wins); adds the Run History tab and builds headers in the spec's column order.
 - v5 (2026-10-10): builds week tabs only Config "Weeks built ahead" weeks ahead; the operator builds the rest as they come.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v4 (2026-10-07): written for sheets-spec v4 (also creates Delivery Lists and Invoice Lists folders).
@@ -104,7 +105,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 32))
+## parser.md (PARSER (version 33))
+- v33 (2026-10-27): "send me Monday's list again" is only a question (answered with the link), no longer also listed as an instruction the system can't do.
 - v32 (2026-10-23): Harry's reply: words that fit only one question go there (GOT IT to the added-items question, delivery reports to the route); a bare yes/ok answers the question texted most recently, and if two were texted within 20 minutes he's asked which. What a reply meant is decided once. Driver items start with their day. A canceled-invoice answer is left Answered for invoicing. A list stored in the Queue item is read like the Doc.
 - v31 (2026-10-19): run history row goes to the Run History tab.
 - v30 (2026-10-18): A4 "no charge" command from Mark or Laura (free, comp, on the house, sample).
@@ -214,6 +216,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops.md
+- 2026-10-27: removed the retired routines/parser.md and routines/operator.md (replaced by this file on Oct 10), and human-prompts/pdf-cloud-test.txt (needed pip and reportlab; the scripts are stdlib now). setup-starter-prompt.md fetches farm-setup.md instead of naming a Google Doc.
 - 2026-10-27: hard limit 8: tools/ scripts run as a command of their own (no cd, &&, ; or pipes) so the routine's permission allow rule matches; if denied, alert and use the fallback, never another way. The permission classifier had been denying the list scripts since Oct 24.
 - 2026-10-23: SYSTEM PROBLEMS: the only way to hold a day's invoicing is that day's "Invoice hold" cell, and only when a write came out wrong and couldn't be fixed; never because an old reply would now be read differently.
 - 2026-10-19: reads System A1:B20 only; log rows via appendCells (sheets-spec rule 12); Run History tab.

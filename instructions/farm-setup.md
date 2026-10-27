@@ -1,5 +1,7 @@
-FARM SETUP (version 5)
+FARM SETUP (version 6)
 Written for: sheets-spec version 4
+
+Setup was finished in October 2026. Use this only to rebuild from scratch. Where this doc and sheets-spec differ, sheets-spec wins.
 
 Purpose: build the Farm Reference and Weekly Deliveries workbooks described in the doc "sheets-spec", starting from the farm's existing customer sheet. Shane is in the chat with you. Confirm with Shane at every CHECKPOINT and wait for the answer before continuing.
 
@@ -23,7 +25,7 @@ PHASE 2. Find the current customer sheet
 
 PHASE 3. Build Farm Reference
 If a Google Sheet named "Farm Reference" already exists in the Ops folder, use it and only add what's missing.
-Otherwise create it in the Ops folder with tabs, in this order: Customers, Products, Routes, Config, Defaults, Queue, Inbox Log, System. Use the exact headers from sheets-spec.
+Otherwise create it in the Ops folder with tabs, in this order: Customers, Products, Routes, Config, Defaults, Queue, Inbox Log, System, Run History. Use the exact headers from sheets-spec, in the column order it lists (log rows are added by position).
 
 Products tab:
 - One row per product column in the old sheet. Milk is "Milk (gal)", Billed through = Squarespace. Every other product: Billed through = Square, Price blank, Active = Yes.
