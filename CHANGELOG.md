@@ -214,6 +214,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops.md
+- 2026-10-27: hard limit 8: tools/ scripts run as a command of their own (no cd, &&, ; or pipes) so the routine's permission allow rule matches; if denied, alert and use the fallback, never another way. The permission classifier had been denying the list scripts since Oct 24.
 - 2026-10-23: SYSTEM PROBLEMS: the only way to hold a day's invoicing is that day's "Invoice hold" cell, and only when a write came out wrong and couldn't be fixed; never because an old reply would now be read differently.
 - 2026-10-19: reads System A1:B20 only; log rows via appendCells (sheets-spec rule 12); Run History tab.
 - 2026-10-18: hard limit 9 allows reading Square payment links (for the invoice text).
