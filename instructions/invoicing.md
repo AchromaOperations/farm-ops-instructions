@@ -1,4 +1,4 @@
-INVOICING (version 11)
+INVOICING (version 12)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -21,9 +21,9 @@ For each day row in LAST or THIS week with "Route confirmed" filled, "Invoices d
    - Extra Milk is priced by the customer's share (their Customers "Milk (gal)"): 1 gallon or more = the Products Price for Extra Milk; less than 1 gallon (a half share) = Config "Extra milk price, half share". If that Config value is missing or blank and this customer has a half share, hold this customer the same way as a blank Price.
    - Create a DRAFT Square invoice (do not publish or send it) with the lines at the current Products prices (Extra Milk as above, per half-gallon jar).
    - Fill "Invoice link" with the Square invoice link.
-3. The list text. The drafted customers = every customer row of that day with a real Square link in "Invoice link" and "Invoice sent" blank, whether drafted just now or by an earlier run that stopped part way (never draft those again). Write it in this form (large plain text in the Doc, no colors):
-   "Invoices for [Day, date]. Reply 'good' to send all, or 'good except [numbers]'."
-   Then one numbered line per drafted customer: "[#]. [Name] ([Cust ID]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. A customer whose items were all no charge has no invoice ("Invoice link" = "none"); list them at the end as "No charge: [name] ([items])".
+3. The day's drafted list. It is the record of this day's drafts; Mark and Laura see these invoices on the approval list (Part B), never in this form. The drafted customers = every customer row of that day with a real Square link in "Invoice link" and "Invoice sent" blank, whether drafted just now or by an earlier run that stopped part way (never draft those again). Write it in this form (large plain text in the Doc, no colors):
+   "Invoices drafted for [Day, date]."
+   Then one line per drafted customer, not numbered: "- [Name] ([Cust ID]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. A customer whose items were all no charge has no invoice ("Invoice link" = "none"); list them at the end as "No charge: [name] ([items])".
    Then: "Total: $[sum] for [n] invoices." Then any held customers: "Held: [name], [reason]".
    Make the Google Doc "Invoices [Ddd Mon D YYYY]" in Invoice Lists from it, exactly as instructions/save-doc.md says. If save-doc.md says it failed, go on to step 4 anyway, with the list text in place of the link.
 4. Fill "Invoices drafted" = now on the day row. Create a Queue item: Type Invoice, Week, Question = the doc link (or, if the Doc failed, the whole list text), Original message = "[Day] invoices: [n], $[sum]", Status = Waiting.
@@ -32,14 +32,28 @@ For each day row in LAST or THIS week with "Route confirmed" filled, "Invoices d
 PART A2. HELD FOR EMAIL
 For customer rows in LAST or THIS week whose Needs attention contains "no email", "Invoice link" is blank, and the Customers tab now has an email (skip rows of a held day): draft them as in Part A step 2, then make a supplemental list doc "Invoices [Ddd Mon D YYYY] (added)" and Queue item exactly as in Part A steps 3 and 4, listing only the customers drafted in this part (do not change the day row's "Invoices drafted").
 
-PART B. ASK FOR APPROVAL (one approval open at a time)
-Only if ALL of these are true:
-- no approval is open (sheets-spec rule 9), AND
-- no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), AND
-- NEXT week's reminder preview is not about to go out (week-names.md): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
-Then take the oldest Invoice item with Status Waiting whose day isn't held (its day = the weekday its Original message starts with, in its Week's tab):
-- Text the family group the list as sheets-spec rules 10 and 11 say, from its list doc (or from its Question, when that holds the list text instead of a link). Title: "Invoices for [Day, date]: [n], $[sum]". Lines: "[#]. [Name]: [items with amounts] = $[total]" (no Square links), with " (no charge: [items])" as in the list doc. Closing lines: "Total: $[sum] for [n] invoices." and, if any, "Held: [name] ([reason])". Then "Approved invoices are emailed by Square and each customer gets a text with their payment link."
-- Status = Sent, Sent to = Group, First sent = now.
+PART B. ASK FOR APPROVAL (one list with every invoice waiting for an OK; Shane's rule from 2026-10-28)
+Every invoice waiting for an OK goes to Mark and Laura in ONE list, whatever day it's from, so a new day's invoices never wait behind an older list nobody has answered. Only one invoice list is ever open: when new invoices are ready, a new list with everything still waiting replaces the open one.
+Words used in this part:
+- Open list = the Invoice item with Status Sent. If two are Sent (a run stopped part way through replacing one), the newer one is the open list: set the older one's Status = Resolved, Answer = "replaced by Q[newer]", Resolved = now.
+- New items = Invoice items with Status Waiting, except day items of a held day. They are the day items Parts A and A2 made (the item's day = the weekday its Original message starts with, in its Week's tab), plus any approval list item a run made but didn't send (its Original message starts "Approval list"; it has no day of its own).
+- Held back = a customer row whose Needs attention has an "Invoice held" note other than "Invoice held: no email" or "Invoice held: no price for ..." (those two only mean it couldn't be drafted yet; Part A2 drafts the email ones later), or whose Cust ID has a Clarify or Sales item that isn't Resolved and whose Question starts "Invoice " (a line Mark or Laura held back, or a held draft).
+- Ready = every customer row in LAST or THIS week with a real Square link in "Invoice link", "Invoice approved" blank and "Invoice sent" blank, that isn't held back and isn't on a held day (skip Cust IDs starting with "T").
+When: only if there is at least one New item, and:
+- With an open list: only if it was first sent on or after 2026-10-29 00:00 (a list sent before then is answered as it is, and new invoices wait until it's answered). The checks in the next bullet don't apply: while a list is open, nothing else can go out anyway.
+- With no open list: no approval is open (sheets-spec rule 9), no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), and NEXT week's reminder preview is not about to go out (week-names.md): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
+If those aren't met, Part B does nothing this run. If they are, but no row is Ready, or every Ready row is already on the open list, there's nothing new to ask: set each New item's Status = Resolved, Answer = "nothing new to approve", Resolved = now, leave any open list as it is, and finish Part B.
+Otherwise:
+1. Lines and numbers. One line per Ready row. Its items with amounts and its total are copied from that row's line on the open list, or else on its day's drafted list (the New item's list doc, or its Question when that holds the list text); only if neither has it, take them from the Square invoice. Never re-price. Rows already on the open list keep their numbers there. Every other Ready row gets the next number after the highest one on the open list (from 1 when there's no open list), oldest delivery date first, then in week-tab order. Rows on the open list that aren't Ready any more (approved or held back since) are left off, and their numbers aren't reused.
+2. The list text, in this form (large plain text in the Doc, no colors):
+   "Invoices to approve: [n], $[sum]. Reply 'good' to send all, or 'good except [numbers]'."
+   Then for each delivery date on it, oldest first, a line "[Ddd Mon D]:" followed by that date's lines in number order: "[#]. [Name] ([Cust ID], [Ddd Mon D]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. Under a date that a New item drafted, also copy that item's "No charge:" and "Held:" lines.
+   Then: "Total: $[sum] for [n] invoices."
+   Make the Google Doc "Invoices to approve [yyyy-mm-dd hh:mm]" in Invoice Lists from it, exactly as instructions/save-doc.md says. If save-doc.md says it failed, go on to step 3 anyway, with the list text in place of the link.
+3. Create a Queue item: Type Invoice, Week = the week tab of the newest delivery date on the list, Question = the doc link (or, if the Doc failed, the whole list text), Original message = "Approval list: [n], $[sum] ([every delivery date on it, as Ddd Mon D, separated by commas])", Status = Waiting.
+4. Text the family group the list as sheets-spec rules 10 and 11 say. First line: "Invoices to approve: [n], $[sum]. Reply 'good' to send all, or 'good except [numbers]'." When it replaces an open list, the next line is "This replaces the list sent [Ddd h:mm am/pm]: same numbers, plus the new ones." Then each date line with its lines, written "[#]. [Name]: [items with amounts] = $[total]" (no Cust IDs, no Square links), with " (no charge: [items])" as in the doc, and any "No charge: [name] ([items])" and "Held: [name] ([reason])" lines under their date. Closing lines: "Total: $[sum] for [n] invoices." and "Approved invoices are emailed by Square and each customer gets a text with their payment link."
+5. On the new item: Status = Sent, Sent to = Group, First sent = now.
+6. Close the rest, each with Status = Resolved and Resolved = now: the open list it replaced (Answer = "replaced by Q[new]") and every New item (Answer = "listed in Q[new]").
 (Nudges and Laura are handled by owner-digest.)
 
 PART C. SEND APPROVED INVOICES
@@ -47,7 +61,9 @@ For each customer row in LAST or THIS week with "Invoice approved" filled and "I
 - If Config Mode is not LIVE: do not send. Put "TEST: invoice not sent" in Needs attention if it isn't there already. Next.
 - Publish and send that Square invoice (Square delivers it to the customer). Then immediately fill "Invoice sent" = now.
 - If Square fails: stop Part C, add a Problem, continue to Part D.
-Then for each day row with "Invoices drafted" filled, "Invoices sent" blank and "Invoice hold" blank: if its Invoice Queue item is Resolved, fill "Invoices approved" = the time it was resolved (if blank). If also every customer row of that day with a real Invoice link has "Invoice sent" filled or a "held" or "TEST" note in Needs attention, fill "Invoices sent" = now.
+Then for each day row with "Invoices drafted" filled, "Invoices sent" blank and "Invoice hold" blank (a day's invoices can be on several approval lists, so these follow the customer rows, not a Queue item):
+- If "Invoices approved" is blank and every customer row of that day with a real Invoice link has "Invoice approved" or "Invoice sent" filled, or is held back (Part B), fill "Invoices approved" = now.
+- If "Invoices approved" is filled and every customer row of that day with a real Invoice link has "Invoice sent" filled or a "held" or "TEST" note in Needs attention, fill "Invoices sent" = now.
 
 PART C2. TEXT THE PAYMENT LINK (Shane's rule from 2026-10-18)
 For each customer row in LAST or THIS week with "Invoice sent" filled on or after 2026-10-18 00:00 and "Pay link texted" blank, not on a held day (if the tab has no "Pay link texted" column, add it at the end of the customer table's header row first, sheets-spec rule 8):
@@ -77,4 +93,4 @@ For each Queue item of Type Clarify with Status Answered whose Question starts "
 - Then set the item's Status = Resolved and Resolved = now. Never change "Invoice sent" or "Pay link texted" here, and never text the customer.
 
 FINISH
-Report to the operator: invoices drafted, lists sent for approval, invoices sent, payment links texted, payments recorded, canceled invoices asked about or settled, overdue flagged, days skipped because they're held.
+Report to the operator: invoices drafted, lists sent for approval (and any list replaced), invoices sent, payment links texted, payments recorded, canceled invoices asked about or settled, overdue flagged, days skipped because they're held.
