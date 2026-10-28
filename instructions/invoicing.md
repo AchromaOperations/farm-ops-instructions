@@ -1,4 +1,4 @@
-INVOICING (version 12)
+INVOICING (version 13)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -51,7 +51,7 @@ Otherwise:
    Then: "Total: $[sum] for [n] invoices."
    Make the Google Doc "Invoices to approve [yyyy-mm-dd hh:mm]" in Invoice Lists from it, exactly as instructions/save-doc.md says. If save-doc.md says it failed, go on to step 3 anyway, with the list text in place of the link.
 3. Create a Queue item: Type Invoice, Week = the week tab of the newest delivery date on the list, Question = the doc link (or, if the Doc failed, the whole list text), Original message = "Approval list: [n], $[sum] ([every delivery date on it, as Ddd Mon D, separated by commas])", Status = Waiting.
-4. Text the family group the list as sheets-spec rules 10 and 11 say. First line: "Invoices to approve: [n], $[sum]. Reply 'good' to send all, or 'good except [numbers]'." When it replaces an open list, the next line is "This replaces the list sent [Ddd h:mm am/pm]: same numbers, plus the new ones." Then each date line with its lines, written "[#]. [Name]: [items with amounts] = $[total]" (no Cust IDs, no Square links), with " (no charge: [items])" as in the doc, and any "No charge: [name] ([items])" and "Held: [name] ([reason])" lines under their date. Closing lines: "Total: $[sum] for [n] invoices." and "Approved invoices are emailed by Square and each customer gets a text with their payment link."
+4. Text the family group the list as sheets-spec rules 10 and 11 say. First line: "Invoices to approve: [n], $[sum]. Reply 'good' to send all, or 'good except [numbers]'." When it replaces an open list, the next line is "This replaces the list sent [Ddd h:mm am/pm]: same numbers, plus the new ones." Then each date line with its lines, written "[#]. [Name]: [items with amounts] = $[total]" (no Cust IDs, no Square links), with " (no charge: [items])" as in the doc, and any "No charge: [name] ([items])" and "Held: [name] ([reason])" lines under their date. Closing lines: "Total: $[sum] for [n] invoices." and "Approved invoices are emailed by Square and each customer gets a text with their payment link (and links to any earlier invoices they haven't paid)."
 5. On the new item: Status = Sent, Sent to = Group, First sent = now.
 6. Close the rest, each with Status = Resolved and Resolved = now: the open list it replaced (Answer = "replaced by Q[new]") and every New item (Answer = "listed in Q[new]").
 (Nudges and Laura are handled by owner-digest.)
@@ -71,8 +71,13 @@ For each customer row in LAST or THIS week with "Invoice sent" filled on or afte
 - No phone on the Customers tab: fill "Pay link texted" = "skipped: no phone". Customers "Notes" contains "NO TEXTS": fill "skipped: opted out". Next.
 - Link = that invoice's public payment page from Square (the invoice's public URL, which exists once it is published). Never the Square dashboard link in "Invoice link". If Square gives no public URL, add an ALERT Problem and leave it blank so a later run tries again; once that invoice was sent more than 24 hours ago, fill "skipped: no payment link from Square" instead, so it stops retrying.
 - Duplicate guard: if the farm number already sent that customer a text containing this link (Quo sent messages since "Invoice sent"), just fill "Pay link texted" with that time.
+- Earlier unpaid invoices (Shane's rule from 2026-10-28: a customer's new pay-link text also lists what they still owe). Look at that customer's other rows (same Cust ID) in the last 8 week tabs with "Invoice sent" filled before this row's, "Paid" blank, a real Square link in "Invoice link", and no "canceled in Square" in Needs attention. For each, ask Square for that invoice's status now:
+  - Paid: fill that row's "Paid" with the payment date, and leave it out.
+  - Canceled, refunded or anything else that isn't still owed: leave it out (Part D handles canceled ones).
+  - Still owed (unpaid, overdue or partly paid): include it, with the amount still due and its public payment link (as for Link above). If Square gives no public URL for it, leave it out. Don't hold this text for it.
 - Text the customer's Phone exactly: "Hi from Restoration Farmstead! Your invoice for [Weekday]'s delivery ([Mon D]) is $[total] for [items]. You can pay here: [link] Thank you!"
-  Items = the invoice's lines as in read-backs (Products "Text name", e.g. "2 vanilla maple yogurts and a dozen eggs"; Extra Milk as "an extra half gallon" / "an extra gallon"). Total with cents ($14.00). Never mention the weekly share.
+  With earlier unpaid invoices included, put these lines between "[link]" and "Thank you!", each on its own line: "You also have [an earlier invoice / [n] earlier invoices] still open:", then one line per invoice, oldest first: "[Mon D] delivery, $[amount due]: [link]". Nothing goes right after a link on the same line (punctuation there can break it).
+  Items = the invoice's lines as in read-backs (Products "Text name", e.g. "2 vanilla maple yogurts and a dozen eggs"; Extra Milk as "an extra half gallon" / "an extra gallon"). Totals and amounts due with cents ($14.00). Never mention the weekly share.
 - Right after sending, fill "Pay link texted" = now and read it back (routines/farm-ops.md: a cell that records a text went out). Log the text in the Inbox Log (sheets-spec rule 7).
 
 PART D. PAYMENTS (at most once a day)
@@ -82,7 +87,7 @@ If System "Last payment check" is blank or at least 24 hours ago:
   - Add "invoice #[number] canceled in Square" to Needs attention.
   - Look in Square for that customer's invoices created after this one that aren't canceled.
   - Create a Clarify item (Week, Cust ID and Customer from the row). Exactly one found: Question = "Canceled invoice: [name]'s [Ddd Mon D] invoice #[number] ($[amount]) was canceled in Square. Is #[new number] ($[its amount]) the replacement? Reply yes, another invoice number, or 'none'." None or several found: Question = "Canceled invoice: [name]'s [Ddd Mon D] invoice #[number] ($[amount]) was canceled in Square. What's the replacement's invoice number? Reply with it, or 'none'."
-- Unpaid (not canceled) and sent at least 14 days ago, and Needs attention doesn't already say "overdue": add "overdue since [sent date], $[amount]" to Needs attention and create a Sales item "Unpaid 14+ days: [name], $[amount], sent [date]. Follow up?" (The system never contacts the customer about payment.)
+- Unpaid (not canceled) and sent at least 14 days ago, and Needs attention doesn't already say "overdue": add "overdue since [sent date], $[amount]" to Needs attention and create a Sales item "Unpaid 14+ days: [name], $[amount], sent [date]. Follow up?" (The system never contacts the customer about payment, except by listing earlier unpaid invoices in their next pay-link text, Part C2.)
 - Set "Last payment check" = now.
 
 PART D2. CANCELED INVOICE ANSWERS (every time invoicing runs)

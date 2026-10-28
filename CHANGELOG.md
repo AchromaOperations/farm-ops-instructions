@@ -51,7 +51,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
 - v1 (2026-10-07): first draft.
 
-## invoicing.md (INVOICING (version 12))
+## invoicing.md (INVOICING (version 13))
+- v13 (2026-10-28): a customer's new pay-link text also lists their earlier invoices that are still owed (last 8 weeks, checked in Square right before texting), each with its amount due and payment link. Paid ones found on the way get "Paid" filled. The approval list's closing line says so. Shane's rule.
 - v12 (2026-10-28): every invoice waiting for an OK goes to Mark and Laura in one approval list, whatever day it's from. When a new day's invoices are drafted while a list is open, a new list with everything still waiting (same numbers, new ones added) replaces it, so new invoices never wait behind an unanswered list. Day items only mark a day's drafts as ready; the day's drafted Doc is unnumbered. Day-row "Invoices approved" follows the customer rows. Lists sent before 2026-10-29 aren't replaced (Shane: don't resend Tuesday Oct 27's list). Shane's rule.
 - v11 (2026-10-23): HELD DAYS: a day row's "Invoice hold" stops drafting, lists, sending and pay-link texts for that day until Shane clears it (a hold only in run notes holds nothing). The list Doc is made as save-doc.md says; if it fails, invoicing goes on with the list text in the Queue item. The list includes drafts an earlier run made before stopping. Part D asks Mark about an invoice canceled in Square; Part D2 applies his answer (new Invoice link, or Paid "none"). From the Oct 22-23 Thursday invoices and Cayli's 000049/000050.
 - v10 (2026-10-18): Part C2 texts each customer their invoice's payment link once it's published in Square (8am-9pm, LIVE, not NO TEXTS, duplicate guard); the approval list says so.
