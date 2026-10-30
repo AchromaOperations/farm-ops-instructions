@@ -210,7 +210,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): cell kinds replace "never overwrite"; one date-time format; file lookup rule; Phone 2 matching; cursor overlap + message ID dedupe; stale run flag; lock time is the real cutoff; structured Not delivered; dropdowns; year-crossing tab names.
 - v1 (2026-10-07): first draft.
 
-## parser-check.md (PARSER CHECK (version 2))
+## parser-check.md (PARSER CHECK (version 3))
+- v3 (2026-10-30): the Quo fetch gives createdAfter with the Eastern offset (from `date -d ... -Iseconds`; Quo reads a time without one as UTC) and converts Quo's UTC times to Eastern. A conversation Quo flags as having more than 10 messages is fetched on its own, page by page, and an incomplete whole-inbox read is continued with its token, so a busy conversation (most likely the family group) can't lose texts past Quo's 10-per-conversation limit. If a fetch call fails, nothing is handled and the cursor stays put. From an Oct 30 run that saw Quo return only the 10 newest messages per conversation.
 - v2 (2026-10-19): dedupe reads the Inbox Log's whole Quo message ID column (the log isn't in time order).
 - v1 (2026-10-17): new. The start of every run (fetch, dedupe, match the system's own texts); parser.md is only opened when there are new messages.
 
