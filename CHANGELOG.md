@@ -75,7 +75,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-18): free items go in the "No charge" column (added if the tab lacks it), not as text in Needs attention or Changes.
 - v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
 
-## operator.md (OPERATOR (version 17))
+## operator.md (OPERATOR (version 18))
+- v18 (2026-10-30): a "no email" customer row makes invoicing due only once the Customers tab has an email for them (invoicing Part A2's condition). A customer still waiting for an email had made invoicing due every run with nothing to do.
 - v17 (2026-10-23): a held day doesn't make invoicing due; an Answered Clarify item (a canceled-invoice answer) does; the daily label check also covers the day table header.
 - v16 (2026-10-19): reads System A1:B20 only; run history and ALERT checks use the Run History tab.
 - v15 (2026-10-18): invoicing is due while a sent invoice (from 2026-10-18 on) still owes its payment-link text, 8am-9pm.
@@ -158,7 +159,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): preview waits while an invoice list is waiting on Mark (approvals never both open).
 - v1 (2026-10-07): first version.
 
-## save-doc.md (SAVE LIST DOC (version 1))
+## save-doc.md (SAVE LIST DOC (version 2))
+- v2 (2026-10-30): after a Drive quota error, check the folder for a file of that title made in the last 10 minutes, and if none, make the same call once more; only a second failure is an ALERT. A read-back list Doc failed once on Oct 30 with "Resource has been exhausted (e.g. check quota)".
 - v1 (2026-10-23): new. The one way to make a list Google Doc: create_file with text/plain (or text/html for the delivery list fallback) and textContent, conversion on; never base64. If it fails, the work goes on without the Doc. Docs can't be edited, so a second one gets "(2)".
 
 ## save-pdf.md (SAVE PDF (version 2))

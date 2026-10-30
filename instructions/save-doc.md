@@ -1,4 +1,4 @@
-SAVE LIST DOC (version 1)
+SAVE LIST DOC (version 2)
 Written for: sheets-spec version 4
 
 The one way to make a list Google Doc: invoice lists (invoicing), read-back lists (confirm-orders) and the delivery list's fallback Doc (daily-delivery-list). Do it exactly this way every time; never improvise another way. PDFs are different: they use save-pdf.md.
@@ -14,7 +14,9 @@ Google Drive create_file (mcp__Google-Drive__create_file), with exactly these pa
 Leave out disableConversionToGoogleType: conversion stays on, so Drive makes it a Google Doc. Never use base64Content, the deprecated "content" or "mimeType" parameters, or any other tool for a list Doc. Never make a second file if one call fails: check first (below).
 
 CHECK
-- The reply must show the new file's ID. If no file was made or the call errored: record an ALERT Problem "List doc not made: [doc name]: [what the reply said]". Don't try another way. Go on with the calling doc's fallback: the work never stops because a Doc failed.
+- The reply must show the new file's ID.
+- A quota error (the reply says "Resource has been exhausted", "quota", "rate limit" or 429, as a read-back list's did on Oct 30) often passes a moment later. Search the target folder for a file with exactly this title made in the last 10 minutes (an older one with the same title is a different list). If one is there, the call worked after all: use that file's ID. If not, make the same call once more, unchanged. If the search itself fails, don't make the call again.
+- Any other error, a reply with no file ID that isn't a first quota error, a second quota error, or a quota error whose search failed: record an ALERT Problem "List doc not made: [doc name]: [what the reply said]". Don't try another way. Go on with the calling doc's fallback: the work never stops because a Doc failed.
 - Link = https://docs.google.com/document/d/[file ID]/edit
 
 A DOC CAN'T BE CHANGED

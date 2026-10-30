@@ -1,4 +1,4 @@
-OPERATOR (version 17)
+OPERATOR (version 18)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -7,7 +7,7 @@ This is a checklist, not a judgment task. Every check below is a yes/no answer f
 READ ONLY THESE
 - week-names.md (THIS, NEXT and LAST week, tab names, missing week tabs). Read it every run.
 - sheets-spec: only its first line, for the version: run `head -1 ops/instructions/sheets-spec.md`. It must say version 4; if not, record an ALERT Problem, text Shane once, end. Open the rest of sheets-spec only when Step 0's daily checks run or a due step's doc needs it.
-- Farm Reference: Config tab, System tab (A1:B20 only), Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b (build ahead), when something needs building.
+- Farm Reference: Config tab, System tab (A1:B20 only), Queue tab (Type, Status, First sent, Last nudged columns only). Customers and Products only for Step 0 b (build ahead), when something needs building; and Customers' Cust ID and Email columns for invoicing's no-email check (Step 1, check 3).
 - Weekly Deliveries: header block and day table of three tabs only: LAST, THIS and NEXT week as week-names.md defines them.
 
 STEP 0. START
@@ -37,7 +37,7 @@ For each due step: open the file instructions/[name].md in this repository (for 
    - a day row in LAST or THIS week has "Route confirmed" filled, "Invoices drafted" blank and "Invoice hold" blank (or missing);
    - a Queue item of Type Clarify has Status "Answered" (a canceled-invoice answer for invoicing Part D2);
    - a Queue item of Type Invoice has Status "Waiting";
-   - a customer row in LAST or THIS week has "Needs attention" containing "no email" and "Invoice link" blank (read only those two columns);
+   - a customer row in LAST or THIS week has "Needs attention" containing "no email" and "Invoice link" blank (read only those two columns), AND that row's Cust ID now has an Email on the Customers tab (read the Customers Cust ID and Email columns only if such a row exists). This matches invoicing Part A2, which only drafts once the email is there: a customer still waiting for an email doesn't make invoicing due;
    - a customer row in LAST or THIS week has "Invoice approved" filled and "Invoice sent" blank (read only those two columns);
    - now is 8:00am to 9:00pm and a customer row in LAST or THIS week has "Invoice sent" filled on or after 2026-10-18 and "Pay link texted" blank or missing (read only those two columns);
    - System "Last payment check" is blank or at least 24 hours ago (invoicing then checks for unpaid invoices itself).
