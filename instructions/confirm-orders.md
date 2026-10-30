@@ -1,4 +1,4 @@
-CONFIRM ORDERS (version 11)
+CONFIRM ORDERS (version 12)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -32,7 +32,11 @@ Risky = since this row's last "Confirmation sent", its Changes has any entry who
 Rows already approved: if "Read-back approved" is later than "Read-back drafted", AND "Confirm needed" is not later than "Read-back drafted" (nothing changed since), send "Read-back draft" exactly as approved (Step 4). If something changed since it was drafted, it needs a new draft and approval (Step 5).
 
 STEP 4. SEND
-Send the text to the customer's Phone (Customers tab). No phone: skip it and put "no phone for read-back" in Needs attention. After each send, set that row's "Confirmation sent" = now.
+Send the text to whichever of the customer's two numbers (Customers tab "Phone" or "Phone 2") they last texted from:
+- Once per run, read the Inbox Log's Time, Direction and From columns in full (the log isn't in time order).
+- For each customer, take the Direction "In" row with the latest Time whose From is their Phone or Phone 2. Compare the last 10 digits only (the log writes 15025551234, Customers writes +15025551234).
+- Found: send to that number as Customers writes it. None found: send to their Phone.
+No number to send to: skip it and put "no phone for read-back" in Needs attention. After each send, set that row's "Confirmation sent" = now.
 
 STEP 5. APPROVAL LIST
 Rows needing approval, EXCEPT rows already waiting on a list ("Read-back drafted" is later than "Confirm needed", and "Read-back approved" is blank or earlier than "Read-back drafted"). If there are none, skip to the last line of this step.

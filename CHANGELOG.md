@@ -2,7 +2,8 @@
 
 History of every file in instructions/ and routines/. Each file keeps only its version line, so a routine run doesn't read old history. Newest entries first. Git has the full changes.
 
-## confirm-orders.md (CONFIRM ORDERS (version 11))
+## confirm-orders.md (CONFIRM ORDERS (version 12))
+- v12 (2026-10-30): read-backs go to whichever of the customer's two numbers (Phone or Phone 2) they last texted from, found in the Inbox Log; Phone if they've never texted. A customer who orders from Phone 2 was getting read-backs on Phone.
 - v11 (2026-10-23): the read-back list Doc is made as save-doc.md says; if it fails, the list text goes in the Queue item and the approval still goes out.
 - v10 (2026-10-10): the read-back list goes to the family group (sheets-spec rule 11).
 - v9 (2026-10-10): read-backs also cover orders placed on later weeks (for example a first-week item), with the date.
