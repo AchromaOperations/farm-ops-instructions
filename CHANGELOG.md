@@ -17,7 +17,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-08): manual review (Config "Read-back review": ALL, RISKY ONLY, OFF).
 - v1 (2026-10-08): first version.
 
-## daily-delivery-list.md (DAILY DELIVERY LIST (version 16))
+## daily-delivery-list.md (DAILY DELIVERY LIST (version 17))
+- v17 (2026-11-02): the links are back (Shane: build the compressed link version). tools/delivery_list_pdf.py writes PDF 1.5 with the small objects (pages, fonts, link entries) packed into one compressed object stream: a 27-stop list is about 14,600 base64 characters with all its map and tap-to-call links (25,000 before). It also writes dl/list-no-links.pdf (about 12,200), which save-pdf.md uploads as the second try if the first upload fails.
 - v16 (2026-11-02): with tools/delivery_list_pdf.py, addresses and phones on the PDF are plain text, not map and tap-to-call links (Shane: they don't need to be links). The link entries were about a third of the file; a 27-stop list drops from about 25,000 to 13,400 base64 characters for the run to copy into the upload. Three of eight uploads since Oct 19 failed on that copy (Oct 19, Oct 25, Nov 1).
 - v15 (2026-10-23): the fallback Doc is made as save-doc.md says; the morning "Got today's added items?" Driver item starts with its date and is created as already Sent (the morning text asked Harry), so his morning GOT IT counts; lists are never edited after they're made.
 - v14 (2026-10-19): the PDF is saved with instructions/save-pdf.md (one fixed create_file call with conversion turned off), replacing the open-ended "text or base64" step that let runs vary.
@@ -164,7 +165,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-30): after a Drive quota error, check the folder for a file of that title made in the last 10 minutes, and if none, make the same call once more; only a second failure is an ALERT. A read-back list Doc failed once on Oct 30 with "Resource has been exhausted (e.g. check quota)".
 - v1 (2026-10-23): new. The one way to make a list Google Doc: create_file with text/plain (or text/html for the delivery list fallback) and textContent, conversion on; never base64. If it fails, the work goes on without the Doc. Docs can't be edited, so a second one gets "(2)".
 
-## save-pdf.md (SAVE PDF (version 3))
+## save-pdf.md (SAVE PDF (version 4))
+- v4 (2026-11-02): when the script's JSON has "no_links" (the delivery list), the second try uploads that smaller copy instead of the same file. A second try that passes is noted in Steps run, not an ALERT.
 - v3 (2026-11-02): a failed or damaged upload gets one more try from a fresh copy of the .b64 file (titled "(2)" if the first try left a file); only a second failure is an ALERT and falls back. Nov 1's delivery list failed because Drive said the base64 wasn't valid.
 - v2 (2026-10-23): says it is for PDFs only; list Docs use save-doc.md (the "never textContent" rule had confused an invoice Doc on Oct 23).
 - v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.

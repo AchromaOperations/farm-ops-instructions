@@ -7,8 +7,9 @@ Usage: python3 -I delivery_list_pdf.py day.json list.pdf
 Standard library only (nothing to install). The routine copies the day's rows into
 day.json; this script does all the counting, flags and layout, so every list looks
 the same. It also writes [list.pdf].b64, the PDF as one line of base64, ready for Google Drive
-create_file's base64Content (instructions/save-pdf.md).
-Prints one line of JSON: counts, flags, page count, file name and the text message.
+create_file's base64Content (instructions/save-pdf.md), and [list]-no-links.pdf (+ .b64), the same
+list without the map and tap-to-call links: smaller, so it's the second try if the upload fails.
+Prints one line of JSON: counts, flags, page count, file name, the text message and "no_links".
 
 Input: the same form as tools/sample-delivery-day.json, plus optional
 "drivers": {"[Route]": "[Driver]"} from the Routes tab. Each row may carry "route"
@@ -19,9 +20,11 @@ import base64
 import json
 import os
 import re
+import struct
 import sys
 import zlib
 from datetime import datetime
+from urllib.parse import quote_plus
 
 SYNC = "(standing order sync)"
 MILK = "Milk (gal)"
@@ -33,6 +36,7 @@ MUTED = (0.42, 0.37, 0.36)       # soft brown-gray for labels
 RULE = (0.718, 0.725, 0.565)     # site sage #B7B990
 ZEBRA = (1.0, 0.973, 0.910)      # site cream #FFF8E8
 SKIPFILL = (0.859, 0.863, 0.784) # light sage
+ACCENT = (0.0, 0.286, 0.565)     # site navy #004990: links only
 BAND = (1.0, 0.973, 0.910)       # cream header band
 WHITE = (1.0, 1.0, 1.0)
 LOGO_SIZE = 56
@@ -124,11 +128,12 @@ def wrap_runs(runs, max_w):
 
 
 class Doc:
-    def __init__(self, footer_left):
+    def __init__(self, footer_left, links=True):
         self.logo = load_logo()
         self.pages = []
         self.page_names = {}
         self.footer_left = footer_left
+        self.links = links
         self.new_page()
 
     def new_page(self):
@@ -218,16 +223,34 @@ class Doc:
                                 + b" /Filter /FlateDecode >>\nstream\n" + content + b"\nendstream")
             kids.append(page_id)
         objs[2] = ("<< /Type /Pages /Kids [%s] /Count %d >>" % (" ".join("%d 0 R" % p for p in kids), n)).encode("ascii")
-        out = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
-        offsets = {}
-        for i in range(1, nxt):
-            offsets[i] = len(out)
-            out += b"%d 0 obj\n" % i + objs[i] + b"\nendobj\n"
+        # PDF 1.5: every object that isn't a stream (pages, fonts, link entries) goes into one compressed object
+        # stream, and the cross-reference table is a compressed stream too. Uncompressed, the link entries were
+        # about a third of the file, and every character of it is copied into the Drive upload (save-pdf.md).
+        packed = [i for i in range(1, nxt) if b"\nstream\n" not in objs[i]]
+        stm_id, xref_id = nxt, nxt + 1
+        size = nxt + 2
+        index, body = [], b""
+        for i in packed:
+            index.append("%d %d" % (i, len(body)))
+            body += objs[i] + b"\n"
+        head = (" ".join(index) + "\n").encode("ascii")
+        stm = zlib.compress(head + body, 9)
+        objs[stm_id] = (("<< /Type /ObjStm /N %d /First %d /Length %d /Filter /FlateDecode >>\nstream\n"
+                         % (len(packed), len(head), len(stm))).encode("ascii") + stm + b"\nendstream")
+        out = bytearray(b"%PDF-1.5\n%\xe2\xe3\xcf\xd3\n")
+        entries = {0: (0, 0, 65535)}
+        for k, i in enumerate(packed):
+            entries[i] = (2, stm_id, k)
+        for i in range(1, xref_id):
+            if i not in entries:
+                entries[i] = (1, len(out), 0)
+                out += b"%d 0 obj\n" % i + objs[i] + b"\nendobj\n"
         xref = len(out)
-        out += b"xref\n0 %d\n0000000000 65535 f \n" % nxt
-        for i in range(1, nxt):
-            out += b"%010d 00000 n \n" % offsets[i]
-        out += b"trailer\n<< /Size %d /Root 1 0 R /Info 6 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (nxt, xref)
+        entries[xref_id] = (1, xref, 0)
+        table = zlib.compress(b"".join(struct.pack(">BIH", *entries[i]) for i in range(size)), 9)
+        out += (b"%d 0 obj\n<< /Type /XRef /Size %d /W [1 4 2] /Root 1 0 R /Info 6 0 R /Length %d /Filter /FlateDecode >>\nstream\n"
+                % (xref_id, size, len(table))) + table + b"\nendstream\nendobj\n"
+        out += b"startxref\n%d\n%%%%EOF\n" % xref
         with open(path, "wb") as f:
             f.write(bytes(out))
         with open(path + ".b64", "w", encoding="ascii") as f:
@@ -251,7 +274,7 @@ def fmt(x):
 
 def phone_text(n):
     m = re.fullmatch(r"\+1(\d{3})(\d{3})(\d{4})", (n or "").strip())
-    return "(%s) %s-%s" % m.groups() if m else (n or "").strip()
+    return ("(%s) %s-%s" % m.groups(), "tel:" + n.strip()) if m else ((n or "").strip(), None)
 
 
 def real_changes(row):
@@ -440,16 +463,19 @@ def stops_header(d):
     d.line(LEFT, d.y, RIGHT, d.y, INK, 1.2)
 
 
-def stop_cells(s):
+def stop_cells(s, links):
     cw = [STOP_X[k + 1] - STOP_X[k] - 12 for k in range(6)]
-    # Addresses and phones are plain text, not links: link entries made the PDF a third bigger, and every
-    # character of it has to be copied into the Drive upload (Shane, Nov 2 2026).
     cust = wrap_runs([(s.get("name", ""), "b", 9.5, INK, None)], cw[2])
-    cust += wrap_runs([(s.get("address", "") + ", " + s.get("city", ""), "r", 9.5, INK, None)], cw[2])
+    if links:
+        maps = "https://maps.google.com/?q=" + quote_plus("%s, %s KY" % (s.get("address", ""), s.get("city", "")), safe=",")
+        cust += wrap_runs([(s.get("address", ""), "r", 9.5, ACCENT, maps), (", " + s.get("city", ""), "r", 9.5, INK, None)], cw[2])
+    else:
+        cust += wrap_runs([(s.get("address", "") + ", " + s.get("city", ""), "r", 9.5, INK, None)], cw[2])
     nums = [phone_text(n) for n in (s.get("phone"), s.get("phone2")) if (n or "").strip()]
     if nums:
-        for label in nums:
-            cust += wrap_runs([(label, "r", 9.5, INK, None)], cw[2])
+        for label, tel in nums:
+            tel = tel if links else None
+            cust += wrap_runs([(label, "r", 9.5, ACCENT if tel else INK, tel)], cw[2])
     else:
         cust += wrap_runs([("no phone", "r", 9.5, INK, None)], cw[2])
     deliver = []
@@ -490,7 +516,7 @@ def draw_stops(d, stops):
     ensure(d, 80)
     stops_header(d)
     for k, s in enumerate(stops):
-        cust, deliver, notes, flags = stop_cells(s)
+        cust, deliver, notes, flags = stop_cells(s, d.links)
         h = max(lines_height(cust), lines_height(deliver), lines_height(notes), lines_height(flags), 18.3, 13) + 12
         if ensure(d, h):
             stops_header(d)
@@ -530,18 +556,10 @@ def draw_changes(d, stops):
         d.y += 3
 
 
-def build(day, path):
-    products, stops = analyse(day)
-    units = {p["column"]: p.get("unit", "") for p in day["products"]}
+def render(day, products, units, stops, routes, links):
     dt = datetime.strptime(day["date"], "%Y-%m-%d")
     made = day.get("made") or day.get("locked_at") or ""
-    d = Doc("%s delivery list - %s %s %d, %d - made %s" % (day.get("farm", ""), day["day"], dt.strftime("%b"), dt.day, dt.year, made))
-    routes = []
-    for s in stops:
-        r = (s.get("route") or "").strip()
-        if r not in routes:
-            routes.append(r)
-    routes = routes or [""]
+    d = Doc("%s delivery list - %s %s %d, %d - made %s" % (day.get("farm", ""), day["day"], dt.strftime("%b"), dt.day, dt.year, made), links)
     for k, r in enumerate(routes):
         if k:
             d.new_page()
@@ -567,7 +585,26 @@ def build(day, path):
             for l in ls:
                 d.y += 11.6
                 d.runs_line(LEFT + 6, d.y - 2, l)
-    size_bytes, pages = d.save(path, "Delivery list %s %s" % (day["day"], day["date"]))
+    return d
+
+
+def build(day, path):
+    products, stops = analyse(day)
+    units = {p["column"]: p.get("unit", "") for p in day["products"]}
+    dt = datetime.strptime(day["date"], "%Y-%m-%d")
+    routes = []
+    for s in stops:
+        r = (s.get("route") or "").strip()
+        if r not in routes:
+            routes.append(r)
+    routes = routes or [""]
+    title = "Delivery list %s %s" % (day["day"], day["date"])
+    d = render(day, products, units, stops, routes, True)
+    size_bytes, pages = d.save(path, title)
+    # The same list without the map and tap-to-call links: smaller, so save-pdf.md uploads it as the second try
+    # when the first upload fails (Shane, Nov 2 2026).
+    plain = (path[:-4] if path.endswith(".pdf") else path) + "-no-links.pdf"
+    plain_bytes, _ = render(day, products, units, stops, routes, False).save(plain, title)
     tot = totals_for(stops)
     deliver = sum(1 for s in stops if not s["skip"])
     skipping = sum(1 for s in stops if s["skip"])
@@ -582,7 +619,8 @@ def build(day, path):
             "milk_jars": tot.get(MILK, 0) * 2 + tot.get(EXTRA, 0),
             "flags": {s.get("name", ""): s["flags"] for s in stops if s["flags"]},
             "file_name": "Delivery list %s %s %d %d.pdf" % (dt.strftime("%a"), dt.strftime("%b"), dt.day, dt.year),
-            "message": message}
+            "message": message,
+            "no_links": {"pdf": plain, "base64_file": plain + ".b64", "base64_chars": len(open(plain + ".b64").read()), "bytes": plain_bytes}}
 
 
 def main():
