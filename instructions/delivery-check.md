@@ -1,4 +1,4 @@
-DELIVERY CHECK (version 3)
+DELIVERY CHECK (version 4)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -17,7 +17,7 @@ For each Queue item of Type Driver that is not Resolved, check these in order an
 
 STEP 2. ROUTE QUESTION
 For the open days whose "Harry last asked" is blank or at least 55 minutes ago:
-- One text to Harry. One open day: "Route done for [Day]? Everything delivered? Yes/No". Several: "Routes done for [Day] and [Day]? Everything delivered? Yes/No (tell me which if only some)".
+- One text to Harry. One open day: "Route done for [Day]? Everything delivered? Yes/No. If anyone paid you cash, tell me who and how much." Several: "Routes done for [Day] and [Day]? Everything delivered? Yes/No (tell me which if only some). If anyone paid you cash, tell me who, which day and how much." (Shane's rule from 2026-11-03: a customer who paid Harry cash is marked paid and never invoiced; the parser records it.)
 - On each of those day rows: "Harry last asked" = now, "Harry ask count" = count + 1.
 (Skip a day in this step if Step 1 just texted Harry a Driver question about that same day; the Driver question comes first.)
 

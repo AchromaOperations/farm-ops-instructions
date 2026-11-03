@@ -1,4 +1,4 @@
-PARSER (version 34)
+PARSER (version 35)
 Written for: sheets-spec version 4
 
 JOB
@@ -115,6 +115,7 @@ Harry's open questions, each with the time it was last texted to him (only times
 1. A message that can only mean one thing goes where it fits, whatever was texted last:
    - "GOT IT", "got them", "got the changes": the "Got today's added items?" item (if several are open, the one texted most recently; if none is open, log only).
    - A delivery report: "all delivered", "route done", "done", a "No" about the deliveries, a named miss ("Kim didn't get her yogurt"), "not enough [product]", or names or items answering a Driver item that asked what wasn't delivered or who didn't get something. It answers the route question, or that Driver item (the day he names, else the open day). Never a "Got today's added items?" item.
+   - A cash report ("Kim paid cash", "the Smiths gave me $14 cash"): CASH (below), for the day he names, else the open day, else the latest day row in LAST or THIS week whose "Harry last asked" is filled (his route may already be confirmed). One message can hold a delivery report and a cash report ("yes all delivered, Kim paid cash"; a "yes" in the same message as a cash report answers the route question): apply both.
    - A bare number ("1", "2"): a "Which was your" item (below).
 2. Only a bare "yes", "ok", "yep" or a thumbs-up can fit more than one question. It answers the open question texted to him most recently, leaving out "Which was your" items. Exception: if another open question (also not a "Which was your" item) was texted to him less than 20 minutes before that one, you can't tell which he meant. Change nothing. If no "Which was your" item is open, create a Driver item: "[Ddd Mon D of the most recent question's day]: Which was your '[his message]' for? Reply 1 or 2. 1 = [the most recent question, as texted], 2 = [the other, as texted]" (more than two: number them all), Status = Waiting (delivery-check texts it). If one is already open, create a Clarify item for Mark instead: "Harry said '[text]'. Not sure which question it answers: [the questions]." Log the message as "unclear".
 3. Anything else, or no open questions: the bullets below ("No route waiting", "Anything else").
@@ -129,6 +130,11 @@ Then apply it:
 - A named miss ("Kim didn't get her yogurt, we ran out") = add to that customer's "Not delivered" (product Column name + amount + reason, e.g. "Yogurt Plain x2 ran out"). If the amount isn't said, use the full amount on the row. If the customer or product can't be matched, create a Driver item asking which ("[Ddd Mon D]: ...").
 - "Not enough [product]" without names = create a Driver item for the open day: "[Ddd Mon D]: Who didn't get [product]?" Invoicing waits while any Driver item for that day is open.
 - An answer to an open Driver item (Status Sent) = apply it as above, then that Driver item is Resolved.
+- CASH (Shane's rule from 2026-11-03: a customer who paid Harry cash is marked paid and never invoiced). For each customer he names, find their customer row on that day, matching names as for a named miss. "Nobody paid cash", or no mention of cash, records nothing.
+  - No single row matches: create a Driver item "[Ddd Mon D]: Who paid you cash? I couldn't tell who '[name]' is." Change nothing else for that name.
+  - "Paid" already filled: change nothing (log it).
+  - Otherwise fill "Paid" = "cash $[amount] (Harry, [now])", or "cash (Harry, [now])" if he gave no amount, and read it back (sheets-spec Paid). Invoicing then never sends that row an invoice or a payment link.
+  - If that row's "Invoice sent" is already filled (sent before he said): also create a Clarify item for Mark "Harry says [name] paid cash[ $amount] for [Ddd Mon D], but their invoice was already sent. Cancel it in Square so they aren't billed twice?"
 - Anything else: Clarify item for Mark "Harry said: '[text]'".
 - Never hold a day's invoicing because you'd now read an old reply differently. Only a write that came out wrong (routines/farm-ops.md SYSTEM PROBLEMS) can hold a day, and only the way that section says.
 

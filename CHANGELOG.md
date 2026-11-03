@@ -39,7 +39,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): empty days count as no delivery (no list, no Harry texts); test customers left out; MORNING EXCEPTIONS part for items added after the list went out.
 - v1 (2026-10-07): first version.
 
-## delivery-check.md (DELIVERY CHECK (version 3))
+## delivery-check.md (DELIVERY CHECK (version 4))
+- v4 (2026-11-03): the route question also asks Harry who paid him cash and how much (Shane: a customer who paid cash is marked paid and never invoiced).
 - v3 (2026-10-23): Driver questions carry their day; a "Got today's added items?" item closes itself when its day ends, and any other unsent one 2+ days old is never sent (ALERT to Shane). On Oct 22 an Oct 14 question reached Harry and his "Yes" was misread.
 - v2 (2026-10-10): Mark's alert goes to the family group (sheets-spec rule 11).
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -54,7 +55,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
 - v1 (2026-10-07): first draft.
 
-## invoicing.md (INVOICING (version 13))
+## invoicing.md (INVOICING (version 14))
+- v14 (2026-11-03): a row whose Paid starts with "cash" (Harry was paid cash) is never drafted, listed for approval, sent or texted a payment link; it shows as a "Paid cash:" line on the lists, and Mark gets a Clarify item if Harry's amount is below the items' total. Cash reported after drafting leaves the Square draft unsent ("Invoice sent" = "not sent: paid cash").
 - v13 (2026-10-28): a customer's new pay-link text also lists their earlier invoices that are still owed (last 8 weeks, checked in Square right before texting), each with its amount due and payment link. Paid ones found on the way get "Paid" filled. The approval list's closing line says so. Shane's rule.
 - v12 (2026-10-28): every invoice waiting for an OK goes to Mark and Laura in one approval list, whatever day it's from. When a new day's invoices are drafted while a list is open, a new list with everything still waiting (same numbers, new ones added) replaces it, so new invoices never wait behind an unanswered list. Day items only mark a day's drafts as ready; the day's drafted Doc is unnumbered. Day-row "Invoices approved" follows the customer rows. Lists sent before 2026-10-29 aren't replaced (Shane: don't resend Tuesday Oct 27's list). Shane's rule.
 - v11 (2026-10-23): HELD DAYS: a day row's "Invoice hold" stops drafting, lists, sending and pay-link texts for that day until Shane clears it (a hold only in run notes holds nothing). The list Doc is made as save-doc.md says; if it fails, invoicing goes on with the list text in the Queue item. The list includes drafts an earlier run made before stopping. Part D asks Mark about an invoice canceled in Square; Part D2 applies his answer (new Invoice link, or Paid "none"). From the Oct 22-23 Thursday invoices and Cayli's 000049/000050.
@@ -111,7 +113,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 34))
+## parser.md (PARSER (version 35))
+- v35 (2026-11-03): CASH: when Harry says a customer paid him cash, fill that row's Paid with "cash $[amount] (Harry, [time])"; a name that doesn't match one row becomes a Driver question; if the invoice already went out, Mark is asked to cancel it in Square.
 - v34 (2026-10-28): invoice approval lists name each line's delivery date; an excepted line gets "Invoice held: waiting for an answer" so later lists leave it off; an answer sent before a replacement list went out applies only to the list it answered, and the rest goes out again.
 - v33 (2026-10-27): "send me Monday's list again" is only a question (answered with the link), no longer also listed as an instruction the system can't do.
 - v32 (2026-10-23): Harry's reply: words that fit only one question go there (GOT IT to the added-items question, delivery reports to the route); a bare yes/ok answers the question texted most recently, and if two were texted within 20 minutes he's asked which. What a reply meant is decided once. Driver items start with their day. A canceled-invoice answer is left Answered for invoicing. A list stored in the Queue item is read like the Doc.
@@ -172,6 +175,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-11-03, revised 36): customer-table column Paid described: Square's paid date, "none: invoice canceled", or "cash $[amount] (Harry, [time])" (never invoiced).
 - v4 (2026-10-28, revised 35): rule 9: an open invoice list may be replaced by one that adds newly drafted invoices (still one open). Invoice items are day items (Waiting until listed) or approval list items (the only ones Sent); Invoice Lists also holds "Invoices to approve" Docs.
 - v4 (2026-10-26, revised 34): Queue columns listed in the sheet's real order (Digest # last); rule 12: build appended log rows from the tab's header row, and find log columns by label. Oct 26 Queue rows Q93-Q98 had shifted one column right (fixed by hand).
 - v4 (2026-10-23, revised 33): day-table column "Invoice hold" (only Shane clears it); Driver item Questions start with their day; "Canceled invoice:" Clarify items wait Answered for invoicing; Invoice link changes only for a canceled invoice's replacement; Queue list items may hold the list text when the Doc failed; list Docs use save-doc.md.
