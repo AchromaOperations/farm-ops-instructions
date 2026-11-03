@@ -22,7 +22,6 @@ import re
 import sys
 import zlib
 from datetime import datetime
-from urllib.parse import quote_plus
 
 SYNC = "(standing order sync)"
 MILK = "Milk (gal)"
@@ -34,7 +33,6 @@ MUTED = (0.42, 0.37, 0.36)       # soft brown-gray for labels
 RULE = (0.718, 0.725, 0.565)     # site sage #B7B990
 ZEBRA = (1.0, 0.973, 0.910)      # site cream #FFF8E8
 SKIPFILL = (0.859, 0.863, 0.784) # light sage
-ACCENT = (0.0, 0.286, 0.565)     # site navy #004990: links only
 BAND = (1.0, 0.973, 0.910)       # cream header band
 WHITE = (1.0, 1.0, 1.0)
 LOGO_SIZE = 56
@@ -253,7 +251,7 @@ def fmt(x):
 
 def phone_text(n):
     m = re.fullmatch(r"\+1(\d{3})(\d{3})(\d{4})", (n or "").strip())
-    return ("(%s) %s-%s" % m.groups(), "tel:" + n.strip()) if m else ((n or "").strip(), None)
+    return "(%s) %s-%s" % m.groups() if m else (n or "").strip()
 
 
 def real_changes(row):
@@ -444,13 +442,14 @@ def stops_header(d):
 
 def stop_cells(s):
     cw = [STOP_X[k + 1] - STOP_X[k] - 12 for k in range(6)]
-    maps = "https://maps.google.com/?q=" + quote_plus("%s, %s KY" % (s.get("address", ""), s.get("city", "")), safe=",")
+    # Addresses and phones are plain text, not links: link entries made the PDF a third bigger, and every
+    # character of it has to be copied into the Drive upload (Shane, Nov 2 2026).
     cust = wrap_runs([(s.get("name", ""), "b", 9.5, INK, None)], cw[2])
-    cust += wrap_runs([(s.get("address", ""), "r", 9.5, ACCENT, maps), (", " + s.get("city", ""), "r", 9.5, INK, None)], cw[2])
+    cust += wrap_runs([(s.get("address", "") + ", " + s.get("city", ""), "r", 9.5, INK, None)], cw[2])
     nums = [phone_text(n) for n in (s.get("phone"), s.get("phone2")) if (n or "").strip()]
     if nums:
-        for label, tel in nums:
-            cust += wrap_runs([(label, "r", 9.5, ACCENT if tel else INK, tel)], cw[2])
+        for label in nums:
+            cust += wrap_runs([(label, "r", 9.5, INK, None)], cw[2])
     else:
         cust += wrap_runs([("no phone", "r", 9.5, INK, None)], cw[2])
     deliver = []

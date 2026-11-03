@@ -1,4 +1,4 @@
-SAVE PDF (version 2)
+SAVE PDF (version 3)
 Written for: sheets-spec version 4
 
 The one way to put a PDF that a tools/ script made into a Google Drive folder. daily-delivery-list and weekly-master-list both use it. Do it exactly this way every time; never improvise another way. This file is only for PDFs: list Google Docs (invoice and read-back lists, the delivery list's fallback Doc) are made with textContent as save-doc.md says, never with base64.
@@ -12,12 +12,14 @@ Google Drive create_file (mcp__Google-Drive__create_file), with exactly these pa
 - contentMimeType: "application/pdf"
 - disableConversionToGoogleType: true
 - base64Content: the whole contents of the script's "base64_file" (one line of base64). Read it with `cat [base64_file]` and pass it exactly, every character, however long (10,000 to 40,000 characters is normal). Never shorten, retype, rewrap or summarize it, and never decide it is too long.
-For a PDF, never use textContent, the deprecated "content" or "mimeType" parameters, or a Google type (application/vnd.google-apps...). Never make a second file if one call fails: check first (below).
+For a PDF, never use textContent, the deprecated "content" or "mimeType" parameters, or a Google type (application/vnd.google-apps...). At most two tries in all: check each one first (below).
 
 CHECK
-- The reply must show the new file's ID and a MIME type of application/pdf. If it shows a Google Doc type, or no file was made: record an ALERT Problem "PDF save failed: [what the reply said]", leave anything that was made (never delete), and use the calling doc's fallback.
-- If the reply (or a Drive search for the file) shows its size, it must equal the script's "bytes". A different size means the copy was damaged: ALERT Problem "PDF damaged in upload: [size] vs [bytes]", leave it, and use the fallback.
-- Link = https://drive.google.com/file/d/[file ID]/view
+- The reply must show the new file's ID and a MIME type of application/pdf.
+- If the reply (or a Drive search for the file) shows its size, it must equal the script's "bytes". A different size means the copy was damaged.
+- One more try if the first one failed: the call errored (for example Drive said the base64 isn't valid, as on Nov 1), no file was made, it's a Google Doc type, or the size is wrong. These mostly come from one wrong character in the long copy, so a fresh copy often works. Run `cat [base64_file]` again and make the call again exactly as THE CALL says, passing it exactly. If the first try made a file, leave it (never delete) and title the new one "[file_name without .pdf] (2).pdf". Check it the same way.
+- If the second try fails too: record an ALERT Problem "PDF save failed twice: [what each reply said]" (for a wrong size, "[size] vs [bytes]"), leave anything that was made, and use the calling doc's fallback.
+- Link = https://drive.google.com/file/d/[file ID]/view (the try that passed).
 
 SHARING
 The Drive tool can only share by email, so link sharing comes from the folder: Shane sets the Delivery Lists and Master Lists folders to "anyone with the link can view". Don't try to change sharing.

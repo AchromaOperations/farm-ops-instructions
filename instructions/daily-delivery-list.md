@@ -1,4 +1,4 @@
-DAILY DELIVERY LIST (version 15)
+DAILY DELIVERY LIST (version 16)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -37,11 +37,11 @@ STEP 4. MAKE THE LIST (the script makes it; never lay it out yourself)
 
 WHAT THE SCRIPT MAKES (for reference; the script decides, so never change its output to match this)
 The approved design, one section per route (Route column; if blank, one section for the day), each starting on a new page:
-- A cream header band with the farm logo at the top left (website colors: cream, maroon text, sage lines, navy links): "[WEEKDAY] · [Mon D, YYYY]", then "[Route, or All [Day] stops] · Driver: [Routes tab Driver, or a blank line] · Locked [time]".
+- A cream header band with the farm logo at the top left (website colors: cream, maroon text, sage lines): "[WEEKDAY] · [Mon D, YYYY]", then "[Route, or All [Day] stops] · Driver: [Routes tab Driver, or a blank line] · Locked [time]".
 - Four tiles: STOPS TO DELIVER, SKIPPING, MILK JARS, ADD-ON ITEMS.
 - A box: "X  DO NOT DELIVER" with each skip (a stop whose row has every product at 0 or blank this week, however it got there: "Stop [#]: [Name], [Address, City]: SKIP, nothing to deliver this week"), then "NO MILK THIS WEEK (add-ons only)" (Milk (gal) 0 this week while their Customers Milk (gal) is above 0: "Stop [#]: [Name]: NO MILK, add-ons only"). Thick border when there are any; otherwise "No skips this week".
 - PACKING LIST with a tick box per line: Milk first as half-gallon jars (gallons x 2, plus Extra Milk jars, "including [n] extra"), then every add-on above 0 with its unit (sheets-spec TERMS: half-gallon jars only).
-- STOPS in Stop # order, every Day row in its place, skips included (shaded): DONE tick box | STOP | CUSTOMER (name, address as a map link, city, then the phone written like (502) 555-1234 as a tap-to-call link, Phone 2 on the line below, "no phone" if both are blank; NO TEXTS customers too, nothing is texted) | DELIVER ("2 jars + 1 extra", then "2 x Yogurt VM" lines; a skip is "SKIP: NO DELIVERY"; "NO MILK" when it applies) | NOTES (Delivery notes) | FLAGS (SKIP, NO MILK, GUESS, CHANGED for a change that isn't "(standing order sync)", "!" for a blank Stop #, other Needs attention text, a share that isn't whole jars, or a cell that isn't a number or an active product, which shows as CHECK).
+- STOPS in Stop # order, every Day row in its place, skips included (shaded): DONE tick box | STOP | CUSTOMER (name, address and city, then the phone written like (502) 555-1234, Phone 2 on the line below, all plain text with no links to keep the PDF small, "no phone" if both are blank; NO TEXTS customers too, nothing is texted) | DELIVER ("2 jars + 1 extra", then "2 x Yogurt VM" lines; a skip is "SKIP: NO DELIVERY"; "NO MILK" when it applies) | NOTES (Delivery notes) | FLAGS (SKIP, NO MILK, GUESS, CHANGED for a change that isn't "(standing order sync)", "!" for a blank Stop #, other Needs attention text, a share that isn't whole jars, or a cell that isn't a number or an active product, which shows as CHECK).
 - CHANGES THIS WEEK: one line per stop with a real Changes entry or Needs attention text.
 - PENDING: NOT PACKED, only if there are open Late order items.
 The fallback Doc (delivery_list_html.py) has the same sections in the same order.
