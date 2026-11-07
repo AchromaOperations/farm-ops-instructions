@@ -1,4 +1,4 @@
-INVOICING (version 14)
+INVOICING (version 15)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -16,6 +16,7 @@ For each day row in LAST or THIS week with "Route confirmed" filled, "Invoices d
    - Lines = each Square-billed product with quantity above 0, minus any amount for that product in "Not delivered" and any in "No charge" (a tab without a "No charge" column has none). Drop lines that reach 0 or less. Remember the no-charge items for the list (step 3).
    - No lines: fill "Invoice link" = "none". Next customer.
    - "Paid" starts with "cash" (Harry was paid cash: parser B, Shane's rule from 2026-11-03): don't draft. Fill "Invoice link" = "none". Work out the lines' total at the current Products prices (Extra Milk priced as below; a blank Price makes the total "unknown") and remember it for the list (step 3). If Paid names an amount below a known total, create a Clarify item for Mark "Harry says [name] paid $[amount] cash for [Ddd Mon D]; their items come to $[total]. Nothing was invoiced. Invoice the rest by hand if needed." Next customer.
+   - The Customers tab Notes for this Cust ID contain "NO INVOICE" (Shane's rule from 2026-10-10: this customer is never invoiced, and any add-on goes to Mark and Laura): don't draft and don't create a Square customer. Fill "Invoice link" = "none". If there are lines, work out their total as for cash, put "never invoiced: NO INVOICE customer" in Needs attention, and create a Clarify item "[name] is never invoiced (NO INVOICE) and got [items with amounts] = $[total] on [Ddd Mon D]. Nothing was drafted; settle it by hand if needed." Next customer.
    - Any line whose product has a blank Price: do not draft this customer. Create a Clarify item "Invoice for [name] held: no price set for [product]." Put "Invoice held: no price for [product]" in Needs attention. Next customer.
    - No email on the Customers tab: do not draft. Put "Invoice held: no email" in Needs attention (if not already there) and create a Clarify item "No email for [name], so their invoice ($[total]) is held. Text me their email." Next customer.
    - Find the customer in Square by email, then by phone. If not found, create the Square customer with name, email and phone.
@@ -24,7 +25,7 @@ For each day row in LAST or THIS week with "Route confirmed" filled, "Invoices d
    - Fill "Invoice link" with the Square invoice link.
 3. The day's drafted list. It is the record of this day's drafts; Mark and Laura see these invoices on the approval list (Part B), never in this form. The drafted customers = every customer row of that day with a real Square link in "Invoice link" and "Invoice sent" blank, whether drafted just now or by an earlier run that stopped part way (never draft those again). Write it in this form (large plain text in the Doc, no colors):
    "Invoices drafted for [Day, date]."
-   Then one line per drafted customer, not numbered: "- [Name] ([Cust ID]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. A customer whose items were all no charge has no invoice ("Invoice link" = "none"); list them at the end as "No charge: [name] ([items])". A customer who paid Harry cash: "Paid cash: [name] ([items with amounts] = $[total]; Harry said [$amount, or 'no amount'])".
+   Then one line per drafted customer, not numbered: "- [Name] ([Cust ID]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. A customer whose items were all no charge has no invoice ("Invoice link" = "none"); list them at the end as "No charge: [name] ([items])". A customer who paid Harry cash: "Paid cash: [name] ([items with amounts] = $[total]; Harry said [$amount, or 'no amount'])". A NO INVOICE customer with lines: "Never invoiced: [name] ([items with amounts] = $[total])".
    Then: "Total: $[sum] for [n] invoices." Then any held customers: "Held: [name], [reason]".
    Make the Google Doc "Invoices [Ddd Mon D YYYY]" in Invoice Lists from it, exactly as instructions/save-doc.md says. If save-doc.md says it failed, go on to step 4 anyway, with the list text in place of the link.
 4. Fill "Invoices drafted" = now on the day row. Create a Queue item: Type Invoice, Week, Question = the doc link (or, if the Doc failed, the whole list text), Original message = "[Day] invoices: [n], $[sum]", Status = Waiting.

@@ -1,4 +1,4 @@
-CONFIRM ORDERS (version 12)
+CONFIRM ORDERS (version 13)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -15,7 +15,7 @@ Items = every product on the row with a quantity above 0, using Products "Text n
 - Extra Milk (jars) comes right after the share, in gallons: 1 = "an extra half gallon", 2 = "an extra gallon", 3 = "an extra gallon and a half", 4 or more = "[jars/2] extra gallons".
 - Everything else: 1 = "a [text name]" (or just the name if "a" sounds wrong, e.g. "butter"), more = "[n] [text name, plural]".
 - Add-ons follow after "plus", joined as a natural list: "your weekly share (1 gallon), plus 2 vanilla maple yogurts, butter and a crumble cheese". No share this week: just the add-ons ("2 vanilla maple yogurts and butter").
-Day = the customer's delivery day on that row. Add the date ("Wednesday the 21st") when the row is a later week; just the day name when it is THIS week.
+Day = the customer's delivery day on that row. Just the day name when the row is THIS week. Add the date when it is a later week: NEXT week as "Wednesday the 21st"; any week after that with the month too, "Friday, Dec 11", so the customer can't take it for a nearer date (on Nov 6 a Dec 11 read-back said "Friday the 11th" and the customer expected her loaf the next week). The skip wording's "[next delivery day and date]" follows the same rule.
 
 Text:
 - First read-back for this row ("Confirmation sent" blank): "Got it! See you [Day] with [items]."

@@ -179,6 +179,12 @@ def num(x):
 
 
 def build(data):
+    for key in ("products", "columns", "rows"):
+        if not isinstance(data.get(key), list):
+            raise ValueError('"%s" must be a list in the input file, not %s: the input file is incomplete (build it with tools/master_list_input.py)'
+                             % (key, "missing" if key not in data else type(data[key]).__name__))
+    data["rows"] = [["" if c is None else str(c) for c in (r or [])] for r in data["rows"]]
+    data["columns"] = ["" if c is None else str(c) for c in data["columns"]]
     problems = []
     now = parse_time(data["now"])
     last_sent = parse_time(data["last_sent"]) if (data.get("last_sent") or "").strip() else None
@@ -696,7 +702,7 @@ def main():
         m = build(data)
         size_bytes, shown, _ = draw(m, sys.argv[2])
         message, fallback = texts(m)
-    except (KeyError, ValueError, TypeError, OSError) as e:
+    except Exception as e:
         print(json.dumps({"error": "%s: %s" % (type(e).__name__, e)}))
         return 1
     ahead = [i for i in range(5) if not m["done"][i]]

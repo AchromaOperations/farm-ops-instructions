@@ -1,4 +1,4 @@
-PARSER (version 35)
+PARSER (version 36)
 Written for: sheets-spec version 4
 
 JOB
@@ -62,7 +62,7 @@ For each number answered: fill Answer, Answered by, Status = Answered, then appl
 - Sales that is a share request (Question contains "asked to change their weekly share"):
   - "no change", "no", "resolved", "no sale" (or clear equivalents) = Outcome "no change".
   - "yes", "ok", "do it" = make the share change the customer asked for (only the share part; any add-ons in that text were already recorded). Any other answer that states a change ("skip them", "1 gal this week") = make that change.
-  - Make a change = apply it as an A4 command for that customer, for the item's Week (source "Mark" or "Laura"). Outcome "share changed". If that week's row is already Delivered, change nothing (never move it to another week): Outcome "too late, already delivered". If A4 has no command for it (cancelling or pausing a share), change nothing: Outcome "change by hand", and create an Other item "Can't make [name]'s share change by text ('[answer]'). Please change it in the sheet."
+  - Make a change = apply it as an A4 command for that customer, for the item's Week (source "Mark" or "Laura"). Outcome "share changed", and set that row's "Confirm needed" = now (ORDER WRITING, Read-back flag), so the customer hears back. If that week's row is already Delivered, change nothing (never move it to another week): Outcome "too late, already delivered". If A4 has no command for it (cancelling or pausing a share), change nothing: Outcome "change by hand", and create an Other item "Can't make [name]'s share change by text ('[answer]'). Please change it in the sheet."
   - Anything else: create a Clarify item "Not sure what to do with [name]'s share request '[text]' after your answer '[answer]'. No change, or [the likely change]?" Outcome "moved to Clarify Q[n]".
   - Then Status = Resolved, clear Digest #.
 - Sales (all others): "sale", "no sale", "resolved" (or clear equivalents) = Outcome, Status = Resolved. Anything else: keep the answer, Status = Answered.
@@ -227,7 +227,7 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
    A built-in default only sets the amount. Rules 2 (which product, e.g. yogurt flavor), 3b and 4 still apply.
 3b. First week only: an item whose Products "Weeks" is "First week only" (crumble cheese, baked goods) is only made in the delivery weeks listed in Config "First weeks" (their Sunday dates).
    - The target week (rule 5) is a listed first week: write it as usual.
-   - Otherwise: write it to the next listed first week's row instead (build that tab first if it isn't built). The read-back gives that date.
+   - Otherwise: write it to the next listed first week's row instead (build that tab first if it isn't built). The read-back gives that date. The Changes entry keeps its normal source ("(text)"): never put a note inside the source (the read-back risk check reads it). Say why it moved in that row's Needs attention instead: "first-week item: [Column name] x[n] from [yyyy-mm-dd] text, moved from week of [dates]".
    - It fails instead if the customer says they want it only this week, if no first week is listed after the target week, or if "First weeks" is missing. Question: "[name] asked for [item] (week of [dates]). It's only made in first weeks (next: [week of date, or none scheduled]). Hold it, or add it to a week?" with "Hold it" first. (The rest of the same message can still be written if it passes.)
 4. Standing conflict: if the item has a standing order and the text could mean "in addition" or "instead" (e.g. "milk this week please"), it fails. Words like "extra", "another", "more" = in addition. "Just", "only", "change to", "instead" = instead.
 5. Target row (test customers, Cust ID starting with "T": if they have no row on the week tab, add one at the bottom of the customer table first. An Active customer with no row on an unlocked week tab, for example one added to Customers today: add their row first, as sheets-spec BUILDING A WEEK TAB step 5 says):
@@ -236,7 +236,7 @@ Rule checks. All must pass, or create a Clarify item with a proposed question in
    - If Locked is filled and Delivered is blank (list already out, not yet delivered): do not write. Create a Late order item: "[customer] ordered '[text]' after the list went out. Add it or next week?"
    - If the text names a specific later week ("for the 26th"), use that week's row. If that week's tab isn't built yet, build it first (sheets-spec BUILDING A WEEK TAB).
 
-Read-back flag: after writing, set the row's "Confirm needed" = now when the change came from the customer's own text (section C; not when that text also had a weekly share request, since Mark replies to those by hand), or from Mark or Laura settling a Clarify item that started from that customer's text (section A3, or F), or from a screenshot (section S, share changes included). Do NOT set it for guesses at lock, Mark/Laura commands (A4), Late order decisions, or standing order changes. (confirm-orders sends the text; you never do.)
+Read-back flag: after writing, set the row's "Confirm needed" = now when the change came from the customer's own text (section C; not when that text also had a weekly share request: that row's read-back waits for Mark's answer, A3), or from Mark or Laura settling a Clarify item that started from that customer's text (section A3, or F), or from Mark or Laura making the share change a customer asked for (A3 "Make a change", Outcome "share changed": the customer is waiting to hear back, and a skipped week gets the "no delivery" wording), or from a screenshot (section S, share changes included). Do NOT set it for guesses at lock, commands Mark or Laura send on their own (A4), Late order decisions, or standing order changes. (confirm-orders sends the text; you never do.)
 
 Writing: set each QUANTITY cell to the new total for the week (for "instead", the stated amount; for "in addition", current + stated). Append to Changes: "[date-time] [Column name] [old]>[new] ([source])", where source is "text", "Mark", "Laura", "Mark (by hand)", or "[sender] (screenshot)".
 

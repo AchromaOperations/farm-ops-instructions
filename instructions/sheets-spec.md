@@ -7,7 +7,7 @@ This describes the two workbooks every skill reads and writes. Every skill doc s
 =====================================================
 GENERAL RULES (apply to every skill)
 =====================================================
-1. Find things by label, not by cell address. Humans may insert rows or columns. Find a header row by its column names, and a header-block value by its label in column A.
+1. Find things by label, not by cell address. Humans may insert rows or columns. Find a header row by its column names, and a header-block value by its label in column A. Cust ID is not a row key: a customer can have two rows on one week tab (a day move with an extra delivery, as C010 had in week 4). Write a cell on the row you read it from, by that row's number; never by counting Cust IDs, by looking a Cust ID up in a list you built, or by taking the row under one customer as the next Cust ID. (On Nov 6 Friday's invoice links were written one row up from the second C010 row down.)
 
 2. Every cell is one of four kinds. Each kind has its own write rule.
    - STAMP: marks a step as done (for example Reminder sent, Locked, Delivered, Invoice sent). Write once. Never change or clear a filled stamp. Blank = not done, filled = done. If a filled stamp looks wrong, write it in that row's "Needs attention" cell and add a Queue item for Mark. Whether that also holds a day's invoicing (DAY TABLE "Invoice hold") is decided only by routines/farm-ops.md SYSTEM PROBLEMS.
@@ -114,7 +114,7 @@ Settings and starting values:
 - Bulk send batch size: 40
 - Stale run after (minutes): 50
 - Parser late after (minutes): no longer used (the parser and operator parts run in the same run)
-- Weekly master list time: 20:30   (the first run at or after this time sends the master list: normally the 8:40pm run, so it arrives about 8:45pm. Runs after 9pm skip the operator part, so keep it before 20:40. "(not set yet)" = off.)
+- Weekly master list time: 19:30   (the first run at or after this time sends the master list: normally the 7:47pm run, so it arrives about 7:55pm, and the 8:17pm and 8:47pm runs can retry if it fails. Runs after 9pm skip it (quiet hours). Was 20:30 until 2026-11-06; the single 8:47pm try ran out of time on Nov 2.)
 - Finance update time: (not set yet)
 - Cursor overlap (minutes): 60
 - Read-back review (dropdown ALL, RISKY ONLY, OFF): ALL. ALL = Mark approves every read-back before it goes to a customer. RISKY ONLY = only read-backs whose changes did not come straight from the customer's own text (a question Mark settled, a lock-time guess, an "after lock" change) need approval; the rest send automatically. OFF = no approval. Missing or blank = treat as ALL.
