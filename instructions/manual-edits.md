@@ -1,15 +1,15 @@
-MANUAL EDITS (version 4)
+MANUAL EDITS (version 5)
 Written for: sheets-spec version 4
 
 WHO THIS IS FOR
 Any chat on the farm's Claude account (not the Farm ops routine) that reads or changes the Google Sheets "Farm Reference" or "Weekly Deliveries", usually because Shane, Mark or Laura asked. The routine has its own rules. In a chat, follow these.
 
 FIRST
-1. Fetch and read these, from the same place as this file (https://raw.githubusercontent.com/AchromaOperations/farm-ops-instructions/main/instructions/[name]):
-   - sheets-spec.md: GENERAL RULES, and the layout of the tab you'll touch.
-   - week-names.md: which tab is THIS, NEXT and LAST week.
-   - For an order or a command: parser.md, only the sections ORDER WRITING and A4 (Commands).
-   If you can't fetch them, change nothing and say so.
+1. Fetch and read these (each link is written out in full on purpose: a chat's web tool opens only links that already appear in the conversation, and it refuses a link it assembled itself from a pattern; that is what stopped a chat on 2026-11-08). A skill that has already cloned the repository (skills/) reads the same files from its clone instead.
+   - https://raw.githubusercontent.com/AchromaOperations/farm-ops-instructions/main/instructions/sheets-spec.md : GENERAL RULES, and the layout of the tab you'll touch.
+   - https://raw.githubusercontent.com/AchromaOperations/farm-ops-instructions/main/instructions/week-names.md : which tab is THIS, NEXT and LAST week.
+   - For an order or a command: https://raw.githubusercontent.com/AchromaOperations/farm-ops-instructions/main/instructions/parser.md , only the sections ORDER WRITING and A4 (Commands).
+   If you can't fetch one, change nothing and say which link failed and what the tool said. Never rebuild a rule from memory.
 2. Times: Eastern, written yyyy-mm-dd hh:mm. If you don't know the exact time now, ask.
 
 READING THE SHEETS
@@ -35,6 +35,7 @@ NEVER
 - Touch a day's "Invoice hold" (week tab day table) unless Shane himself asks. When he asks to hold a day: fill it as "[yyyy-mm-dd hh:mm] [reason] (Shane (chat))", or add that after " ; " if it's already filled. When he asks to lift it: clear the cell.
 - Change prices, or run a sync.
 - Send a text or message, unless the person asks for that exact message to that exact person.
+- Save a delivery list or master list into the Delivery Lists or Master Lists folders, or make one by hand. The routine makes and sends those; a list made for a person in a chat is a preview that stays in the chat (skills/delivery-list-pdf/SKILL.md).
 
 FINISH
 Say in one or two lines what changed (customer, week, cells, old > new), or why nothing changed.

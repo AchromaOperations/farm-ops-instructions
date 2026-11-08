@@ -75,11 +75,15 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## manual-edits.md (MANUAL EDITS (version 4))
+## manual-edits.md (MANUAL EDITS (version 5))
+- v5 (2026-11-08): the three files a chat must read are linked in full, not as a "[name]" pattern. A chat's web tool opens only links that already appear in the conversation and refuses links it assembled itself; on Nov 8 a chat on the farm account built the sheets-spec and week-names links from the pattern, was refused, and stopped (correctly) without making the Monday list it was asked for. Also: a chat never saves a delivery or master list into the Drive folders the routine sends from; chat-made lists are previews (new skills/delivery-list-pdf).
 - v4 (2026-10-23): a chat sets or clears a day's "Invoice hold" only when Shane asks.
 - v3 (2026-10-19): Run History tab is routine-owned too.
 - v2 (2026-10-18): free items go in the "No charge" column (added if the tab lacks it), not as text in Needs attention or Changes.
 - v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
+
+## skills/delivery-list-pdf/SKILL.md (version 1)
+- v1 (2026-11-08): new. A chat-side skill for the farm's Claude account (Shane uploads it under Settings, Capabilities, Skills; the repository copy is the source). On "Monday delivery sheet in pdf" it clones this repository with git (no web fetching, no GitHub sign-in), reads the sheets by name, builds day.json as daily-delivery-list.md Step 4 says and runs tools/delivery_list_pdf.py, then hands the PDF to the person as a preview marked "PREVIEW, not locked". It never writes a cell, texts anyone, or saves into Delivery Lists: the routine's 7:17pm run makes and sends the official list, and a file in that folder would be taken for it.
 
 ## operator.md (OPERATOR (version 19))
 - v19 (2026-11-06): the daily label check covers every built week tab, not just THIS and NEXT (weeks 6 to 12 were built under an older layout; on Nov 6 the parser added 18 columns to week 9 itself). Every evening run at or after the master list time records weekly-master-list as done, failed or not due in Steps run (on Nov 3 it was due, skipped, and nothing said so).
