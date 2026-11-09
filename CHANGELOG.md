@@ -18,7 +18,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-08): manual review (Config "Read-back review": ALL, RISKY ONLY, OFF).
 - v1 (2026-10-08): first version.
 
-## daily-delivery-list.md (DAILY DELIVERY LIST (version 17))
+## daily-delivery-list.md (DAILY DELIVERY LIST (version 18))
+- v18 (2026-11-09): the list text and the morning changes text go to both drivers, Harry and Zi, one-to-one each (Config "Driver 2 (Zi) phone"); the morning text says "Reply GOT IT" with no name; the Driver item's Sent to = "Harry, Zi". Shane: every delivery text Harry gets goes to Zi as well.
 - v17 (2026-11-02): the links are back (Shane: build the compressed link version). tools/delivery_list_pdf.py writes PDF 1.5 with the small objects (pages, fonts, link entries) packed into one compressed object stream: a 27-stop list is about 14,600 base64 characters with all its map and tap-to-call links (25,000 before). It also writes dl/list-no-links.pdf (about 12,200), which save-pdf.md uploads as the second try if the first upload fails.
 - v16 (2026-11-02): with tools/delivery_list_pdf.py, addresses and phones on the PDF are plain text, not map and tap-to-call links (Shane: they don't need to be links). The link entries were about a third of the file; a 27-stop list drops from about 25,000 to 13,400 base64 characters for the run to copy into the upload. Three of eight uploads since Oct 19 failed on that copy (Oct 19, Oct 25, Nov 1).
 - v15 (2026-10-23): the fallback Doc is made as save-doc.md says; the morning "Got today's added items?" Driver item starts with its date and is created as already Sent (the morning text asked Harry), so his morning GOT IT counts; lists are never edited after they're made.
@@ -40,14 +41,16 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): empty days count as no delivery (no list, no Harry texts); test customers left out; MORNING EXCEPTIONS part for items added after the list went out.
 - v1 (2026-10-07): first version.
 
-## delivery-check.md (DELIVERY CHECK (version 4))
+## delivery-check.md (DELIVERY CHECK (version 5))
+- v5 (2026-11-09): every driver text (Driver questions, nudges, the route question) goes to both drivers, Harry and Zi, one-to-one each; Mark's alert reads "Haven't heard from Harry or Zi". The day-table columns keep their "Harry" names. Shane's rule.
 - v4 (2026-11-03): the route question also asks Harry who paid him cash and how much (Shane: a customer who paid cash is marked paid and never invoiced).
 - v3 (2026-10-23): Driver questions carry their day; a "Got today's added items?" item closes itself when its day ends, and any other unsent one 2+ days old is never sent (ALERT to Shane). On Oct 22 an Oct 14 question reached Harry and his "Yes" was misread.
 - v2 (2026-10-10): Mark's alert goes to the family group (sheets-spec rule 11).
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
 - v1 (2026-10-07): first version.
 
-## farm-setup.md (FARM SETUP (version 6))
+## farm-setup.md (FARM SETUP (version 7))
+- v7 (2026-11-09): the phone checkpoint asks for Zi's number too (Config "Driver 2 (Zi) phone").
 - v6 (2026-10-27): marked as the original build doc (sheets-spec wins); adds the Run History tab and builds headers in the spec's column order.
 - v5 (2026-10-10): builds week tabs only Config "Weeks built ahead" weeks ahead; the operator builds the rest as they come.
 - (2026-10-08) moved from Google Docs to the GitHub repository; other docs are files in instructions/.
@@ -56,7 +59,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
 - v1 (2026-10-07): first draft.
 
-## invoicing.md (INVOICING (version 15))
+## invoicing.md (INVOICING (version 16))
+- v16 (2026-11-09): cash wording names the driver in the Paid cell (Harry or Zi) instead of always Harry.
 - v15 (2026-11-06): Part A: a customer whose Customers Notes say NO INVOICE is never drafted ("Invoice link" = "none", no Square customer); any add-on goes to Mark and Laura as a Clarify item (Shane's Oct 10 rule, which no doc held). On Nov 3 Hannah Fabish got a $21 draft and a Square customer.
 - v14 (2026-11-03): a row whose Paid starts with "cash" (Harry was paid cash) is never drafted, listed for approval, sent or texted a payment link; it shows as a "Paid cash:" line on the lists, and Mark gets a Clarify item if Harry's amount is below the items' total. Cash reported after drafting leaves the Square draft unsent ("Invoice sent" = "not sent: paid cash").
 - v13 (2026-10-28): a customer's new pay-link text also lists their earlier invoices that are still owed (last 8 weeks, checked in Square right before texting), each with its amount due and payment link. Paid ones found on the way get "Paid" filled. The approval list's closing line says so. Shane's rule.
@@ -84,6 +88,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
 
 ## skills/delivery-list-pdf/SKILL.md (version 1)
+- (2026-11-09) wording: the official list reaches the drivers, Harry and Zi.
 - v1 (2026-11-08): new. A chat-side skill for the farm's Claude account (Shane uploads it under Settings, Capabilities, Skills; the repository copy is the source). On "Monday delivery sheet in pdf" it clones this repository with git (no web fetching, no GitHub sign-in), reads the sheets by name, builds day.json as daily-delivery-list.md Step 4 says and runs tools/delivery_list_pdf.py, then hands the PDF to the person as a preview marked "PREVIEW, not locked". It never writes a cell, texts anyone, or saves into Delivery Lists: the routine's 7:17pm run makes and sends the official list, and a file in that folder would be taken for it.
 
 ## operator.md (OPERATOR (version 19))
@@ -121,7 +126,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 36))
+## parser.md (PARSER (version 37))
+- v37 (2026-11-09): section B reads texts from either driver, Harry or Zi (Zi is a Config phone and an Inbox Log Who); Clarify texts and the Paid cash stamp name the driver who spoke; SECOND ANSWERS: a plain agreement from the second driver after the first answered is logged only, while a named miss or cash report is still recorded and Mark is told; the reminder paragraph stays Harry-only. Shane: every delivery text Harry gets goes to Zi as well.
 - v36 (2026-11-06): a first-week item moved to a later week keeps the plain "(text)" source and says why in Needs attention (a note inside the source broke the read-back risk check); a share change Mark or Laura make for a customer's request (A3) sets Confirm needed, so the customer hears back (Victoria Gilmour's Nov 5 skip got no reply and she asked again Nov 6).
 - v35 (2026-11-03): CASH: when Harry says a customer paid him cash, fill that row's Paid with "cash $[amount] (Harry, [time])"; a name that doesn't match one row becomes a Driver question; if the invoice already went out, Mark is asked to cancel it in Square.
 - v34 (2026-10-28): invoice approval lists name each line's delivery date; an excepted line gets "Invoice held: waiting for an answer" so later lists leave it off; an answer sent before a replacement list went out applies only to the list it answered, and the rest goes out again.
@@ -184,6 +190,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-11-09, revised 38): Config "Driver 2 (Zi) phone"; rule 11: one-to-one copies for both drivers; Driver items are for both drivers; Inbox Log Who includes Zi; "Harry last asked" and "Harry ask count" described (names kept, both drivers); Paid cash names the driver.
 - v4 (2026-11-06, revised 37): rule 1: Cust ID is not a row key (a customer can have two rows on one week tab); a cell is written on the row it was read from, by row number. On Nov 6 Friday's invoice links landed one row up from the second C010 row down, and Friday's invoices were held.
 - v4 (2026-11-03, revised 36): customer-table column Paid described: Square's paid date, "none: invoice canceled", or "cash $[amount] (Harry, [time])" (never invoiced).
 - v4 (2026-10-28, revised 35): rule 9: an open invoice list may be replaced by one that adds newly drafted invoices (still one open). Invoice items are day items (Waiting until listed) or approval list items (the only ones Sent); Invoice Lists also holds "Invoices to approve" Docs.
@@ -244,6 +251,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops.md
+- 2026-11-09: SYSTEM PROBLEMS wording: "the drivers' old replies" (Harry and Zi).
 - 2026-10-27: removed the retired routines/parser.md and routines/operator.md (replaced by this file on Oct 10), and human-prompts/pdf-cloud-test.txt (needed pip and reportlab; the scripts are stdlib now). setup-starter-prompt.md fetches farm-setup.md instead of naming a Google Doc.
 - 2026-10-27: hard limit 8: tools/ scripts run as a command of their own (no cd, &&, ; or pipes) so the routine's permission allow rule matches; if denied, alert and use the fallback, never another way. The permission classifier had been denying the list scripts since Oct 24.
 - 2026-10-23: SYSTEM PROBLEMS: the only way to hold a day's invoicing is that day's "Invoice hold" cell, and only when a write came out wrong and couldn't be fixed; never because an old reply would now be read differently.

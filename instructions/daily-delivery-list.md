@@ -1,4 +1,4 @@
-DAILY DELIVERY LIST (version 17)
+DAILY DELIVERY LIST (version 18)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -47,7 +47,7 @@ The approved design, one section per route (Route column; if blank, one section 
 The fallback Doc (delivery_list_html.py) has the same sections in the same order.
 
 STEP 5. SEND
-- Text the family group (sheets-spec rule 11) and Harry (one-to-one) the same text: the script's "message" with {LINK} replaced by the list's link (the PDF, or the fallback Doc) ("[Day]'s delivery list is ready: [link]. [n] stops to deliver, [routes]. [s] skipping (boxed at the top). [g] guesses marked. Shares and orders for [Day] are now locked.").
+- Text the family group (sheets-spec rule 11) and each driver, Harry and Zi (one-to-one each: Config "Driver (Harry) phone" and "Driver 2 (Zi) phone"; a blank one is skipped; Shane's rule, 2026-11-09), the same text: the script's "message" with {LINK} replaced by the list's link (the PDF, or the fallback Doc) ("[Day]'s delivery list is ready: [link]. [n] stops to deliver, [routes]. [s] skipping (boxed at the top). [g] guesses marked. Shares and orders for [Day] are now locked.").
 - Log each text in the Inbox Log (Out (system)).
 - Fill that day's "Delivery list sent" = now.
 
@@ -57,12 +57,12 @@ Report to the operator: day, stops, guesses, pending items.
 =====================================================
 MORNING EXCEPTIONS (run only this part when the operator says so)
 =====================================================
-Changes approved after the list went out (Mark said "add it" to a Late order) must reach Harry before he leaves.
+Changes approved after the list went out (Mark said "add it" to a Late order) must reach the drivers (Harry and Zi) before they leave.
 1. Delivery day = today. New exceptions = today's customer rows with a Changes entry containing "after lock" that is later than today's "Exceptions sent" (all of them if it's blank).
-2. Text the family group and Harry (one-to-one) the same message:
+2. Text the family group and each driver (Harry and Zi, one-to-one each, as Step 5 says) the same message:
    "Changes to today's ([Day]) delivery list:
    - [Name], stop [#]: [what changed, e.g. +2 Yogurt VM; if their whole order is now 0: SKIP, no delivery today]
-   Harry, reply GOT IT when you have these."
+   Reply GOT IT when you have these."
 3. The day's list can't be changed after it's made (a PDF, or a Doc: save-doc.md), so the text is the record. Don't touch the list.
-4. Create a Queue item: Type Driver, Week, Question = "[Ddd Mon D]: Got today's added items? ([names]) Reply GOT IT" (today's date first, for example "Thu Oct 22: Got today's added items? (Jessi Slade: SKIP) Reply GOT IT"), Status = Sent, Sent to = Harry, First sent = now (step 2's text already asked him). (delivery-check re-asks it and closes it when the day ends; the parser records Harry's answer.)
+4. Create a Queue item: Type Driver, Week, Question = "[Ddd Mon D]: Got today's added items? ([names]) Reply GOT IT" (today's date first, for example "Thu Oct 22: Got today's added items? (Jessi Slade: SKIP) Reply GOT IT"), Status = Sent, Sent to = "Harry, Zi", First sent = now (step 2's text already asked them). (delivery-check re-asks it and closes it when the day ends; the parser records the first driver's answer, parser B.)
 5. Set today's "Exceptions sent" = now. Log each text in the Inbox Log.

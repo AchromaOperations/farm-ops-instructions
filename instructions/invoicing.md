@@ -1,4 +1,4 @@
-INVOICING (version 15)
+INVOICING (version 16)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -11,11 +11,11 @@ A day is held when its day row's "Invoice hold" is filled (sheets-spec DAY TABLE
 
 PART A. DRAFT
 For each day row in LAST or THIS week with "Route confirmed" filled, "Invoices drafted" blank and "Invoice hold" blank:
-1. If any Queue item of Type Driver whose day (sheets-spec Queue) is that day is not Resolved, skip this day (Harry's answers may still change what was delivered).
+1. If any Queue item of Type Driver whose day (sheets-spec Queue) is that day is not Resolved, skip this day (the drivers' answers may still change what was delivered).
 2. For each customer row of that day with "Delivered" filled and "Invoice link" blank (skip Cust IDs starting with "T"):
    - Lines = each Square-billed product with quantity above 0, minus any amount for that product in "Not delivered" and any in "No charge" (a tab without a "No charge" column has none). Drop lines that reach 0 or less. Remember the no-charge items for the list (step 3).
    - No lines: fill "Invoice link" = "none". Next customer.
-   - "Paid" starts with "cash" (Harry was paid cash: parser B, Shane's rule from 2026-11-03): don't draft. Fill "Invoice link" = "none". Work out the lines' total at the current Products prices (Extra Milk priced as below; a blank Price makes the total "unknown") and remember it for the list (step 3). If Paid names an amount below a known total, create a Clarify item for Mark "Harry says [name] paid $[amount] cash for [Ddd Mon D]; their items come to $[total]. Nothing was invoiced. Invoice the rest by hand if needed." Next customer.
+   - "Paid" starts with "cash" (a driver was paid cash: parser B, Shane's rule from 2026-11-03): don't draft. Fill "Invoice link" = "none". Work out the lines' total at the current Products prices (Extra Milk priced as below; a blank Price makes the total "unknown") and remember it for the list (step 3). If Paid names an amount below a known total, create a Clarify item for Mark "[driver] says [name] paid $[amount] cash for [Ddd Mon D]; their items come to $[total]. Nothing was invoiced. Invoice the rest by hand if needed." ([driver] = the name in the Paid cell: Harry or Zi.) Next customer.
    - The Customers tab Notes for this Cust ID contain "NO INVOICE" (Shane's rule from 2026-10-10: this customer is never invoiced, and any add-on goes to Mark and Laura): don't draft and don't create a Square customer. Fill "Invoice link" = "none". If there are lines, work out their total as for cash, put "never invoiced: NO INVOICE customer" in Needs attention, and create a Clarify item "[name] is never invoiced (NO INVOICE) and got [items with amounts] = $[total] on [Ddd Mon D]. Nothing was drafted; settle it by hand if needed." Next customer.
    - Any line whose product has a blank Price: do not draft this customer. Create a Clarify item "Invoice for [name] held: no price set for [product]." Put "Invoice held: no price for [product]" in Needs attention. Next customer.
    - No email on the Customers tab: do not draft. Put "Invoice held: no email" in Needs attention (if not already there) and create a Clarify item "No email for [name], so their invoice ($[total]) is held. Text me their email." Next customer.
@@ -25,7 +25,7 @@ For each day row in LAST or THIS week with "Route confirmed" filled, "Invoices d
    - Fill "Invoice link" with the Square invoice link.
 3. The day's drafted list. It is the record of this day's drafts; Mark and Laura see these invoices on the approval list (Part B), never in this form. The drafted customers = every customer row of that day with a real Square link in "Invoice link" and "Invoice sent" blank, whether drafted just now or by an earlier run that stopped part way (never draft those again). Write it in this form (large plain text in the Doc, no colors):
    "Invoices drafted for [Day, date]."
-   Then one line per drafted customer, not numbered: "- [Name] ([Cust ID]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. A customer whose items were all no charge has no invoice ("Invoice link" = "none"); list them at the end as "No charge: [name] ([items])". A customer who paid Harry cash: "Paid cash: [name] ([items with amounts] = $[total]; Harry said [$amount, or 'no amount'])". A NO INVOICE customer with lines: "Never invoiced: [name] ([items with amounts] = $[total])".
+   Then one line per drafted customer, not numbered: "- [Name] ([Cust ID]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. A customer whose items were all no charge has no invoice ("Invoice link" = "none"); list them at the end as "No charge: [name] ([items])". A customer who paid a driver cash: "Paid cash: [name] ([items with amounts] = $[total]; [driver] said [$amount, or 'no amount'])" ([driver] = the name in the Paid cell). A NO INVOICE customer with lines: "Never invoiced: [name] ([items with amounts] = $[total])".
    Then: "Total: $[sum] for [n] invoices." Then any held customers: "Held: [name], [reason]".
    Make the Google Doc "Invoices [Ddd Mon D YYYY]" in Invoice Lists from it, exactly as instructions/save-doc.md says. If save-doc.md says it failed, go on to step 4 anyway, with the list text in place of the link.
 4. Fill "Invoices drafted" = now on the day row. Create a Queue item: Type Invoice, Week, Question = the doc link (or, if the Doc failed, the whole list text), Original message = "[Day] invoices: [n], $[sum]", Status = Waiting.
@@ -59,7 +59,7 @@ Otherwise:
 (Nudges and Laura are handled by owner-digest.)
 
 PART C. SEND APPROVED INVOICES
-First, paid cash after drafting: for each customer row in LAST or THIS week with a real Square link in "Invoice link", "Invoice sent" blank and "Paid" starting with "cash" (Harry said so after the draft was made; skip rows of a held day), never send it, approved or not. Fill "Invoice sent" = "not sent: paid cash" and "Pay link texted" = "skipped: paid cash", and add "paid cash: Square draft left unsent" to Needs attention.
+First, paid cash after drafting: for each customer row in LAST or THIS week with a real Square link in "Invoice link", "Invoice sent" blank and "Paid" starting with "cash" (a driver said so after the draft was made; skip rows of a held day), never send it, approved or not. Fill "Invoice sent" = "not sent: paid cash" and "Pay link texted" = "skipped: paid cash", and add "paid cash: Square draft left unsent" to Needs attention.
 Then for each customer row in LAST or THIS week with "Invoice approved" filled and "Invoice sent" blank (skip rows of a held day; they send once Shane clears the hold):
 - If Config Mode is not LIVE: do not send. Put "TEST: invoice not sent" in Needs attention if it isn't there already. Next.
 - Publish and send that Square invoice (Square delivers it to the customer). Then immediately fill "Invoice sent" = now.
@@ -71,7 +71,7 @@ Then for each day row with "Invoices drafted" filled, "Invoices sent" blank and 
 PART C2. TEXT THE PAYMENT LINK (Shane's rule from 2026-10-18)
 For each customer row in LAST or THIS week with "Invoice sent" filled on or after 2026-10-18 00:00 and "Pay link texted" blank, not on a held day (if the tab has no "Pay link texted" column, add it at the end of the customer table's header row first, sheets-spec rule 8):
 - Only between 8:00am and 9:00pm Eastern and while Config Mode is LIVE. Outside those hours, leave it blank: a later run sends it.
-- "Paid" starts with "cash" (Harry was paid after the invoice went out; the parser asked Mark to cancel it in Square): fill "Pay link texted" = "skipped: paid cash". Next.
+- "Paid" starts with "cash" (a driver was paid after the invoice went out; the parser asked Mark to cancel it in Square): fill "Pay link texted" = "skipped: paid cash". Next.
 - No phone on the Customers tab: fill "Pay link texted" = "skipped: no phone". Customers "Notes" contains "NO TEXTS": fill "skipped: opted out". Next.
 - Link = that invoice's public payment page from Square (the invoice's public URL, which exists once it is published). Never the Square dashboard link in "Invoice link". If Square gives no public URL, add an ALERT Problem and leave it blank so a later run tries again; once that invoice was sent more than 24 hours ago, fill "skipped: no payment link from Square" instead, so it stops retrying.
 - Duplicate guard: if the farm number already sent that customer a text containing this link (Quo sent messages since "Invoice sent"), just fill "Pay link texted" with that time.

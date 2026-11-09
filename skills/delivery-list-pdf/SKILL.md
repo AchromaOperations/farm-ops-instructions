@@ -10,7 +10,7 @@ WHO THIS IS FOR
 A chat on the farm's Claude account, asked by Shane, Mark or Laura for one day's delivery list.
 
 WHAT IT MAKES, AND WHAT IT IS NOT
-The same PDF the Farm ops routine makes, built by the repository's script from the same sheet data, handed to the person in this chat. It is a PREVIEW. The official list is made and sent by the routine the evening before (Config "Delivery list time" is 19:00, so the 7:17pm run; the link reaches the family group and Harry about 7:25pm), and that is the moment the day's orders lock. Two official lists for one day would conflict, so this skill never writes a cell, never texts, and never saves to Drive.
+The same PDF the Farm ops routine makes, built by the repository's script from the same sheet data, handed to the person in this chat. It is a PREVIEW. The official list is made and sent by the routine the evening before (Config "Delivery list time" is 19:00, so the 7:17pm run; the link reaches the family group and the drivers (Harry and Zi) about 7:25pm), and that is the moment the day's orders lock. Two official lists for one day would conflict, so this skill never writes a cell, never texts, and never saves to Drive.
 
 STEP 1. GET THE INSTRUCTIONS WITH GIT (first, before anything else)
 Run these two commands in the chat's sandbox:
@@ -34,7 +34,7 @@ STEP 3. WHICH DAY, WHICH TAB
 - The tab = the Weekly Deliveries tab whose Sunday-to-Saturday dates include that day (week-names.md gives the names, for example "Delivery week 5 Nov 8-14 2026").
 
 STEP 4. IS THE OFFICIAL LIST ALREADY OUT?
-Search Drive for the exact name "Delivery list [Ddd Mon D YYYY].pdf" (for example "Delivery list Mon Nov 9 2026.pdf") and for a Google Doc "Delivery list [Ddd Mon D YYYY]" (the routine's fallback). If either exists, it is the official list and the day is locked: give its link, https://drive.google.com/file/d/[file ID]/view, and stop. Make a preview anyway only if the person says they want one knowing the official list is out, and say in the summary that the official list is the one Harry has.
+Search Drive for the exact name "Delivery list [Ddd Mon D YYYY].pdf" (for example "Delivery list Mon Nov 9 2026.pdf") and for a Google Doc "Delivery list [Ddd Mon D YYYY]" (the routine's fallback). If either exists, it is the official list and the day is locked: give its link, https://drive.google.com/file/d/[file ID]/view, and stop. Make a preview anyway only if the person says they want one knowing the official list is out, and say in the summary that the official list is the one the drivers have.
 
 STEP 5. READ THE DATA (nothing is written)
 - Find the workbooks as sheets-spec rule 5 says: a Drive search for the Google Sheet named exactly "Farm Reference" (its Config A1 reads "RF-OPS REFERENCE v1") and, in the same folder, "Weekly Deliveries". Exactly one of each; if not, stop and say so.

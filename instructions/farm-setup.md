@@ -1,4 +1,4 @@
-FARM SETUP (version 6)
+FARM SETUP (version 7)
 Written for: sheets-spec version 4
 
 Setup was finished in October 2026. Use this only to rebuild from scratch. Where this doc and sheets-spec differ, sheets-spec wins.
@@ -44,7 +44,7 @@ Routes tab: one row per route found in the old sheet. If none, one row per weekd
 
 Config tab: A1 = RF-OPS REFERENCE v1, then the settings from sheets-spec with their starting values. For the phones:
 - Farm Quo number: look it up (list Quo inboxes).
-- CHECKPOINT: ask Shane for Mark's, Laura's, Harry's and Shane's cell numbers. Fill them in. Test phones stays as the list of roles.
+- CHECKPOINT: ask Shane for Mark's, Laura's, Harry's, Zi's and Shane's cell numbers. Fill them in. Test phones stays as the list of roles.
 
 System tab: create every label listed in sheets-spec. If Message cursor is blank, set it to the current date-time (so the parser never processes old history). If it already has a value, leave it alone. All other System values blank. Run history header below them.
 

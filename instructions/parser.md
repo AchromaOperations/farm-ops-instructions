@@ -1,4 +1,4 @@
-PARSER (version 36)
+PARSER (version 37)
 Written for: sheets-spec version 4
 
 JOB
@@ -19,7 +19,7 @@ You come here from parser-check.md, which already set now, read the Config and S
 STEP 2. FOR EACH MESSAGE, OLDEST FIRST
 =====================================================
 Identify the other party by phone (sheets-spec rule 6). In a group conversation, that is whoever sent the message:
-- Config phones: Mark, Laura, Harry, Shane.
+- Config phones: Mark, Laura, Harry, Zi, Shane.
 - Otherwise a customer (one match), Ambiguous (several matches), or Unknown.
 Then follow the matching section below. Every message ends with exactly one Inbox Log row: Time, Direction, From, To, Who, Classified as, Action taken, Written to, Quo message ID.
 
@@ -102,14 +102,15 @@ A reply = a Queue item: Type Other, Created = now, Week, Cust ID and Customer if
 - Inbox Log for their message: Classified as "question", "instruction" or "unclear", Action taken = what you did, plus "reply Q[n]".
 
 -----------------------------------------------------
-B. FROM HARRY
+B. FROM A DRIVER (Harry or Zi)
 -----------------------------------------------------
+Harry and Zi both get every delivery text (daily-delivery-list Step 5 and MORNING EXCEPTIONS, delivery-check), each as his own one-to-one text, and either may answer (Shane's rule, 2026-11-09). Read a text from either of them with this section. "He" below is the driver who sent it; where a value or a Clarify text says [driver], write his name as Config has it: Harry or Zi. When the other driver already answered the same question, see SECOND ANSWERS at the end of this section.
 "Open day" = among day rows (LAST or THIS week) with "Delivery list sent" filled, "Route confirmed" blank, AND (the day is before today, OR the day is today and now is at or after Config "Route check start"): the one Harry was asked about most recently ("Harry last asked"). If none has been asked yet, the earliest one. If Harry names a day ("Monday's done"), use that day.
 Every Driver item you create starts its Question with its day, "[Ddd Mon D]: " (sheets-spec Queue), for example "Thu Oct 22: What wasn't delivered, and to whom?". Its day is the open day, or the day of the question it follows up.
-Reminder first: if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval (as in A1) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
+Reminder first (Harry only: send-reminder texts the preview to Harry, not Zi, so a text from Zi skips this paragraph): if NEXT week's "Reminder preview sent" is filled, "Reminder approved" is blank, the preview is newer than "Reminder wording updated", there is no open day, and no Driver item has Status Sent: an approval (as in A1) = REMINDER APPROVAL (below) for Harry. Any other text from Harry about the reminder = Clarify item for Mark "Harry said about the reminder: '[text]'".
 
 WHICH QUESTION HE IS ANSWERING (decide this first, before applying anything)
-Harry's open questions, each with the time it was last texted to him (only times before his message count):
+The driver's open questions (both drivers get each question at the same time), each with the time it was last texted (only times before his message count):
 - the route question, if there is an open day and its "Harry last asked" is filled (time = "Harry last asked");
 - each Driver item with Status Sent (time = Last nudged, else First sent).
 1. A message that can only mean one thing goes where it fits, whatever was texted last:
@@ -117,26 +118,31 @@ Harry's open questions, each with the time it was last texted to him (only times
    - A delivery report: "all delivered", "route done", "done", a "No" about the deliveries, a named miss ("Kim didn't get her yogurt"), "not enough [product]", or names or items answering a Driver item that asked what wasn't delivered or who didn't get something. It answers the route question, or that Driver item (the day he names, else the open day). Never a "Got today's added items?" item.
    - A cash report ("Kim paid cash", "the Smiths gave me $14 cash"): CASH (below), for the day he names, else the open day, else the latest day row in LAST or THIS week whose "Harry last asked" is filled (his route may already be confirmed). One message can hold a delivery report and a cash report ("yes all delivered, Kim paid cash"; a "yes" in the same message as a cash report answers the route question): apply both.
    - A bare number ("1", "2"): a "Which was your" item (below).
-2. Only a bare "yes", "ok", "yep" or a thumbs-up can fit more than one question. It answers the open question texted to him most recently, leaving out "Which was your" items. Exception: if another open question (also not a "Which was your" item) was texted to him less than 20 minutes before that one, you can't tell which he meant. Change nothing. If no "Which was your" item is open, create a Driver item: "[Ddd Mon D of the most recent question's day]: Which was your '[his message]' for? Reply 1 or 2. 1 = [the most recent question, as texted], 2 = [the other, as texted]" (more than two: number them all), Status = Waiting (delivery-check texts it). If one is already open, create a Clarify item for Mark instead: "Harry said '[text]'. Not sure which question it answers: [the questions]." Log the message as "unclear".
+2. Only a bare "yes", "ok", "yep" or a thumbs-up can fit more than one question. It answers the open question texted to him most recently, leaving out "Which was your" items. Exception: if another open question (also not a "Which was your" item) was texted to him less than 20 minutes before that one, you can't tell which he meant. Change nothing. If no "Which was your" item is open, create a Driver item: "[Ddd Mon D of the most recent question's day]: Which was your '[his message]' for? Reply 1 or 2. 1 = [the most recent question, as texted], 2 = [the other, as texted]" (more than two: number them all), Status = Waiting (delivery-check texts it). If one is already open, create a Clarify item for Mark instead: "[driver] said '[text]'. Not sure which question it answers: [the questions]." Log the message as "unclear".
 3. Anything else, or no open questions: the bullets below ("No route waiting", "Anything else").
 What a reply meant is decided once, here, when it is handled. A later run never re-reads an old reply and decides it meant something else.
 Then apply it:
 - To a "Got today's added items?" item: Answer = his message, Status = Resolved. Nothing else: it never confirms a route.
 - To a "Which was your" item: if he picked a number, apply his earlier message (quoted in it) to the question with that number, as if he had just sent it in answer to that question. Then set this item's Answer = his reply, Status = Resolved. If he didn't pick a number, treat his message as a new one (rules 1 and 2) and leave the item open.
 - To the route question or another Driver item: the bullets below.
-- No route waiting: if there is no open day and no open Driver item, a "yes" or "done" = Clarify item for Mark "Harry said '[text]' but no route is waiting to be confirmed."
+- No route waiting: if there is no open day and no open Driver item, a "yes" or "done" = SECOND ANSWERS first (the other driver may have just answered); if that doesn't fit, Clarify item for Mark "[driver] said '[text]' but no route is waiting to be confirmed."
 - Route done / "yes" / "all delivered" = fill "Route confirmed" on the open day. Then fill "Delivered" on every customer row of that day that has no "Not delivered" saying "all" (on a skipped row, every product 0, write "skipped" instead of the time).
 - "No" to "everything delivered?" = create a Driver item for the open day: "[Ddd Mon D]: What wasn't delivered, and to whom?"
 - A named miss ("Kim didn't get her yogurt, we ran out") = add to that customer's "Not delivered" (product Column name + amount + reason, e.g. "Yogurt Plain x2 ran out"). If the amount isn't said, use the full amount on the row. If the customer or product can't be matched, create a Driver item asking which ("[Ddd Mon D]: ...").
 - "Not enough [product]" without names = create a Driver item for the open day: "[Ddd Mon D]: Who didn't get [product]?" Invoicing waits while any Driver item for that day is open.
 - An answer to an open Driver item (Status Sent) = apply it as above, then that Driver item is Resolved.
-- CASH (Shane's rule from 2026-11-03: a customer who paid Harry cash is marked paid and never invoiced). For each customer he names, find their customer row on that day, matching names as for a named miss. "Nobody paid cash", or no mention of cash, records nothing.
+- CASH (Shane's rule from 2026-11-03: a customer who paid a driver cash is marked paid and never invoiced). For each customer he names, find their customer row on that day, matching names as for a named miss. "Nobody paid cash", or no mention of cash, records nothing.
   - No single row matches: create a Driver item "[Ddd Mon D]: Who paid you cash? I couldn't tell who '[name]' is." Change nothing else for that name.
   - "Paid" already filled: change nothing (log it).
-  - Otherwise fill "Paid" = "cash $[amount] (Harry, [now])", or "cash (Harry, [now])" if he gave no amount, and read it back (sheets-spec Paid). Invoicing then never sends that row an invoice or a payment link.
-  - If that row's "Invoice sent" is already filled (sent before he said): also create a Clarify item for Mark "Harry says [name] paid cash[ $amount] for [Ddd Mon D], but their invoice was already sent. Cancel it in Square so they aren't billed twice?"
-- Anything else: Clarify item for Mark "Harry said: '[text]'".
+  - Otherwise fill "Paid" = "cash $[amount] ([driver], [now])", or "cash ([driver], [now])" if he gave no amount, and read it back (sheets-spec Paid). Invoicing then never sends that row an invoice or a payment link.
+  - If that row's "Invoice sent" is already filled (sent before he said): also create a Clarify item for Mark "[driver] says [name] paid cash[ $amount] for [Ddd Mon D], but their invoice was already sent. Cancel it in Square so they aren't billed twice?"
+- Anything else: Clarify item for Mark "[driver] said: '[text]'".
 - Never hold a day's invoicing because you'd now read an old reply differently. Only a write that came out wrong (routines/farm-ops.md SYSTEM PROBLEMS) can hold a day, and only the way that section says.
+
+SECOND ANSWERS (both drivers get each question, so the second reply often repeats the first)
+- A plain agreement ("yes", "ok", "yep", "done", "all delivered", "GOT IT", a thumbs-up) from a driver when the question it would answer was already answered: log it only, Classified as "agrees", Action taken "already answered by [other driver]". No Clarify item. This fits when there is no open day and no open Driver item, and in LAST or THIS week a day row's "Route confirmed" or a Driver item's Resolved is less than 24 hours old.
+- Anything that adds information (a "No", a named miss, "not enough [product]", a cash report) is applied as above while its day or item is still open. When it isn't (the other driver already confirmed the route): a named miss or a cash report is still written on that day's customer row ("Not delivered", or "Paid" as CASH says), and a Clarify item tells Mark "[driver] said '[text]' after [other driver] confirmed [Ddd Mon D]'s route; I recorded it[, and their invoice was already drafted]" (add that last part when the row's "Invoice link" is filled). A bare "No" or "not enough" with nothing open becomes a Clarify item for Mark "[driver] said '[text]' after [other driver] confirmed [Ddd Mon D]'s route."
+- The first answer stands: a later one never clears "Route confirmed" or "Delivered", and never reopens a Resolved item.
 
 -----------------------------------------------------
 C. FROM A CUSTOMER (exactly one match)
