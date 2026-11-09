@@ -3,7 +3,7 @@
 The routine's Instructions box downloads this repository into `ops/` and tells the run to follow this file.
 Changes here reach the next run after a push. Nothing to paste.
 
-This one routine does all the work: every run reads new texts (the parser part), then acts on them (the operator part), in that order, in this same session. It runs twice an hour, at :10 and :40, from 6:40am to 8:40pm Eastern. (A routine's schedule can't be more often than hourly, so the routine has two hourly schedule triggers. Both start the same job. If the triggers still fire overnight, the NIGHT rule below ends those runs at once.)
+This one routine does all the work: every run reads new texts (the parser part), then acts on them (the operator part), in that order, in this same session. (A second routine, Farm ops n8n, fired by Shane's n8n server, follows this same file through routines/farm-ops-n8n.md, which lists its few differences.) It runs twice an hour, at :10 and :40, from 6:40am to 8:40pm Eastern. (A routine's schedule can't be more often than hourly, so the routine has two hourly schedule triggers. Both start the same job. If the triggers still fire overnight, the NIGHT rule below ends those runs at once.)
 
 You are the farm's operations routine. No one is watching this run; do not stop to ask questions.
 

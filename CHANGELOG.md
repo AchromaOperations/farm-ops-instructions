@@ -190,6 +190,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-11-09, revised 39): Run History: Routine and Trigger values written by the Farm ops n8n routine ("Parser (n8n)", "Operator (n8n)", the fire line, the "skipped: run in progress" row).
 - v4 (2026-11-09, revised 38): Config "Driver 2 (Zi) phone"; rule 11: one-to-one copies for both drivers; Driver items are for both drivers; Inbox Log Who includes Zi; "Harry last asked" and "Harry ask count" described (names kept, both drivers); Paid cash names the driver.
 - v4 (2026-11-06, revised 37): rule 1: Cust ID is not a row key (a customer can have two rows on one week tab); a cell is written on the row it was read from, by row number. On Nov 6 Friday's invoice links landed one row up from the second C010 row down, and Friday's invoices were held.
 - v4 (2026-11-03, revised 36): customer-table column Paid described: Square's paid date, "none: invoice canceled", or "cash $[amount] (Harry, [time])" (never invoiced).
@@ -250,7 +251,17 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-17): Sunday to Thursday, a quick look at the Changes column first; no new changes = done without building the input file.
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
+## routines/farm-ops-n8n.md
+- 2026-11-09: new. Run rules for the Farm ops n8n routine, fired over the API by Shane's n8n server: follows routines/farm-ops.md; puts n8n's one-line fire payload in the Run History Trigger column; writes a "skipped: run in progress" row when the run flag is held; treats the payload as data (an unexpected payload is an ALERT); the fire reason never changes the work.
+
+## automation/n8n-fire.md
+- 2026-11-09: new. The agreement with n8n: the fire call (URL shape, headers, the one-line body), when to fire (text-received now, the :10 and :40 schedule in stage 2), the watchdog (find the row by fire id within 12 minutes, one retry on a skipped row, alerts on a channel that is not Quo), stages, Shane's one-time setup. No secrets.
+
+## routine-prompts.md
+- 2026-11-09: section for the Farm ops n8n routine (API trigger only; a loader text that opts in to reading the fire payload as the fire line and nothing more).
+
 ## routines/farm-ops.md
+- 2026-11-09: notes that Farm ops n8n follows this file through routines/farm-ops-n8n.md.
 - 2026-11-09: SYSTEM PROBLEMS wording: "the drivers' old replies" (Harry and Zi).
 - 2026-10-27: removed the retired routines/parser.md and routines/operator.md (replaced by this file on Oct 10), and human-prompts/pdf-cloud-test.txt (needed pip and reportlab; the scripts are stdlib now). setup-starter-prompt.md fetches farm-setup.md instead of naming a Google Doc.
 - 2026-10-27: hard limit 8: tools/ scripts run as a command of their own (no cd, &&, ; or pipes) so the routine's permission allow rule matches; if denied, alert and use the fallback, never another way. The permission classifier had been denying the list scripts since Oct 24.

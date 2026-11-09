@@ -165,6 +165,7 @@ Problem alerts sent | today's date + the ALERT problems Shane was texted today, 
 TAB: Run History (header in row 1; LOG). One row per part of each run:
 Run start | Run end | Routine | Trigger | Steps run | Texts sent | Problems
 - If the tab doesn't exist, create it with that header row. Add rows only as rule 12 says.
+- Routine: Parser or Operator; the Farm ops n8n routine writes "Parser (n8n)" and "Operator (n8n)". Trigger: Scheduled, Manual, or the fire line an n8n-fired run began with, "n8n [reason] [fire id]" (routines/farm-ops-n8n.md); a fired run that found the run flag held writes one row with Steps run "skipped: run in progress since [time]".
 - Reading texts: start from (Message cursor minus Cursor overlap), and skip any message whose ID is already in the Inbox Log (read the whole Quo message ID column, rule 12; the log is not in time order, so never just the last rows; older IDs can't be in the window). The overlap catches texts that arrive late or share a minute.
 - Run flag: one Farm ops run at a time. routines/farm-ops.md RUN FLAG sets System "Run in progress since" at the start of a run and clears it at the end; a run that finds it set (and less than Config "Stale run after" minutes old) ends at once and changes nothing. The parser and operator parts run one after the other inside the same run, so they never overlap.
 - Week tabs: when a week tab is missing, follow MISSING WEEK TABS in week-names.md.
