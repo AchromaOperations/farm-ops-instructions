@@ -75,7 +75,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## manual-edits.md (MANUAL EDITS (version 5))
+## manual-edits.md (MANUAL EDITS (version 6))
+- v6 (2026-11-08): the person in a farm-account chat is Laura unless they say they are Shane or Mark (Shane's rule), so "[who]" in Changes, No charge and other tags defaults to "Laura (chat)"; the Invoice hold exception applies when the person says they are Shane.
 - v5 (2026-11-08): the three files a chat must read are linked in full, not as a "[name]" pattern. A chat's web tool opens only links that already appear in the conversation and refuses links it assembled itself; on Nov 8 a chat on the farm account built the sheets-spec and week-names links from the pattern, was refused, and stopped (correctly) without making the Monday list it was asked for. Also: a chat never saves a delivery or master list into the Drive folders the routine sends from; chat-made lists are previews (new skills/delivery-list-pdf).
 - v4 (2026-10-23): a chat sets or clears a day's "Invoice hold" only when Shane asks.
 - v3 (2026-10-19): Run History tab is routine-owned too.
