@@ -60,7 +60,7 @@ Otherwise:
 
 PART C. SEND APPROVED INVOICES
 First, paid cash after drafting: for each customer row in LAST or THIS week with a real Square link in "Invoice link", "Invoice sent" blank and "Paid" starting with "cash" (a driver said so after the draft was made; skip rows of a held day), never send it, approved or not. Fill "Invoice sent" = "not sent: paid cash" and "Pay link texted" = "skipped: paid cash", and add "paid cash: Square draft left unsent" to Needs attention.
-Then for each customer row in LAST or THIS week with "Invoice approved" filled and "Invoice sent" blank (skip rows of a held day, which send once Shane clears the hold; and skip rows that are held back as Part B defines it, for example a draft a driver reported a miss on after it was approved, which send once that question is answered):
+Then for each customer row in LAST or THIS week with "Invoice approved" filled and "Invoice sent" blank (skip rows of a held day, which send once Shane clears the hold; and skip rows whose Cust ID has a Clarify or Sales item that isn't Resolved and whose Question starts "Invoice ", for example a draft a driver reported a miss on after it was approved, which send once that question is answered; an "Invoice held" note in Needs attention on its own never stops a row that was approved):
 - If Config Mode is not LIVE: do not send. Put "TEST: invoice not sent" in Needs attention if it isn't there already. Next.
 - Publish and send that Square invoice (Square delivers it to the customer). Then immediately fill "Invoice sent" = now.
 - If Square fails: stop Part C, add a Problem, continue to Part D.
