@@ -86,6 +86,7 @@ TERMS (every text and every doc you write)
 TAB: Routes (header in row 1)
 Route | Day | Driver | Notes
 - Day (dropdown): Monday to Friday.
+- One row per route. The number of rows with a given Day is how many driver confirmations that weekday needs before "Route confirmed" is filled (parser B ROUTE CONFIRMATIONS; Shane's rule, 2026-11-09): Monday, Thursday and Friday have two routes, Tuesday and Wednesday one. A weekday with no row needs one.
 
 TAB: Config
 A1 = RF-OPS REFERENCE v1. Settings from row 3, columns: Setting | Value | Notes
@@ -210,10 +211,11 @@ Weekly master list checked |   (TRACKER: yyyy-mm-dd of the last night weekly-mas
 Finance update sent |
 
 DAY TABLE (directly below, header row starts with "Day")
-Day | Delivery list sent | Exceptions sent | Harry last asked | Harry ask count | Mark alerted | Route confirmed | Invoices drafted | Invoices approved | Invoices sent | Invoice hold
+Day | Delivery list sent | Exceptions sent | Harry last asked | Harry ask count | Mark alerted | Route confirmed | Invoices drafted | Invoices approved | Invoices sent | Invoice hold | Confirmed by
 - A day whose cells say "No delivery" had nothing ordered (for example a holiday); every step skips it.
 - Exceptions sent (TRACKER): when the latest morning-of exceptions text went out (see daily-delivery-list).
 - Harry last asked, Harry ask count (TRACKER): when the drivers were last texted the route question, and how many times (delivery-check Step 2). Since 2026-11-09 that question goes to Harry and Zi; the columns keep their names (rule 8: never rename).
+- Confirmed by (TRACKER, add only): each driver's route confirmation for that day, "[driver] [yyyy-mm-dd hh:mm]", entries separated by " ; " (parser B ROUTE CONFIRMATIONS). "Route confirmed" (STAMP, "[yyyy-mm-dd hh:mm] [names]") is filled only when the day has as many confirmations as the Routes tab has routes for that weekday (Shane's rule, 2026-11-09: a two-route day needs both drivers, a one-route day one); until then the day stays open and delivery-check asks only the driver not yet named here. Never remove an entry. On tabs built before this column existed, it is added at the end of the day table's header row (rule 8).
 - Invoice hold (TRACKER, with the limits below): filled = that day's invoicing is on hold. Invoicing drafts, lists, sends and texts nothing for that day until it is blank again (invoicing HELD DAYS). A run fills it, or adds to it after " ; ", as "[yyyy-mm-dd hh:mm] [reason]" only when routines/farm-ops.md SYSTEM PROBLEMS says to (a write to that day's delivery or invoice cells came out wrong and couldn't be fixed). Only Shane clears it: by hand, or by asking a chat (manual-edits.md). A routine never clears or shortens it. A hold written anywhere else (Run History, Problems, Needs attention, a run's notes) holds nothing. On tabs built before this column existed, it is added at the end of the day table's header row (rule 8).
 One row each: Monday, Tuesday, Wednesday, Thursday, Friday.
 

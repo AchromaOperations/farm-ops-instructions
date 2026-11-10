@@ -1,4 +1,4 @@
-INVOICING (version 16)
+INVOICING (version 17)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -11,7 +11,7 @@ A day is held when its day row's "Invoice hold" is filled (sheets-spec DAY TABLE
 
 PART A. DRAFT
 For each day row in LAST or THIS week with "Route confirmed" filled, "Invoices drafted" blank and "Invoice hold" blank:
-1. If any Queue item of Type Driver whose day (sheets-spec Queue) is that day is not Resolved, skip this day (the drivers' answers may still change what was delivered).
+1. If any Queue item of Type Driver whose day (sheets-spec Queue) is that day is not Resolved, skip this day (the drivers' answers may still change what was delivered). ("Route confirmed" itself is filled only once every route of the day is confirmed, one driver per route: parser B ROUTE CONFIRMATIONS, Shane's rule from 2026-11-09. On Nov 9 one driver's "Yes" confirmed Monday, the drafts were made in the same run, and the other driver's miss arrived afterwards.)
 2. For each customer row of that day with "Delivered" filled and "Invoice link" blank (skip Cust IDs starting with "T"):
    - Lines = each Square-billed product with quantity above 0, minus any amount for that product in "Not delivered" and any in "No charge" (a tab without a "No charge" column has none). Drop lines that reach 0 or less. Remember the no-charge items for the list (step 3).
    - No lines: fill "Invoice link" = "none". Next customer.
@@ -46,7 +46,7 @@ When: only if there is at least one New item, and:
 - With no open list: no approval is open (sheets-spec rule 9), no Queue item of Type Read-back has Status Waiting (read-back lists go before invoice lists), and NEXT week's reminder preview is not about to go out (week-names.md): NOT the case that "Reminder wording" is filled, "Reminder approved" is blank, and "Reminder preview sent" is blank or older than "Reminder wording updated". (A reminder still waiting for wording does not block invoices.)
 If those aren't met, Part B does nothing this run. If they are, but no row is Ready, or every Ready row is already on the open list, there's nothing new to ask: set each New item's Status = Resolved, Answer = "nothing new to approve", Resolved = now, leave any open list as it is, and finish Part B.
 Otherwise:
-1. Lines and numbers. One line per Ready row. Its items with amounts and its total are copied from that row's line on the open list, or else on its day's drafted list (the New item's list doc, or its Question when that holds the list text); only if neither has it, take them from the Square invoice. Never re-price. Rows already on the open list keep their numbers there. Every other Ready row gets the next number after the highest one on the open list (from 1 when there's no open list), oldest delivery date first, then in week-tab order. Rows on the open list that aren't Ready any more (approved or held back since) are left off, and their numbers aren't reused.
+1. Lines and numbers. One line per Ready row. Its items with amounts and its total are copied from that row's line on the open list, or else on its day's drafted list (the New item's list doc, or its Question when that holds the list text); only if neither has it, take them from the Square invoice. Never re-price. One exception: a row whose Needs attention contains "draft changed by hand" (parser A3: Mark or Laura changed the draft in Square after a driver reported a miss) takes its items and total from the Square invoice as it is now, and its line ends with " (draft changed by hand)". Rows already on the open list keep their numbers there. Every other Ready row gets the next number after the highest one on the open list (from 1 when there's no open list), oldest delivery date first, then in week-tab order. Rows on the open list that aren't Ready any more (approved or held back since) are left off, and their numbers aren't reused.
 2. The list text, in this form (large plain text in the Doc, no colors):
    "Invoices to approve: [n], $[sum]. Reply 'good' to send all, or 'good except [numbers]'."
    Then for each delivery date on it, oldest first, a line "[Ddd Mon D]:" followed by that date's lines in number order: "[#]. [Name] ([Cust ID], [Ddd Mon D]): [items with amounts] = $[total]  [link]", adding " (no charge: [items])" when the row had no-charge items. Under a date that a New item drafted, also copy that item's "No charge:", "Paid cash:" and "Held:" lines.
@@ -60,7 +60,7 @@ Otherwise:
 
 PART C. SEND APPROVED INVOICES
 First, paid cash after drafting: for each customer row in LAST or THIS week with a real Square link in "Invoice link", "Invoice sent" blank and "Paid" starting with "cash" (a driver said so after the draft was made; skip rows of a held day), never send it, approved or not. Fill "Invoice sent" = "not sent: paid cash" and "Pay link texted" = "skipped: paid cash", and add "paid cash: Square draft left unsent" to Needs attention.
-Then for each customer row in LAST or THIS week with "Invoice approved" filled and "Invoice sent" blank (skip rows of a held day; they send once Shane clears the hold):
+Then for each customer row in LAST or THIS week with "Invoice approved" filled and "Invoice sent" blank (skip rows of a held day, which send once Shane clears the hold; and skip rows that are held back as Part B defines it, for example a draft a driver reported a miss on after it was approved, which send once that question is answered):
 - If Config Mode is not LIVE: do not send. Put "TEST: invoice not sent" in Needs attention if it isn't there already. Next.
 - Publish and send that Square invoice (Square delivers it to the customer). Then immediately fill "Invoice sent" = now.
 - If Square fails: stop Part C, add a Problem, continue to Part D.

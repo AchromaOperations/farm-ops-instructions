@@ -1,9 +1,9 @@
-DELIVERY CHECK (version 5)
+DELIVERY CHECK (version 6)
 Written for: sheets-spec version 4
 
 HOW TO WORK
 A checklist. No judgment: the parser reads the drivers' replies; this step only asks. Every text you send: log it in the Inbox Log right away as sheets-spec rule 7 says (Direction "Out (system)", the number, the exact text, Quo message ID "pending"). Only text the drivers and the family group (Mark and Laura, sheets-spec rule 11).
-The drivers = Harry (Config "Driver (Harry) phone") and Zi (Config "Driver 2 (Zi) phone"; Shane's rule, 2026-11-09). Every text to the drivers below goes to each of them as his own one-to-one text, the same words, each logged; a blank phone is skipped. Either driver may answer; the parser decides what a reply meant (parser B).
+The drivers = Harry (Config "Driver (Harry) phone") and Zi (Config "Driver 2 (Zi) phone"; Shane's rule, 2026-11-09). Every text to the drivers below goes to each of them as his own one-to-one text, the same words, each logged; a blank phone is skipped. (Step 2 is the exception: it texts only the drivers who still have a day to confirm.) Either driver may answer; the parser decides what a reply meant (parser B).
 
 Open days = day rows in LAST or THIS week with "Delivery list sent" filled, "Route confirmed" blank, and (the day is before today, or it is today and now is at or after "Route check start").
 Last hour = the hour before Config "Quiet hours start" (20:00 when quiet hours start at 21:00).
@@ -18,13 +18,14 @@ For each Queue item of Type Driver that is not Resolved, check these in order an
 
 STEP 2. ROUTE QUESTION
 For the open days whose "Harry last asked" is blank or at least 55 minutes ago:
-- One text to the drivers (the same text to each). One open day: "Route done for [Day]? Everything delivered? Yes/No. If anyone paid you cash, tell me who and how much." Several: "Routes done for [Day] and [Day]? Everything delivered? Yes/No (tell me which if only some). If anyone paid you cash, tell me who, which day and how much." (Shane's rule from 2026-11-03: a customer who paid a driver cash is marked paid and never invoiced; the parser records it.)
-- On each of those day rows: "Harry last asked" = now, "Harry ask count" = count + 1 (the columns keep their names; they cover both drivers).
+- Who still has to answer: for each of those days, the drivers not named in its "Confirmed by" (sheets-spec DAY TABLE; blank or missing = both). A two-route day needs a confirmation from each driver and a one-route day from one (parser B ROUTE CONFIRMATIONS; Shane's rule, 2026-11-09), so a driver who already confirmed a day is not asked about it again.
+- One text per driver, naming only the days he still has to answer (a driver with none gets no text). One day: "Route done for [Day]? Everything delivered? Yes/No. If anyone paid you cash, tell me who and how much." Several: "Routes done for [Day] and [Day]? Everything delivered? Yes/No (tell me which if only some). If anyone paid you cash, tell me who, which day and how much." (Shane's rule from 2026-11-03: a customer who paid a driver cash is marked paid and never invoiced; the parser records it.)
+- On each day row asked about: "Harry last asked" = now, "Harry ask count" = count + 1 (once per day per run, whoever was texted; the columns keep their names and cover both drivers).
 (Skip a day in this step if Step 1 just texted the drivers a Driver question about that same day; the Driver question comes first.)
 
 STEP 3. TELL MARK
 For each open day whose "Mark alerted" is blank, where the day is before today, OR it is today and this run is in the Last hour:
-- Text the family group: "Haven't heard from Harry or Zi about [Day]'s route. Asked [count] times."
+- Text the family group: "Haven't heard from [the drivers not named in that day's "Confirmed by": "Harry or Zi", "Harry" or "Zi"] about [Day]'s route. Asked [count] times." When one driver has confirmed, add " [Driver] confirmed his at [h:mm am/pm]. If you know the other route is finished, reply '[other driver]'s done'." (parser A4 records it for him).
 - Fill "Mark alerted" = now.
 
 FINISH

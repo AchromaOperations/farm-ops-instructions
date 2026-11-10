@@ -1,4 +1,4 @@
-OWNER DIGEST (version 10)
+OWNER DIGEST (version 11)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -7,7 +7,7 @@ A checklist over the Queue tab. No judgment needed: the parser already wrote eac
 Definitions
 - Reply = a Queue item of Type Other whose Question starts with "REPLY: " (the parser's answer to something Mark or Laura texted). Replies are never in a batch, never numbered and never followed up: Step 0 handles them, and every other definition and step below leaves them out.
 - Open batch = Queue items of Type Clarify, Sales, Late order or Other (not replies) with Status "Sent".
-- Urgent = an item whose customer's delivery is today or tomorrow and whose week-tab row has Delivered blank. (Delivery list items need answers before the list locks.)
+- Urgent = an item whose customer's delivery is today or tomorrow and whose week-tab row has Delivered blank (delivery list items need answers before the list locks), or a Clarify item whose Question starts with "Invoice " (it holds an invoice that is otherwise about to go out; on Nov 9 one waited behind the very invoice list it was about).
 - Invoice pending = a Queue item of Type Invoice or Read-back with Status "Sent" (an open list approval).
 - "Follow-up every" = Config "Follow-up every (minutes)"; missing or blank = 55 (Mark hears again at every hourly run).
 - Batch size = Config "Digest batch size".
@@ -41,7 +41,7 @@ Waiting items = Type Clarify, Sales, Late order or Other (not replies) with Stat
   1. [Question]
   2. [Question]
   [if more are waiting:] ([n] more waiting after these)"
-  Mark urgent items with "(for tomorrow)" or "(for today)" after the question.
+  Mark urgent items with "(for tomorrow)" or "(for today)" after the question; an urgent invoice item gets "(before the invoices go out)".
   After each Sales item add "(reply to the customer yourself; answer here with sale / no sale / resolved)". Except a share request (Question contains "asked to change their weekly share"): add "(reply to the customer yourself; answer here with the change to make, or 'no change')" instead.
 - For each item sent: Status = Sent, Digest # = its number, Sent to = Group, First sent = now.
 

@@ -41,7 +41,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): empty days count as no delivery (no list, no Harry texts); test customers left out; MORNING EXCEPTIONS part for items added after the list went out.
 - v1 (2026-10-07): first version.
 
-## delivery-check.md (DELIVERY CHECK (version 5))
+## delivery-check.md (DELIVERY CHECK (version 6))
+- v6 (2026-11-09): the route question goes only to the drivers who haven't confirmed that day ("Confirmed by"), and Mark's alert says who has and offers "[Driver]'s done" for a driver who can't be reached. Shane: a two-route day waits for two confirmations, a one-route day for one.
 - v5 (2026-11-09): every driver text (Driver questions, nudges, the route question) goes to both drivers, Harry and Zi, one-to-one each; Mark's alert reads "Haven't heard from Harry or Zi". The day-table columns keep their "Harry" names. Shane's rule.
 - v4 (2026-11-03): the route question also asks Harry who paid him cash and how much (Shane: a customer who paid cash is marked paid and never invoiced).
 - v3 (2026-10-23): Driver questions carry their day; a "Got today's added items?" item closes itself when its day ends, and any other unsent one 2+ days old is never sent (ALERT to Shane). On Oct 22 an Oct 14 question reached Harry and his "Yes" was misread.
@@ -59,7 +60,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
 - v1 (2026-10-07): first draft.
 
-## invoicing.md (INVOICING (version 16))
+## invoicing.md (INVOICING (version 17))
+- v17 (2026-11-09): Part A notes that "Route confirmed" now waits for every route's driver; Part B lists a draft Mark or Laura changed by hand with the lines it has now; Part C never sends a row that is held back (a miss reported after approval). On Nov 9 Zi's "Yes" confirmed Monday alone, the drafts were made in the same run, and Harry's "extra half gallon not delivered" came 27 minutes later: the Reynolds draft kept the $7 line.
 - v16 (2026-11-09): cash wording names the driver in the Paid cell (Harry or Zi) instead of always Harry.
 - v15 (2026-11-06): Part A: a customer whose Customers Notes say NO INVOICE is never drafted ("Invoice link" = "none", no Square customer); any add-on goes to Mark and Laura as a Clarify item (Shane's Oct 10 rule, which no doc held). On Nov 3 Hannah Fabish got a $21 draft and a Square customer.
 - v14 (2026-11-03): a row whose Paid starts with "cash" (Harry was paid cash) is never drafted, listed for approval, sent or texted a payment link; it shows as a "Paid cash:" line on the lists, and Mark gets a Clarify item if Harry's amount is below the items' total. Cash reported after drafting leaves the Square draft unsent ("Invoice sent" = "not sent: paid cash").
@@ -113,7 +115,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): shared run lock with the parser; morning exceptions; approvals never both open; missing week tab alert; held no-email invoices.
 - v1 (2026-10-07): first version.
 
-## owner-digest.md (OWNER DIGEST (version 10))
+## owner-digest.md (OWNER DIGEST (version 11))
+- v11 (2026-11-09): a Clarify item whose Question starts with "Invoice " is urgent, so it goes out even while an invoice list is open, marked "(before the invoices go out)". On Nov 9 the warning about the Reynolds draft waited behind the list it was about.
 - v10 (2026-10-23): a list nudge reads the list from the Queue item when there is no Doc.
 - v9 (2026-10-17): Step 0 sends the parser's replies (Queue Type Other, Question starting "REPLY: ") to the family group right away, unnumbered, and closes them; replies are never part of a batch or a follow-up.
 - v8 (2026-10-10): everything goes to the family group (sheets-spec rule 11), Laura's 6-hour copy is gone; a follow-up tops the open questions back up to Batch size.
@@ -126,7 +129,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 37))
+## parser.md (PARSER (version 38))
+- v38 (2026-11-09): ROUTE CONFIRMATIONS: each driver's "yes" is recorded in the day row's "Confirmed by", and "Route confirmed" (with the Delivered stamps) is filled only when the day has one confirmation per Routes tab route (Monday, Thursday and Friday two; Tuesday and Wednesday one), so the second driver's miss lands before any draft; a driver's answer to his own "what wasn't delivered" question counts as his confirmation. SECOND ANSWERS: a miss reported after the route is confirmed makes an "Invoice for [name] held" question when the draft is unsent (invoicing holds it) or a fix-by-hand note when it was sent. A3: "fixed" on a held-invoice question marks the row "draft changed by hand". A4: Mark or Laura can confirm a route for a driver who can't be reached ("Harry's done"). Shane's rule after Nov 9.
 - v37 (2026-11-09): section B reads texts from either driver, Harry or Zi (Zi is a Config phone and an Inbox Log Who); Clarify texts and the Paid cash stamp name the driver who spoke; SECOND ANSWERS: a plain agreement from the second driver after the first answered is logged only, while a named miss or cash report is still recorded and Mark is told; the reminder paragraph stays Harry-only. Shane: every delivery text Harry gets goes to Zi as well.
 - v36 (2026-11-06): a first-week item moved to a later week keeps the plain "(text)" source and says why in Needs attention (a note inside the source broke the read-back risk check); a share change Mark or Laura make for a customer's request (A3) sets Confirm needed, so the customer hears back (Victoria Gilmour's Nov 5 skip got no reply and she asked again Nov 6).
 - v35 (2026-11-03): CASH: when Harry says a customer paid him cash, fill that row's Paid with "cash $[amount] (Harry, [time])"; a name that doesn't match one row becomes a Driver question; if the invoice already went out, Mark is asked to cancel it in Square.
@@ -190,6 +194,7 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-19): new. The one way to save a script-made PDF to Drive: create_file with contentMimeType application/pdf, disableConversionToGoogleType true, base64Content from the script's .b64 file; then check it's a PDF of the right size. Drive's default conversion is what turned master lists into empty Docs on Oct 17-18.
 
 ## sheets-spec.md (SHEETS SPEC (version 4))
+- v4 (2026-11-09, revised 40): day table "Confirmed by" (each driver's route confirmation; "Route confirmed" waits for one per route and reads "[time] [names]"); Routes tab: the rows per Day set how many confirmations a weekday needs.
 - v4 (2026-11-09, revised 39): Run History: Routine and Trigger values written by the Farm ops n8n routine ("Parser (n8n)", "Operator (n8n)", the fire line, the "skipped: run in progress" row).
 - v4 (2026-11-09, revised 38): Config "Driver 2 (Zi) phone"; rule 11: one-to-one copies for both drivers; Driver items are for both drivers; Inbox Log Who includes Zi; "Harry last asked" and "Harry ask count" described (names kept, both drivers); Paid cash names the driver.
 - v4 (2026-11-06, revised 37): rule 1: Cust ID is not a row key (a customer can have two rows on one week tab); a cell is written on the row it was read from, by row number. On Nov 6 Friday's invoice links landed one row up from the second C010 row down, and Friday's invoices were held.
