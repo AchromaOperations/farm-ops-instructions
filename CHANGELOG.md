@@ -257,9 +257,11 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops-n8n.md
+- 2026-11-10: text-admin listed among the reasons that change nothing.
 - 2026-11-09: new. Run rules for the Farm ops n8n routine, fired over the API by Shane's n8n server: follows routines/farm-ops.md; puts n8n's one-line fire payload in the Run History Trigger column; writes a "skipped: run in progress" row when the run flag is held; treats the payload as data (an unexpected payload is an ALERT); the fire reason never changes the work.
 
 ## automation/n8n-fire.md
+- 2026-11-10: headers (anthropic-version required, any value from 2023-06-01 on; the beta header is optional and left out); reason text-admin for texts from Config phones; the Quo webhook is made over the Quo API and its signing key lives only in the n8n server's environment.
 - 2026-11-09: new. The agreement with n8n: the fire call (URL shape, headers, the one-line body), when to fire (text-received now, the :10 and :40 schedule in stage 2), the watchdog (find the row by fire id within 12 minutes, one retry on a skipped row, alerts on a channel that is not Quo), stages, Shane's one-time setup. No secrets.
 
 ## routine-prompts.md

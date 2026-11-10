@@ -14,6 +14,6 @@ Follow ops/routines/farm-ops.md from top to bottom, exactly as a scheduled Farm 
 
 4. NIGHT. As farm-ops.md: 9:00pm or later, or before 6:30am, end at once with no reads and no writes, so no row. n8n does not fire in those hours; a fire that arrives then was a mistake on its side and is simply dropped.
 
-5. THE REASON CHANGES NOTHING. Whatever the fire line says (text-received, schedule, retry, manual), run both parts as farm-ops.md says. The operator's own due checks decide what is due; a fire for one text does the whole run, so a read-back or a reply to the family group goes out in this run and not half an hour later. Never skip a part, a step or a check because of the reason, and never do extra work because of it.
+5. THE REASON CHANGES NOTHING. Whatever the fire line says (text-received, text-admin, schedule, retry, manual), run both parts as farm-ops.md says. The operator's own due checks decide what is due; a fire for one text does the whole run, so a read-back or a reply to the family group goes out in this run and not half an hour later. Never skip a part, a step or a check because of the reason, and never do extra work because of it.
 
 6. SIDE BY SIDE. While the scheduled Farm ops routine still runs, both share the RUN FLAG, so they never work on the sheets at the same time, and a fired run that loses the race ends as rule 3 says. Nothing else changes for either routine. The hourly fire caps (30 per routine, 100 per account) are n8n's to respect, not yours.
