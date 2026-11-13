@@ -1,4 +1,4 @@
-MANUAL EDITS (version 6)
+MANUAL EDITS (version 7)
 Written for: sheets-spec version 4
 
 WHO THIS IS FOR
@@ -29,10 +29,24 @@ MAKING A CHANGE
 - Don't set "Confirm needed" (no read-back text to the customer) unless the person asks for the customer to get one.
 - After writing, read the cells back. If one didn't land right, fix it once; if it's still wrong, tell the person.
 
+CLOSING A QUEUE ITEM BY HAND (only when the person says they are Shane; Shane's rule, 2026-11-13)
+The Queue is the routine's. Mark and Laura close a digest question by answering it in the family group ("2 resolved"); Shane isn't in that group and his texts are logged only, so a stuck question (settled some other way, or not needed any more) is closed for him here. Only these cells (sheets-spec rule 2 names them as a Queue row's TRACKER cells; Digest # is one too), and nothing else:
+- Find the row by the Q# he gives, or by the customer and the digest number he quotes. If more than one open row fits, ask. The row must have Status Waiting, Sent or Answered; never touch a row that is already Resolved, and never a reply (Question starting "REPLY: ").
+- Write: Answer = "closed by hand: [his reason] (Shane (chat))" (if Answer already has text, add it after " ; "), Answered by = "Shane (chat)", Status = Resolved, Resolved = now, Outcome = Resolved (Sales items only), Digest # = blank.
+- Never add or delete rows, and change no other cell. Mark and Laura don't hear about it: the question just leaves the next digest.
+- Closing a question fixes nothing else. An "Unpaid 14+ days" question closed here leaves the invoice counted as unpaid until its row's Paid is filled (next section).
+
+INVOICE CANCELED OR DELETED IN SQUARE (only when the person says they are Shane; Shane's rule, 2026-11-13)
+The routine's payment check (invoicing Part D) notices an invoice Square reports canceled and asks Mark and Laura about a replacement. When Square no longer returns the invoice at all, nothing is asked: the check runs again every day, and the row keeps counting as unpaid (it is listed on that customer's next pay-link text). When Shane says a sent invoice was canceled or deleted in Square and won't be replaced:
+- Find the row: the customer, the week tab (the delivery date or "Invoice sent" date he gives), and the "Invoice link" if he names it. It must have "Invoice sent" filled and "Paid" blank; if not, change nothing and tell him what the row shows.
+- Fill Paid = "none: invoice canceled (Shane (chat))" and add "invoice canceled in Square (Shane (chat), [yyyy-mm-dd hh:mm])" to Needs attention (after " ; " if it has text). That stops the daily check and keeps the invoice off the customer's next pay-link text.
+- If he names a replacement invoice, don't do it here: leave the row alone and tell him the routine asks about replacements itself (invoicing Part D) when Square shows the old one canceled.
+- Never clear or change a filled Paid, and never change "Invoice link", "Invoice sent" or "Pay link texted".
+
 NEVER
 - Delete rows, tabs or files. Rename, move or remove headers or labels.
 - Change a filled STAMP cell, or edit or remove anything in a LOG cell (only append, to Changes and No charge).
-- Edit the System, Queue, Inbox Log or Run History tabs: the routine owns them.
+- Edit the System, Queue, Inbox Log or Run History tabs: the routine owns them. One exception: CLOSING A QUEUE ITEM BY HAND above, when the person says they are Shane.
 - Touch a day's "Invoice hold" (week tab day table) unless the person says they are Shane and asks for it. When he asks to hold a day: fill it as "[yyyy-mm-dd hh:mm] [reason] (Shane (chat))", or add that after " ; " if it's already filled. When he asks to lift it: clear the cell.
 - Change prices, or run a sync.
 - Send a text or message, unless the person asks for that exact message to that exact person.

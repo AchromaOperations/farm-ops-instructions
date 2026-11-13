@@ -81,7 +81,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## manual-edits.md (MANUAL EDITS (version 6))
+## manual-edits.md (MANUAL EDITS (version 7))
+- v7 (2026-11-13): two things a chat does only when the person says they are Shane: close a stuck Queue item by hand (tracker cells only: Answer "closed by hand: ...", Answered by, Status and Outcome Resolved, Resolved, Digest # cleared; no rows added or removed), and mark a sent invoice canceled or deleted in Square (Paid "none: invoice canceled (Shane (chat))" plus a Needs attention note), so the payment check stops and the invoice leaves the customer's next pay-link text. Shane's rule: a canceled invoice left an "Unpaid 14+ days" question nagging, and nobody but Mark or Laura could close it.
 - v6 (2026-11-08): the person in a farm-account chat is Laura unless they say they are Shane or Mark (Shane's rule), so "[who]" in Changes, No charge and other tags defaults to "Laura (chat)"; the Invoice hold exception applies when the person says they are Shane.
 - v5 (2026-11-08): the three files a chat must read are linked in full, not as a "[name]" pattern. A chat's web tool opens only links that already appear in the conversation and refuses links it assembled itself; on Nov 8 a chat on the farm account built the sheets-spec and week-names links from the pattern, was refused, and stopped (correctly) without making the Monday list it was asked for. Also: a chat never saves a delivery or master list into the Drive folders the routine sends from; chat-made lists are previews (new skills/delivery-list-pdf).
 - v4 (2026-10-23): a chat sets or clears a day's "Invoice hold" only when Shane asks.
@@ -264,6 +265,9 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 ## automation/n8n-fire.md
 - 2026-11-10: headers (anthropic-version required, any value from 2023-06-01 on; the beta header is optional and left out); reason text-admin for texts from Config phones; the Quo webhook is made over the Quo API and its signing key lives only in the n8n server's environment.
 - 2026-11-09: new. The agreement with n8n: the fire call (URL shape, headers, the one-line body), when to fire (text-received now, the :10 and :40 schedule in stage 2), the watchdog (find the row by fire id within 12 minutes, one retry on a skipped row, alerts on a channel that is not Quo), stages, Shane's one-time setup. No secrets.
+
+## human-prompts/clear-open-questions.md
+- 2026-11-13: new. The protocol for a digest that keeps nudging: answer by text (Mark or Laura), close by hand through a chat (Shane, manual-edits v7), and what to do about the invoice itself when it was canceled or deleted in Square.
 
 ## routine-prompts.md
 - 2026-11-09: section for the Farm ops n8n routine (API trigger only; a loader text that opts in to reading the fire payload as the fire line and nothing more).
