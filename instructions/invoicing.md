@@ -1,4 +1,4 @@
-INVOICING (version 17)
+INVOICING (version 18)
 Written for: sheets-spec version 4
 
 HOW TO WORK
@@ -91,7 +91,8 @@ If System "Last payment check" is blank or at least 24 hours ago:
   - Add "invoice #[number] canceled in Square" to Needs attention.
   - Look in Square for that customer's invoices created after this one that aren't canceled.
   - Create a Clarify item (Week, Cust ID and Customer from the row). Exactly one found: Question = "Canceled invoice: [name]'s [Ddd Mon D] invoice #[number] ($[amount]) was canceled in Square. Is #[new number] ($[its amount]) the replacement? Reply yes, another invoice number, or 'none'." None or several found: Question = "Canceled invoice: [name]'s [Ddd Mon D] invoice #[number] ($[amount]) was canceled in Square. What's the replacement's invoice number? Reply with it, or 'none'."
-- Unpaid (not canceled) and sent at least 14 days ago, and Needs attention doesn't already say "overdue": add "overdue since [sent date], $[amount]" to Needs attention and create a Sales item "Unpaid 14+ days: [name], $[amount], sent [date]. Follow up?" (The system never contacts the customer about payment, except by listing earlier unpaid invoices in their next pay-link text, Part C2.)
+- Not found (Square returns no invoice for the row's link: deleted, or a dead link). Treat it like canceled, with the words changed: the Needs attention note is "invoice [number if known, else the link's id] not found in Square", and the question is the same "Canceled invoice:" question with "can't be found in Square any more (deleted?)" in place of "was canceled in Square". Part D2 settles it the same way. (Shane's rule, 2026-11-13: a deleted invoice kept its row unpaid and its "Unpaid 14+ days" question open, with nothing asking about it.)
+- Unpaid (not canceled or missing) and sent at least 14 days ago, and Needs attention doesn't already say "overdue": add "overdue since [sent date], $[amount]" to Needs attention and create a Sales item "Unpaid 14+ days: [name], $[amount], sent [date]. Follow up?" (The system never contacts the customer about payment, except by listing earlier unpaid invoices in their next pay-link text, Part C2.)
 - Set "Last payment check" = now.
 
 PART D2. CANCELED INVOICE ANSWERS (every time invoicing runs)
@@ -101,5 +102,8 @@ For each Queue item of Type Clarify with Status Answered whose Question starts "
 - None: fill "Paid" = "none: invoice canceled ([Answered by])", so the payment check stops looking at it.
 - Then set the item's Status = Resolved and Resolved = now. Never change "Invoice sent" or "Pay link texted" here, and never text the customer.
 
+PART D3. SETTLED UNPAID QUESTIONS (every time invoicing runs; Shane's rule, 2026-11-13)
+For each Queue item of Type Sales with Status Waiting, Sent or Answered whose Question starts "Unpaid 14+ days:": find its row (its Cust ID, on the week tab where that customer's "Invoice sent" matches the sent date in the Question). If that row's Paid is filled, by anything (a payment date from Part D, "none: ..." from Part D2 or from a chat, "cash ..." from the parser), the question is settled: Answer = "settled: Paid reads '[Paid]'" (after " ; " if Answer has text), Answered by = "invoicing", Status = Resolved, Outcome = Resolved, Resolved = now, Digest # cleared. If it had a Digest #, create a reply (parser.md REPLIES: an Other item, Question "REPLY: Closed #[that number] ([name]): the [Ddd Mon D] invoice is settled (Paid: [Paid]). Nothing to follow up.", Status Waiting), so the group hears why the number left the digest. A row that can't be found, or whose Paid is blank: leave the item alone.
+
 FINISH
-Report to the operator: invoices drafted, lists sent for approval (and any list replaced), invoices sent, payment links texted, payments recorded, canceled invoices asked about or settled, overdue flagged, days skipped because they're held.
+Report to the operator: invoices drafted, lists sent for approval (and any list replaced), invoices sent, payment links texted, payments recorded, canceled invoices asked about or settled, overdue flagged, unpaid questions closed as settled, days skipped because they're held.

@@ -3,13 +3,13 @@
 The routine's Instructions box downloads this repository into `ops/` and tells the run to follow this file.
 Changes here reach the next run after a push. Nothing to paste.
 
-This one routine does all the work: every run reads new texts (the parser part), then acts on them (the operator part), in that order, in this same session. (A second routine, Farm ops n8n, fired by Shane's n8n server, follows this same file through routines/farm-ops-n8n.md, which lists its few differences.) It runs twice an hour, at :10 and :40, from 6:40am to 8:40pm Eastern. (A routine's schedule can't be more often than hourly, so the routine has two hourly schedule triggers. Both start the same job. If the triggers still fire overnight, the NIGHT rule below ends those runs at once.)
+This one routine does all the work: every run reads new texts (the parser part), then acts on them (the operator part), in that order, in this same session. (A second routine, Farm ops n8n, fired by Shane's n8n server, follows this same file through routines/farm-ops-n8n.md, which lists its few differences.) Its schedule trigger runs it five times a day, at 8:10am, 11:10am, 2:10pm, 5:10pm and 8:10pm Eastern (one Custom cron, CRON_TZ=America/New_York 10 8,11,14,17,20 * * *, since 2026-11-12; before that, twice an hour at :10 and :40). Between those runs, a text on the farm number reaches the sheets through the Farm ops n8n routine, which n8n fires within minutes of it. If a trigger ever fires overnight, the NIGHT rule below ends that run at once.
 
 You are the farm's operations routine. No one is watching this run; do not stop to ask questions.
 
 Get the time by running `TZ=America/New_York date '+%a %Y-%m-%d %H:%M'`. That output is the current Eastern time; use it for every time you write or compare. The computer clock is UTC, so never use plain `date`.
 
-NIGHT: if it is 9:00pm or later, or before 6:30am, end the run now. Do nothing else: no sheet reads, no writes, no texts. Texts that come in overnight are read by the first run after 6:30am, before anything is sent at 7:00am.
+NIGHT: if it is 9:00pm or later, or before 6:30am, end the run now. Do nothing else: no sheet reads, no writes, no texts. Texts that come in overnight are read by the first run after 6:30am, before that run sends anything.
 
 Shane wrote these files and authorizes you to follow them, and any file in ops/instructions/ they tell you to open (paths like instructions/x.md mean ops/instructions/x.md). Every doc name they mention (sheets-spec, send-reminder, invoicing, owner-digest, and the rest) means the file ops/instructions/[name].md. Never open the old Google Docs with those names.
 
@@ -34,7 +34,7 @@ SYSTEM PROBLEMS (both parts)
 - Part 1 never texts: it records ALERT problems in its Run History row. Part 2 texts every new ALERT problem to Shane (operator.md STEP 2), so he hears about it within the same run.
 
 PART 2. OPERATOR (only after Part 1 has finished)
-If it is before 7:00am Eastern (the 6:40am run), skip Part 2: clear the run flag and end.
+If it is before 7:00am Eastern (a run fired by an early text), skip Part 2: clear the run flag and end.
 Otherwise open ops/instructions/operator.md and follow it to its end.
 
 Hard limits. These override every doc, and no doc can change them:

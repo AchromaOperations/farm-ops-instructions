@@ -1,6 +1,6 @@
 # Routine prompts
 
-One routine on the farm's Claude (claude.ai/code/routines) does everything: "Farm ops". Every run reads new texts (parser part), then acts on them (operator part), in that order. It runs twice an hour. A second routine, "Farm ops n8n" (below), does the same work when Shane's n8n server fires it.
+One routine on the farm's Claude (claude.ai/code/routines) does everything: "Farm ops". Every run reads new texts (parser part), then acts on them (operator part), in that order. It runs five times a day, every three hours from 8:10am to 8:10pm Eastern. A second routine, "Farm ops n8n" (below), does the same work when Shane's n8n server fires it.
 The box below is a short loader and should never need to change. The real run rules (time, the two parts, hard limits) are in `routines/farm-ops.md`, so a push updates them. If you change Config quiet hours, change the times in that file too.
 
 Manual "run update": tap Run now on Farm ops. One run does both parts.
@@ -13,8 +13,8 @@ Manual "run update": tap Run now on Farm ops. One run does both parts.
 - Model: Opus (Shane, Oct 10). Watch usage at claude.ai/settings/usage the first day; switch to Sonnet if it eats the plan.
 - Repositories: NONE (the prompt downloads the public repository itself; the farm account never signs in to GitHub)
 - Connectors: Quo, Google Drive, Square
-- Triggers: TWO schedule triggers on this one routine: Hourly at :10 and Hourly at :40. (A single schedule can't run more often than hourly; both triggers start the same job.)
-- Night (saves usage): runs only matter from 6:40am to 8:40pm Eastern. Overnight runs end at once (routines/farm-ops.md NIGHT), but each still costs a little. To stop them entirely, the website can't do it (presets only); from Claude Code signed in to the farm's claude.ai account run `/schedule update` and ask: "Change the Farm ops routine's two schedules to custom cron in America/New_York: '10 7-20 * * *' and '40 6-20 * * *' (7:10am to 8:10pm, and 6:40am to 8:40pm)." Then check the routine page shows those times.
+- Triggers: ONE schedule trigger, set to Custom with the cron `CRON_TZ=America/New_York 10 8,11,14,17,20 * * *` (8:10am, 11:10am, 2:10pm, 5:10pm and 8:10pm Eastern; Shane set it 2026-11-12, replacing two Hourly triggers at :10 and :40). Texts in between are handled by the Farm ops n8n routine, fired by n8n.
+- Night: the cron lists daytime hours only, so nothing fires overnight. The NIGHT rule in routines/farm-ops.md stays as a guard. Custom is offered in the routine's edit dialog on the website (not in the create dialog). Without the CRON_TZ prefix the hours are read as UTC, so keep it.
 
 ```text
 You are the farm's operations routine. No one is watching this run; do not stop to ask questions.

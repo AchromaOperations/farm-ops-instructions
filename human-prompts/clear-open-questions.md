@@ -5,7 +5,7 @@ Use this when a digest keeps coming back ("Still waiting on these (reply with th
 ## What is going on
 
 - Every numbered line in a digest is a Queue row waiting for an answer in the family group. The routine asks again every "Follow-up every (minutes)" (Config) until it has one. While any sent question is unanswered, new questions wait behind it; only urgent ones (a delivery today or tomorrow, or a held invoice) go out early. So one ignored question holds up the rest.
-- Fixing the thing somewhere else never answers the question. Canceling or deleting an invoice in Square, paying it, or changing the sheet leaves an "Unpaid 14+ days" question open: it was asking Mark whether to follow up with the customer, and only an answer closes it. (One exception since parser v39: a text sent to that customer from the Quo app closes their open customer-service questions.)
+- Fixing the thing somewhere else does not answer the question right away. An "Unpaid 14+ days" question closes itself only once its row's Paid cell is filled: a payment shows up in the daily payment check, or Mark or Laura answer the "Canceled invoice:" question that check asks when the invoice was canceled or deleted in Square. That takes up to a day. Any other change (texting the customer about something else, editing the sheet) leaves it open. (Since parser v39, a text sent to that customer from the Quo app closes their open customer-service questions.)
 - Shane's texts don't count. The parser reads digest answers only from Mark and Laura, in the family group.
 
 ## 1. By text (Mark or Laura, in the family group)
@@ -28,14 +28,14 @@ The chat writes only that row's tracker cells (Answer "closed by hand: ...", Ans
 
 ## 3. The invoice itself (when it was canceled or deleted in Square)
 
-Closing the question does not change the invoice's standing in the sheets. The row still counts as unpaid, the daily payment check keeps looking, and the invoice is listed on that customer's next pay-link text, until its Paid cell is filled.
+For an "Unpaid 14+ days" question, settle the invoice row instead of closing the question: once the row's Paid cell is filled, invoicing closes the question itself on its next run and tells the group ("Closed #n ... settled"). Until then the row counts as unpaid and the invoice is listed on that customer's next pay-link text.
 
-- Canceled in Square and still visible there: nothing to do. The next daily payment check sees it, puts a "Canceled invoice: ... replacement?" question in the digest; answer it with "none" (or the replacement's invoice number). That fills Paid.
-- Deleted (Square no longer shows it), or you want it settled now: paste into a chat
+- Canceled or deleted in Square: nothing to do. The next daily payment check sees it and puts a "Canceled invoice: ... replacement?" question in the digest; answer it with "none" (or the replacement's invoice number). That fills Paid, and the question closes on the following run.
+- Want it settled now, without waiting for the daily check: paste into a chat
 
       I'm Shane. [Customer]'s [delivery date] invoice ($[amount], sent [date]) was canceled in Square and won't be replaced. Follow INVOICE CANCELED OR DELETED IN SQUARE in https://raw.githubusercontent.com/AchromaOperations/farm-ops-instructions/main/instructions/manual-edits.md and change nothing else.
 
-  The chat fills Paid = "none: invoice canceled (Shane (chat))" and notes it in Needs attention.
+  The chat fills Paid = "none: invoice canceled (Shane (chat))" and notes it in Needs attention. The question closes on the next run.
 - A replacement invoice was sent by hand: don't close anything. Wait for the "Canceled invoice:" question and answer it with the new invoice number, so the row points at the replacement and its payment is tracked.
 
 ## Never

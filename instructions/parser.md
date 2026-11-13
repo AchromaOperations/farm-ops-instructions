@@ -1,4 +1,4 @@
-PARSER (version 39)
+PARSER (version 40)
 Written for: sheets-spec version 4
 
 JOB
@@ -52,7 +52,7 @@ A2. Reminder. Look at NEXT week's tab header (week-names.md).
   - A short instruction about the wording ("make it Sunday", "add that we have honey") = apply it to the current "Reminder wording", and set "Reminder wording updated" = now.
   - Unclear = Clarify item "Not sure if this is the reminder wording: '[text]'".
 
-A3. Digest answers. Fits if the message refers to numbers that match open Queue items by Digest # (Status Sent, or a Sales item with Status Answered that the daily follow-up asks about again), e.g. "1 two dozen, 2 maple", "4 resolved". A number written "Q[n]" is a Q#, never a digest number (A4 reopen). Also fits when a number with sale, no sale or resolved matches no open item but matches the "#[n]" of a "REPLY: Closed #[n]" item created in the last 24 hours (section F closed it after a text sent by hand): log only, Action taken "already closed by hand (Q[the closed item's Q#])", no reply.
+A3. Digest answers. Fits if the message refers to numbers that match open Queue items by Digest # (Status Sent, or a Sales item with Status Answered that the daily follow-up asks about again), e.g. "1 two dozen, 2 maple", "4 resolved". A number written "Q[n]" is a Q#, never a digest number (A4 reopen). Also fits when a number with sale, no sale or resolved matches no open item but matches the "#[n]" of a "REPLY: Closed #[n]" item created in the last 24 hours (section F closed it after a text sent by hand, or invoicing Part D3 closed it as settled): log only, Action taken "already closed (Q[the closed item's Q#])", no reply.
 For each number answered: fill Answer, Answered by, Status = Answered, then apply by Type:
 - Clarify about a held invoice (Question starts with "Invoice"): an OK in any wording ("send", "good", "ok", "send it", "it's fine", "send as is") = fill that customer's "Invoice approved" (date-time + who). "Fixed" in any wording ("fixed", "done", "removed it", "changed it", "took it off": they changed the draft in Square themselves) = add "draft changed by hand ([who], [now])" to that row's Needs attention, removing any "Invoice held: waiting for an answer (Q[n] #[k])" note for this question from it, and leave "Invoice approved" as it is: invoicing lists the draft again with the lines it has now (Part B step 1), or sends it if it was already approved. Anything else = write "Invoice held: [answer]. Fix it in Square, then fill Invoice sent by hand." in that row's Needs attention. Then Resolved.
 - Clarify about a held read-back (Question starts with "Read-back"): an OK in any wording ("send", "good", "it's fine", "send it") = fill that row's "Read-back approved". Otherwise treat the answer as a correction to that customer's order: apply it with ORDER WRITING (source "Mark" or "Laura") and set "Confirm needed" = now, so a corrected read-back goes on the next list. Then Resolved.

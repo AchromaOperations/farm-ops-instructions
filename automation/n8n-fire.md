@@ -28,7 +28,7 @@ Content-Type: application/json
 
 - Never between 9:00pm and 6:30am Eastern (the routine ends such a run at once with no row; routines/farm-ops.md NIGHT).
 - text-received and text-admin: Quo's message.received webhook for the farm number (text-admin when the sender is a Config phone, text-received for anyone else; the routine does the same work for both). Fire only for incoming messages, never for message.delivered or the system's own sends. Coalesce: if any fire went out in the last 3 minutes, don't fire; the run that is going, or the next one, reads the text (the parser fetches from the message cursor minus a 60-minute overlap, so nothing is lost by waiting).
-- schedule: not in stage 1 (the scheduled Farm ops routine still runs at :10 and :40). In stage 2 n8n fires at :10 and :40, 6:40am to 8:40pm Eastern, and Shane pauses the scheduled routine's two schedule triggers. Same minutes as before, so every time rule in the instructions (Delivery list time 19:00, Weekly master list time 19:30, Route check start 15:00) keeps working unchanged.
+- schedule: not used. The scheduled Farm ops routine keeps its own clock: one Custom cron, five runs a day at 8:10am, 11:10am, 2:10pm, 5:10pm and 8:10pm Eastern (since 2026-11-12; routines/farm-ops.md). n8n fires only on texts. Shane dropped the earlier plan of n8n taking over the clock (2026-11-11): few timed runs plus a fire on every text is the design. Every time rule in the instructions (Delivery list time, Weekly master list time, Route check start) is "at or after", so each lands on the next of those five runs; Shane sets the Config times with that in mind.
 - retry: only as section 3 says.
 - manual: a button in n8n for Shane. Same body shape.
 
@@ -42,12 +42,12 @@ Ten minutes after each fire, read the Run History tab (Google Sheets API, read-o
 - A row whose Problems contains "ALERT": alert Shane on the non-Quo channel with the Problems text. The routine texts him too, through Quo (operator.md STEP 2); the point of this alert is the path that does not depend on Quo.
 - Anything else: the fire landed; nothing to do.
 
-Health checks that need no fire (the assessment's item 1) come after the watchdog works: newest Run History row older than 75 minutes between 7am and 9pm; a weekday whose "Delivery list sent" is still blank at 7:40pm. Those read the week tabs and need week-names.md's rules; a later version of this file will specify them.
+Health checks that need no fire (the assessment's item 1) come after the watchdog works: the newest Run History row older than 195 minutes between 8:30am and 9:00pm Eastern (the scheduled runs are three hours apart, so this fires only when one was missed; a scheduled run that finds the run flag held by a fired run ends without a row, so a fire shortly before a scheduled minute can also trip it); a weekday whose "Delivery list sent" is still blank at 8:40pm (the 8:10pm run is the last that can send it). Those read the week tabs and need week-names.md's rules; a later version of this file will specify them.
 
 ## 4. Stages
 
-1. Stage 1 (this file): the Farm ops n8n routine exists with an API trigger; n8n fires it on text-received only and runs the watchdog. The scheduled Farm ops routine keeps running. Texts get handled within minutes instead of up to 30. Run for a week; compare the two routines' Run History rows.
-2. Stage 2: n8n adds the :10 and :40 schedule fires; Shane pauses the scheduled routine's schedule triggers (and can turn them back on in one click if n8n goes quiet). The scheduled routine stays as the fallback.
+1. Stage 1 (this file; live since 2026-11-12): the Farm ops n8n routine exists with an API trigger; n8n fires it on text-received and text-admin and runs the watchdog. The scheduled Farm ops routine keeps running. Texts get handled within minutes.
+2. Stage 2 (done differently, 2026-11-12): instead of n8n taking the clock, Shane cut the scheduled routine to five runs a day on one Custom cron (routines/farm-ops.md). n8n keeps firing on texts. If n8n goes quiet, nothing is lost: the five runs still read every text, just later.
 3. Later: the assessment's items 2 to 5.
 
 ## 5. What Shane sets up once

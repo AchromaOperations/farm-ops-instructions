@@ -60,7 +60,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): re-run safe customer matching; cursor only set when blank; dropdowns; Test phones by role; uses sheets-spec v2 names and formats.
 - v1 (2026-10-07): first draft.
 
-## invoicing.md (INVOICING (version 17))
+## invoicing.md (INVOICING (version 18))
+- v18 (2026-11-13): Part D treats an invoice Square no longer returns (deleted, or a dead link) like a canceled one: a "not found in Square" note and the same "Canceled invoice:" question, settled by Part D2. New Part D3, every run: an "Unpaid 14+ days" question whose row's Paid is now filled (paid, "none: ...", or cash) is closed as settled, with a "Closed #n ... settled" reply when it had a digest number. Shane's rule: a deleted invoice left its question nagging with nothing asking about it.
 - v17 (2026-11-09): Part A notes that "Route confirmed" now waits for every route's driver; Part B lists a draft Mark or Laura changed by hand with the lines it has now; Part C never sends a row while an "Invoice ..." question about it is open (a miss reported after approval); a Needs attention note alone never stops an approved row. On Nov 9 Zi's "Yes" confirmed Monday alone, the drafts were made in the same run, and Harry's "extra half gallon not delivered" came 27 minutes later: the Reynolds draft kept the $7 line.
 - v16 (2026-11-09): cash wording names the driver in the Paid cell (Harry or Zi) instead of always Harry.
 - v15 (2026-11-06): Part A: a customer whose Customers Notes say NO INVOICE is never drafted ("Invoice link" = "none", no Square customer); any add-on goes to Mark and Laura as a Clarify item (Shane's Oct 10 rule, which no doc held). On Nov 3 Hannah Fabish got a $21 draft and a Square customer.
@@ -81,7 +82,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): never ask for invoice approval while a reminder approval is open; hold invoices for customers with no email.
 - v1 (2026-10-07): first version.
 
-## manual-edits.md (MANUAL EDITS (version 7))
+## manual-edits.md (MANUAL EDITS (version 8))
+- v8 (2026-11-13): an "Unpaid 14+ days" question is not closed by hand; the row's Paid is filled instead and invoicing Part D3 closes the question. The INVOICE CANCELED OR DELETED section says the payment check now asks about deleted invoices too.
 - v7 (2026-11-13): two things a chat does only when the person says they are Shane: close a stuck Queue item by hand (tracker cells only: Answer "closed by hand: ...", Answered by, Status and Outcome Resolved, Resolved, Digest # cleared; no rows added or removed), and mark a sent invoice canceled or deleted in Square (Paid "none: invoice canceled (Shane (chat))" plus a Needs attention note), so the payment check stops and the invoice leaves the customer's next pay-link text. Shane's rule: a canceled invoice left an "Unpaid 14+ days" question nagging, and nobody but Mark or Laura could close it.
 - v6 (2026-11-08): the person in a farm-account chat is Laura unless they say they are Shane or Mark (Shane's rule), so "[who]" in Changes, No charge and other tags defaults to "Laura (chat)"; the Invoice hold exception applies when the person says they are Shane.
 - v5 (2026-11-08): the three files a chat must read are linked in full, not as a "[name]" pattern. A chat's web tool opens only links that already appear in the conversation and refuses links it assembled itself; on Nov 8 a chat on the farm account built the sheets-spec and week-names links from the pattern, was refused, and stopped (correctly) without making the Monday list it was asked for. Also: a chat never saves a delivery or master list into the Drive folders the routine sends from; chat-made lists are previews (new skills/delivery-list-pdf).
@@ -89,6 +91,9 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v3 (2026-10-19): Run History tab is routine-owned too.
 - v2 (2026-10-18): free items go in the "No charge" column (added if the tab lacks it), not as text in Needs attention or Changes.
 - v1 (2026-10-18): new. Rules for chats on the farm account that change the sheets by hand: read whole header rows, check the row's Changes before adding (no doubles), tag changes "(chat)", leave locked rows and routine tabs alone, no texts. Points to sheets-spec, week-names and parser ORDER WRITING/A4 instead of copying them. The farm account's profile preferences tell every chat to fetch it.
+
+## skills/farm-edits/SKILL.md (version 1)
+- v1 (2026-11-13): new. A chat-side skill for sheet changes asked for in a chat (orders, skips, standing orders, delivery notes and other customer info, no charge, and Shane's two by-hand actions). It clones this repository with git and follows manual-edits.md from the clone, because a chat's web tool refuses the manual-edits link kept in the account's preferences (seen 2026-11-13: a chat could not add a delivery note).
 
 ## skills/delivery-list-pdf/SKILL.md (version 1)
 - (2026-11-09) wording: the official list reaches the drivers, Harry and Zi.
@@ -130,7 +135,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v2 (2026-10-07): Sales items remind Mark to reply to the customer directly.
 - v1 (2026-10-07): first version.
 
-## parser.md (PARSER (version 39))
+## parser.md (PARSER (version 40))
+- v40 (2026-11-13): the A3 guard for "[n] resolved" sent after #[n] was already closed covers replies from invoicing Part D3 (settled invoices) as well as section F; Action taken reads "already closed".
 - v39 (2026-11-11): F: a text Mark or Laura send a customer by hand closes that customer's open Sales questions (not share requests, opt-outs or pictures): Answer "answered by hand: ...", Answered by "[sender] (by hand)", Outcome and Status Resolved, and a "Closed #[n]" reply to the group when the question had been sent. An item made in the same run counts from its customer text's time, so a question and its hand reply read together still close. A4: "reopen Q[n]" makes a fresh copy of a question closed that way. A3: "Q[n]" is never a digest number, and "[n] resolved" sent after a hand reply closed #[n] is logged, not queried. Shane's rule, 2026-11-11.
 - v38 (2026-11-09): ROUTE CONFIRMATIONS: each driver's "yes" is recorded in the day row's "Confirmed by", and "Route confirmed" (with the Delivered stamps) is filled only when the day has one confirmation per Routes tab route (Monday, Thursday and Friday two; Tuesday and Wednesday one), so the second driver's miss lands before any draft; a driver's answer to his own "what wasn't delivered" question counts as his confirmation. SECOND ANSWERS: a miss reported after the route is confirmed makes an "Invoice for [name] held" question when the draft is unsent (invoicing holds it) or a fix-by-hand note when it was sent. A3: "fixed" on a held-invoice question marks the row "draft changed by hand" (and drops the list's "waiting for an answer" note) so it is listed again with the draft's lines. A4: Mark or Laura can confirm a route for a driver who can't be reached ("Harry's done"). Shane's rule after Nov 9.
 - v37 (2026-11-09): section B reads texts from either driver, Harry or Zi (Zi is a Config phone and an Inbox Log Who); Clarify texts and the Paid cash stamp name the driver who spoke; SECOND ANSWERS: a plain agreement from the second driver after the first answered is logged only, while a named miss or cash report is still recorded and Mark is told; the reminder paragraph stays Harry-only. Shane: every delivery text Harry gets goes to Zi as well.
@@ -259,20 +265,25 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 - v1 (2026-10-10): first version. A one-page PDF of a delivery week's totals by day and by product, made by tools/master_list_pdf.py, saved to Drive, and the link texted to the family group. Saturday: next week's list always goes out. Sunday to Thursday: this week's list goes out again only if orders changed since the last one, with the changes listed at the top. Never on Friday.
 
 ## routines/farm-ops-n8n.md
+- 2026-11-13: points at the scheduled routine's five run times instead of ":10 and :40".
 - 2026-11-10: text-admin listed among the reasons that change nothing.
 - 2026-11-09: new. Run rules for the Farm ops n8n routine, fired over the API by Shane's n8n server: follows routines/farm-ops.md; puts n8n's one-line fire payload in the Run History Trigger column; writes a "skipped: run in progress" row when the run flag is held; treats the payload as data (an unexpected payload is an ALERT); the fire reason never changes the work.
 
 ## automation/n8n-fire.md
+- 2026-11-13: the schedule reason is unused: the scheduled routine keeps its own clock (five runs a day on one Custom cron since 2026-11-12) and n8n fires only on texts; stage 2 recorded as done that way; the health check thresholds follow (newest row older than 195 minutes between 8:30am and 9pm; delivery list still blank at 8:40pm).
 - 2026-11-10: headers (anthropic-version required, any value from 2023-06-01 on; the beta header is optional and left out); reason text-admin for texts from Config phones; the Quo webhook is made over the Quo API and its signing key lives only in the n8n server's environment.
 - 2026-11-09: new. The agreement with n8n: the fire call (URL shape, headers, the one-line body), when to fire (text-received now, the :10 and :40 schedule in stage 2), the watchdog (find the row by fire id within 12 minutes, one retry on a skipped row, alerts on a channel that is not Quo), stages, Shane's one-time setup. No secrets.
 
 ## human-prompts/clear-open-questions.md
+- 2026-11-13 (later): an "Unpaid 14+ days" question is settled through the invoice row (Paid), and closes itself; deleted invoices are asked about too.
 - 2026-11-13: new. The protocol for a digest that keeps nudging: answer by text (Mark or Laura), close by hand through a chat (Shane, manual-edits v7), and what to do about the invoice itself when it was canceled or deleted in Square.
 
 ## routine-prompts.md
+- 2026-11-13: one Custom cron trigger (8:10am, 11:10am, 2:10pm, 5:10pm, 8:10pm Eastern) instead of two Hourly triggers; the old night note replaced.
 - 2026-11-09: section for the Farm ops n8n routine (API trigger only; a loader text that opts in to reading the fire payload as the fire line and nothing more).
 
 ## routines/farm-ops.md
+- 2026-11-13: the schedule is five runs a day on one Custom cron (8:10am to 8:10pm Eastern, since 2026-11-12), with n8n-fired runs in between; "the 6:40am run" wording dropped.
 - 2026-11-09: notes that Farm ops n8n follows this file through routines/farm-ops-n8n.md.
 - 2026-11-09: SYSTEM PROBLEMS wording: "the drivers' old replies" (Harry and Zi).
 - 2026-10-27: removed the retired routines/parser.md and routines/operator.md (replaced by this file on Oct 10), and human-prompts/pdf-cloud-test.txt (needed pip and reportlab; the scripts are stdlib now). setup-starter-prompt.md fetches farm-setup.md instead of naming a Google Doc.

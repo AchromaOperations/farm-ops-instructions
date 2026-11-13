@@ -1,4 +1,4 @@
-MANUAL EDITS (version 7)
+MANUAL EDITS (version 8)
 Written for: sheets-spec version 4
 
 WHO THIS IS FOR
@@ -34,12 +34,12 @@ The Queue is the routine's. Mark and Laura close a digest question by answering 
 - Find the row by the Q# he gives, or by the customer and the digest number he quotes. If more than one open row fits, ask. The row must have Status Waiting, Sent or Answered; never touch a row that is already Resolved, and never a reply (Question starting "REPLY: ").
 - Write: Answer = "closed by hand: [his reason] (Shane (chat))" (if Answer already has text, add it after " ; "), Answered by = "Shane (chat)", Status = Resolved, Resolved = now, Outcome = Resolved (Sales items only), Digest # = blank.
 - Never add or delete rows, and change no other cell. Mark and Laura don't hear about it: the question just leaves the next digest.
-- Closing a question fixes nothing else. An "Unpaid 14+ days" question closed here leaves the invoice counted as unpaid until its row's Paid is filled (next section).
+- Closing a question fixes nothing else. Don't close an "Unpaid 14+ days" question here: fill the row's Paid instead (next section), and invoicing closes the question itself on its next run.
 
 INVOICE CANCELED OR DELETED IN SQUARE (only when the person says they are Shane; Shane's rule, 2026-11-13)
-The routine's payment check (invoicing Part D) notices an invoice Square reports canceled and asks Mark and Laura about a replacement. When Square no longer returns the invoice at all, nothing is asked: the check runs again every day, and the row keeps counting as unpaid (it is listed on that customer's next pay-link text). When Shane says a sent invoice was canceled or deleted in Square and won't be replaced:
+The routine's daily payment check (invoicing Part D) notices an invoice Square reports canceled or no longer returns, asks Mark and Laura about a replacement, and fills Paid itself when they answer "none"; invoicing then closes the row's "Unpaid 14+ days" question (Part D3). Until Paid is filled, the row counts as unpaid and is listed on that customer's next pay-link text. This section is for when Shane wants it settled now, without waiting for that. When he says a sent invoice was canceled or deleted in Square and won't be replaced:
 - Find the row: the customer, the week tab (the delivery date or "Invoice sent" date he gives), and the "Invoice link" if he names it. It must have "Invoice sent" filled and "Paid" blank; if not, change nothing and tell him what the row shows.
-- Fill Paid = "none: invoice canceled (Shane (chat))" and add "invoice canceled in Square (Shane (chat), [yyyy-mm-dd hh:mm])" to Needs attention (after " ; " if it has text). That stops the daily check and keeps the invoice off the customer's next pay-link text.
+- Fill Paid = "none: invoice canceled (Shane (chat))" and add "invoice canceled in Square (Shane (chat), [yyyy-mm-dd hh:mm])" to Needs attention (after " ; " if it has text). That stops the daily check, keeps the invoice off the customer's next pay-link text, and lets invoicing close the row's "Unpaid 14+ days" question on its next run (Part D3): no need to close that question by hand as well.
 - If he names a replacement invoice, don't do it here: leave the row alone and tell him the routine asks about replacements itself (invoicing Part D) when Square shows the old one canceled.
 - Never clear or change a filled Paid, and never change "Invoice link", "Invoice sent" or "Pay link texted".
 
