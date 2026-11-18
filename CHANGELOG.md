@@ -257,7 +257,8 @@ History of every file in instructions/ and routines/. Each file keeps only its v
 ## week-names.md (WEEK NAMES (version 1))
 - v1 (2026-10-17): new. THIS/NEXT/LAST week, tab names and missing week tabs, moved here from sheets-spec so the operator reads a small file each run.
 
-## weekly-master-list.md (WEEKLY MASTER LIST (version 4))
+## weekly-master-list.md (WEEKLY MASTER LIST (version 5))
+- v5 (2026-11-17): Step 2 says an answer the Sheets tool shows inline is written to the file exactly as the tool returned it (Nov 8, 9 and 14 the run read "never type from memory" as forbidding that and stopped with nothing sent). The week tab is always exactly four 50-row chunks and Step 3's command is fixed, because the routine environment's permission rule names the exact command; a tab past row 200 is a failure that texts Shane. A denied Step 3 command is named as such. Background: master_list_input.py was added Nov 6 but the environment's allow rules named only the three older scripts, so the run was denied it on Nov 9 and every night Nov 15 to 17; nothing went out after the Nov 7 week 5 list, and week 6 never got one.
 - v4 (2026-11-06): the input file is built by tools/master_list_input.py from the sheet's answers saved as files (the week tab in 50-row chunks, Products, Config), never typed by the run. Nov 2 the run couldn't build the file before quiet hours; Nov 4 it wrote null for a list and master_list_pdf.py failed with TypeError; nothing went out Nov 1 to 6.
 - 2026-11-06 (tools): master_list_input.py added; master_list_pdf.py names an incomplete input key instead of a bare TypeError, and treats a null cell as blank.
 - v3 (2026-10-19): the PDF is saved with instructions/save-pdf.md.
